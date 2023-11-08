@@ -6,7 +6,7 @@
  */
 package a23.sim203.tp3.modele;
 
-//import a23.sim203.tp3.app.GestionAffichage;
+import a23.sim203.tp3.app.GestionAffichage;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import org.mariuszgromada.math.mxparser.Constant;

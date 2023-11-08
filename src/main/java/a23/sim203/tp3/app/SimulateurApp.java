@@ -14,7 +14,7 @@ public class SimulateurApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(SimulateurApp.class.getResource("calculatrice.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("calculatriceV2.fxml"));
         Node root = fxmlLoader.load();
         Scene scene = new Scene((Parent) root);
         primaryStage.setScene(scene);
