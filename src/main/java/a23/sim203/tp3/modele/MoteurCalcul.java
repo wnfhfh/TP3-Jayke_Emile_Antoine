@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 public class MoteurCalcul {
 
     // ajoutez les attributs pour stocker les équations et les variables
+    private Long pasDeTempsEnCours;
     /**
      * Stock les variables avec leur nom et valeur associés.
      */
@@ -33,6 +34,10 @@ public class MoteurCalcul {
      */
     private HashMap<String, Object> equationEtVariableMap;
 
+    private HashMap<String, Constant> mapAncienneValeur;
+    private HashMap<String, Constant> mapNouvelleValeur;
+    private HashMap<String, Map> historique;
+
     /**
      * Constructeur par défaut du moteur de calcul.
      * Initialise les maps et confirme l'utilisation non commerciale de la licence mxparser.
@@ -42,9 +47,21 @@ public class MoteurCalcul {
         variableMap = new HashMap<>();
         equationMap = new HashMap<>();
         equationEtVariableMap = new HashMap<>();
+        mapAncienneValeur = new HashMap<>();
+        mapNouvelleValeur = new HashMap<>();
+        historique = new HashMap<>();
 
     }
-
+    public long avancePasDeTemps(){
+        historique = new HashMap<>((Map) mapAncienneValeur.values());
+        long nouveauPasDeCalcul = 0;
+        for (int i = 0; i < pasDeTempsEnCours.intValue() ; i++) {
+            nouveauPasDeCalcul = avancePasDeTemps() + i;
+        }
+        mapAncienneValeur.put(mapNouvelleValeur.keySet().toString(), (Constant) mapNouvelleValeur.values());
+        mapNouvelleValeur.clear();
+        return nouveauPasDeCalcul;
+    }
     /**
      * Retourne l'ensemble des variables requises en tant que {@code Set<String>}.
      *
