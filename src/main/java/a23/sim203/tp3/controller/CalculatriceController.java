@@ -85,6 +85,8 @@ public class CalculatriceController implements Initializable {
     @FXML
     private ListView<String> listeEquations;
     @FXML
+    private ListView<?> listeConstantes;
+    @FXML
     private Menu menuAssistance;
     @FXML
     private CheckMenuItem menuItemAssistanceVisuelle;
@@ -92,6 +94,12 @@ public class CalculatriceController implements Initializable {
     private ToggleButton toggleBoutonLire;
     @FXML
     private TextField stringAffiche;    // TODO Changer ID dans SceneBuilder
+    @FXML
+    private MenuItem MenuItemCalculPasDeTemps;
+    @FXML
+    private MenuItem MenuItemCharger;
+    @FXML
+    private MenuItem MenuItemEnregistrer;
 
     /**
      * Configure les boutons de la calculatrice en associant les caractères
@@ -124,6 +132,9 @@ public class CalculatriceController implements Initializable {
         gestionAffichage.actionBoutonEgal(boutonEgal);
         gestionAffichage.actionBoutonAjoute(boutonAjoute);
         gestionAffichage.actionBoutonSupprime(boutonSupprime);
+        gestionAffichage.setMenuItemCalculPasDeTemps(MenuItemCalculPasDeTemps);
+        gestionAffichage.setMenuItemEnregistrer(MenuItemEnregistrer);
+        gestionAffichage.setMenuItemCharger(MenuItemCharger);
 
         ToggleGroup toggleGroup = new ToggleGroup();
         gestionAffichage.actionToggleBoutons(toggleBoutonLire, toggleBoutonVariable, toggleGroup);
@@ -190,6 +201,8 @@ public class CalculatriceController implements Initializable {
         return stringAffiche;
     }
 
+
+
     /**
      * Récupère le texte actuellement affiché dans le champ de texte de l'interface graphique.
      *
@@ -222,6 +235,5 @@ public class CalculatriceController implements Initializable {
         gestionAffichage = new GestionAffichage(this);
         setBoutonsCalculatrice();
         createMenuAPropos();
-
     }
 }

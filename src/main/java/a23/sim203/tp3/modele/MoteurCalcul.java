@@ -231,7 +231,8 @@ public class MoteurCalcul {
         Pattern pattern = Pattern.compile("[a-z]");
         Matcher matcher = pattern.matcher(nomEquation);
 
-        if (matcher.find()) resultat = calcule(equationMap.get(nomEquation)); else resultat = calcule(new Equation("o9",nomEquation.replace(" ","")));
+        if (matcher.find()) resultat = calcule(equationMap.get(nomEquation));
+        else resultat = calcule(new Equation("o9", nomEquation.replace(" ", "")));
         return resultat;
     }
 
@@ -288,7 +289,7 @@ public class MoteurCalcul {
 
         String expressionStringTemp = equation.getExpression();
         expressionStringTemp = remplacerEquations(expressionStringTemp);
-        Set<String> elementsRequis = new Equation("a0", expressionStringTemp).getElementsRequis();
+        Set<String> elementsRequis = new Equation("a_", expressionStringTemp).getElementsRequis();
         ArrayList<Constant> constants = new ArrayList();
 
         for (String element : elementsRequis) {

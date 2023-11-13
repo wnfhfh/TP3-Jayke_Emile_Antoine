@@ -11,17 +11,22 @@ import a23.sim203.tp3.modele.Equation;
 import a23.sim203.tp3.modele.MoteurCalcul;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.mariuszgromada.math.mxparser.Constant;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class GestionAffichage {
     MoteurCalcul moteurCalcul;
     String stringAffiche;
     CalculatriceController calculatriceController;
+    private Stage stage;
 
     /**
      * Constructeur de la classe GestionAffichage.
@@ -32,28 +37,29 @@ public class GestionAffichage {
         moteurCalcul = new MoteurCalcul();
         stringAffiche = "";
         this.calculatriceController = controller;
+        calculatriceController.getListeEquations();
 //        ajouterEquationsDeBase();
     }
 
     /**
      * Ajoute les équations demandées aux listes et au moteur de calcul.
      */
-    private void ajouterEquationsDeBase() {
-        moteurCalcul.ajouteEquation("sin0=sin(x0)");
-        moteurCalcul.ajouteEquation("cos0=cos(x0)");
-        moteurCalcul.ajouteEquation("inverse0=1/x0");
-        moteurCalcul.ajouteEquation("exp0 = x0^e0");
-        moteurCalcul.ajouteEquation("linear0 = a0*x0+b0");
-
-        for (Equation equation :
-                moteurCalcul.getAllEquations()) {
-            calculatriceController.getListeEquations().getItems().add(equation.toString());
-        }
-        for (String variable :
-                moteurCalcul.getAllVariables()) {
-            calculatriceController.getListeVariables().getItems().add(variable + " = " +moteurCalcul.getVariableValues().get(variable).getConstantValue());
-        }
-    }
+//    private void ajouterEquationsDeBase() {
+//        moteurCalcul.ajouteEquation("sin0=sin(x0)");
+//        moteurCalcul.ajouteEquation("cos0=cos(x0)");
+//        moteurCalcul.ajouteEquation("inverse0=1/x0");
+//        moteurCalcul.ajouteEquation("exp0 = x0^e0");
+//        moteurCalcul.ajouteEquation("linear0 = a0*x0+b0");
+//
+//        for (Equation equation :
+//                moteurCalcul.getAllEquations()) {
+//            calculatriceController.getListeEquations().getItems().add(equation.toString());
+//        }
+//        for (String variable :
+//                moteurCalcul.getAllVariables()) {
+//            calculatriceController.getListeVariables().getItems().add(variable + " = " +moteurCalcul.getVariableValues().get(variable).getConstantValue());
+//        }
+//    }
 
     /**
      * Configure le bouton pour afficher un caractère lorsqu'il est cliqué.
@@ -67,8 +73,9 @@ public class GestionAffichage {
         bouton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<Event>() {
             @Override
             public void handle(Event event) {
+                stringAffiche = calculatriceController.getStringAfficheTexte();
                 stringAffiche += caractere;
-                calculatriceController.setStringAffiche(stringAffiche);
+                calculatriceController.getStringAffiche().setText(stringAffiche);
             }
         });
     }
@@ -161,7 +168,7 @@ public class GestionAffichage {
         bouton.setOnMouseClicked(event -> {
             try {
                 moteurCalcul.ajouteEquation(calculatriceController.getStringAfficheTexte());
-                calculatriceController.getListeEquations().getItems().add(moteurCalcul.getEquationMap().get((calculatriceController.getStringAfficheTexte()).substring(0, 2)).toString());
+                calculatriceController.getListeEquations().getItems().add(moteurCalcul.getEquationMap().get((calculatriceController.getStringAfficheTexte()).split("=")[0]).toString());
                 calculatriceController.getListeEquations().refresh();
                 calculatriceController.getListeVariables().getItems().setAll(moteurCalcul.getToutesLesVariables());
             } catch (Exception e) {
@@ -199,7 +206,7 @@ public class GestionAffichage {
      */
     public void actionBoutonSupprime(Button bouton) {
         bouton.setOnAction(event -> {
-            moteurCalcul.getEquationMap().remove(calculatriceController.getListeEquations().getSelectionModel().getSelectedItem().substring(0, 2));
+            moteurCalcul.getEquationMap().remove(calculatriceController.getListeEquations().getSelectionModel().getSelectedItem().split("=")[0]);
             calculatriceController.getListeEquations().getItems().remove(calculatriceController.getListeEquations().getSelectionModel().getSelectedItem());
             moteurCalcul.retireVariablesInutiles();
         });
@@ -246,7 +253,7 @@ public class GestionAffichage {
 
         calculatriceController.getListeVariables().setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
-                String stringAAjouter = calculatriceController.getListeVariables().getSelectionModel().getSelectedItem().substring(0, 2);
+                String stringAAjouter = calculatriceController.getListeVariables().getSelectionModel().getSelectedItem().split("=")[0];
                 if (toggleButtonVariable.getText() == "valeur") {
                     stringAAjouter = String.valueOf((moteurCalcul.getVariableValueMap().get(stringAAjouter)).getConstantValue());
                 }
@@ -261,7 +268,7 @@ public class GestionAffichage {
     private void gererEcrire() {
         calculatriceController.getListeVariables().setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
-                String nomVariableAChanger = calculatriceController.getListeVariables().getSelectionModel().getSelectedItem().substring(0, 2);
+                String nomVariableAChanger = calculatriceController.getListeVariables().getSelectionModel().getSelectedItem().split("=")[0];
                 try {
                     Constant nouvelleConstante = new Constant(nomVariableAChanger, Double.parseDouble(calculatriceController.getStringAfficheTexte()));
                     moteurCalcul.getVariableValueMap().put(nomVariableAChanger, nouvelleConstante);
@@ -272,5 +279,25 @@ public class GestionAffichage {
                 }
             }
         });
+    }
+
+    public void setMenuItemCalculPasDeTemps(MenuItem boutonCalculPasDeTemps) {
+        //TODO faire l'autre fenetre ofc
+    }
+
+    public void setMenuItemEnregistrer(MenuItem menuItemEnregistrer) {
+        menuItemEnregistrer.setOnAction(event -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().add(0, new FileChooser.ExtensionFilter("fichier texte", "*.txt"));
+            File fichierEnregistrer = fileChooser.showSaveDialog(stage);
+//TODO appeler enregistreur
+        });
+    }
+
+    public void setMenuItemCharger(MenuItem menuItemCharger) {
+    }
+
+    public MoteurCalcul getMoteurCalcul() {
+        return moteurCalcul;
     }
 }
