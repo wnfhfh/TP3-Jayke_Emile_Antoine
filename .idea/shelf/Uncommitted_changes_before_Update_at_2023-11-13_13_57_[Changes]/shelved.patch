@@ -1,0 +1,516 @@
+Index: src/main/java/a23/sim203/tp3/app/GestionAffichage.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>/**\r\n * Gère l'affichage et les interactions de la calculatrice.\r\n *\r\n * @Author Jayke Gagné, Antoine Houde, Émile Roy\r\n */\r\npackage a23.sim203.tp3.app;\r\n\r\n\r\nimport a23.sim203.tp3.controller.CalculatriceController;\r\nimport a23.sim203.tp3.modele.Equation;\r\nimport a23.sim203.tp3.modele.MoteurCalcul;\r\nimport javafx.event.Event;\r\nimport javafx.event.EventHandler;\r\nimport javafx.scene.control.*;\r\nimport javafx.scene.input.MouseEvent;\r\nimport javafx.stage.FileChooser;\r\nimport javafx.stage.Stage;\r\nimport org.mariuszgromada.math.mxparser.Constant;\r\n\r\nimport java.io.BufferedWriter;\r\nimport java.io.File;\r\nimport java.io.FileWriter;\r\nimport java.io.IOException;\r\n\r\npublic class GestionAffichage {\r\n    MoteurCalcul moteurCalcul;\r\n    String stringAffiche;\r\n    CalculatriceController calculatriceController;\r\n    private Stage stage;\r\n\r\n    /**\r\n     * Constructeur de la classe GestionAffichage.\r\n     *\r\n     * @param controller Le contrôleur de la calculatrice.\r\n     */\r\n    public GestionAffichage(CalculatriceController controller) {\r\n        moteurCalcul = new MoteurCalcul();\r\n        stringAffiche = \"\";\r\n        this.calculatriceController = controller;\r\n        calculatriceController.getListeEquations();\r\n//        ajouterEquationsDeBase();\r\n    }\r\n\r\n    /**\r\n     * Ajoute les équations demandées aux listes et au moteur de calcul.\r\n     */\r\n//    private void ajouterEquationsDeBase() {\r\n//        moteurCalcul.ajouteEquation(\"sin0=sin(x0)\");\r\n//        moteurCalcul.ajouteEquation(\"cos0=cos(x0)\");\r\n//        moteurCalcul.ajouteEquation(\"inverse0=1/x0\");\r\n//        moteurCalcul.ajouteEquation(\"exp0 = x0^e0\");\r\n//        moteurCalcul.ajouteEquation(\"linear0 = a0*x0+b0\");\r\n//\r\n//        for (Equation equation :\r\n//                moteurCalcul.getAllEquations()) {\r\n//            calculatriceController.getListeEquations().getItems().add(equation.toString());\r\n//        }\r\n//        for (String variable :\r\n//                moteurCalcul.getAllVariables()) {\r\n//            calculatriceController.getListeVariables().getItems().add(variable + \" = \" +moteurCalcul.getVariableValues().get(variable).getConstantValue());\r\n//        }\r\n//    }\r\n\r\n    /**\r\n     * Configure le bouton pour afficher un caractère lorsqu'il est cliqué.\r\n     *\r\n     * @param caractere Le caractère a affiché.\r\n     * @param bouton    Le bouton associé.\r\n     */\r\n\r\n    public void setBoutonCaractere(char caractere, Button bouton) {\r\n        actionAssistanceVisuelle(bouton);\r\n        bouton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<Event>() {\r\n            @Override\r\n            public void handle(Event event) {\r\n                stringAffiche = calculatriceController.getStringAfficheTexte();\r\n                stringAffiche += caractere;\r\n                calculatriceController.getStringAffiche().setText(stringAffiche);\r\n            }\r\n        });\r\n    }\r\n\r\n    /**\r\n     * Définit le contrôleur de la calculatrice pour cette instance de GestionAffichage.\r\n     *\r\n     * @param calculatriceController Le contrôleur de la calculatrice.\r\n     */\r\n    public void setCalculatriceController(CalculatriceController calculatriceController) {\r\n        this.calculatriceController = calculatriceController;\r\n    }\r\n\r\n    /**\r\n     * Associe un événement au bouton pour effacer l'affichage de la calculatrice.\r\n     *\r\n     * @param bouton Le bouton associé à l'action d'effacement.\r\n     */\r\n    public void actionBoutonEffacer(Button bouton) {\r\n        bouton.setOnAction(event -> {\r\n            stringAffiche = \"\";\r\n            calculatriceController.setStringAffiche(stringAffiche);\r\n        });\r\n    }\r\n\r\n    /**\r\n     * Associe un événement au bouton pour reculer d'un caractère dans l'affichage de la calculatrice.\r\n     *\r\n     * @param bouton Le bouton associé à l'action de recul.\r\n     */\r\n\r\n    public void actionBoutonReculer(Button bouton) {\r\n        bouton.setOnAction(event -> {\r\n            if (stringAffiche.length() >= 1) {\r\n                stringAffiche = stringAffiche.substring(0, stringAffiche.length() - 1);\r\n                calculatriceController.setStringAffiche(stringAffiche);\r\n            }\r\n        });\r\n    }\r\n\r\n    /**\r\n     * Associe un événement au bouton pour changer le signe de la valeur affichée (positif/négatif).\r\n     *\r\n     * @param bouton Le bouton associé à l'action de changement de signe.\r\n     */\r\n    public void actionBoutonPlusMinus(Button bouton) {\r\n        actionAssistanceVisuelle(bouton);\r\n        bouton.setOnAction(event -> {\r\n            if (stringAffiche.charAt(0) == '-') {\r\n                stringAffiche = stringAffiche.substring(1);\r\n                calculatriceController.setStringAffiche(stringAffiche);\r\n            } else {\r\n                stringAffiche = \"-\" + stringAffiche;\r\n                calculatriceController.setStringAffiche(stringAffiche);\r\n            }\r\n        });\r\n    }\r\n\r\n    /**\r\n     * Associe un événement au bouton pour effectuer le calcul de l'expression actuellement affichée.\r\n     *\r\n     * @param bouton Le bouton associé à l'action de calcul.\r\n     */\r\n    public void actionBoutonEgal(Button bouton) {\r\n        actionAssistanceVisuelle(bouton);\r\n        bouton.setOnAction(event -> {\r\n            double reponse = moteurCalcul.calcule(calculatriceController.getStringAfficheTexte().split(\"=\")[0]);\r\n            calculatriceController.setStringAffiche(String.valueOf(reponse));\r\n        });\r\n    }\r\n\r\n    /**\r\n     * Crée et affiche une alerte indiquant une expression récursive.\r\n     * Utilisé lorsque l'utilisateur tente d'ajouter une expression récursive.\r\n     */\r\n    public void creerAlerteRecursive() {\r\n        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);\r\n        alert.setHeaderText(\"Expression récursive\");\r\n        alert.setTitle(\"Calculateur avancée\");\r\n        alert.setContentText(\"L'expression saisie ne peut être ajoutée\");\r\n        alert.showAndWait();\r\n    }\r\n\r\n    /**\r\n     * Associe un événement au bouton pour ajouter une équation à partir de l'expression actuellement affichée.\r\n     *\r\n     * @param bouton Le bouton associé à l'action d'ajout d'équation.\r\n     */\r\n    public void actionBoutonAjoute(Button bouton) {\r\n        bouton.setOnMouseClicked(event -> {\r\n            try {\r\n                moteurCalcul.ajouteEquation(calculatriceController.getStringAfficheTexte());\r\n                calculatriceController.getListeEquations().getItems().add(moteurCalcul.getEquationMap().get((calculatriceController.getStringAfficheTexte()).split(\"=\")[0]).toString());\r\n                calculatriceController.getListeEquations().refresh();\r\n                calculatriceController.getListeVariables().getItems().setAll(moteurCalcul.getToutesLesVariables());\r\n            } catch (Exception e) {\r\n                // Affiche une alerte en cas d'équation non valide\r\n                new Alert(Alert.AlertType.ERROR, \"Équation non valide\").showAndWait();\r\n            }\r\n        });\r\n    }\r\n\r\n    /**\r\n     * Associe des événements visuels au bouton pour l'assistance visuelle.\r\n     *\r\n     * @param bouton Le bouton associé à l'assistance visuelle.\r\n     */\r\n\r\n    public void actionAssistanceVisuelle(Button bouton) {\r\n        bouton.setOnMouseEntered(event -> {\r\n            boolean isSelected = calculatriceController.getMenuItemAssistanceVisuelle().isSelected();\r\n            if (isSelected) {\r\n                bouton.setStyle(\"-fx-font-size: 35;\");\r\n            }\r\n        });\r\n\r\n        bouton.setOnMouseExited(event1 -> {\r\n            boolean isSelected = calculatriceController.getMenuItemAssistanceVisuelle().isSelected();\r\n            if (isSelected) {\r\n                bouton.setStyle(\"-fx-font-size: 25;\");\r\n            }\r\n        });\r\n    }\r\n\r\n    /**\r\n     * Associe un événement au bouton pour supprimer une équation sélectionnée dans la liste des équations.\r\n     *\r\n     * @param bouton Le bouton associé à l'action de suppression.\r\n     */\r\n    public void actionBoutonSupprime(Button bouton) {\r\n        bouton.setOnAction(event -> {\r\n            moteurCalcul.getEquationMap().remove(calculatriceController.getListeEquations().getSelectionModel().getSelectedItem().split(\"=\")[0]);\r\n            calculatriceController.getListeEquations().getItems().remove(calculatriceController.getListeEquations().getSelectionModel().getSelectedItem());\r\n            moteurCalcul.retireVariablesInutiles();\r\n        });\r\n    }\r\n\r\n    /**\r\n     * Associe des événements aux boutons de bascule pour gérer les actions d'écriture et de lecture.\r\n     *\r\n     * @param toggleBoutonLire     Le bouton de bascule pour l'action de lecture/écriture.\r\n     * @param toggleButtonVariable Le bouton de bascule pour sélectionner la valeur ou la variable.\r\n     * @param toggleGroup          Le groupe de bascules auquel appartiennent les boutons.\r\n     */\r\n    public void actionToggleBoutons(ToggleButton toggleBoutonLire, ToggleButton toggleButtonVariable, ToggleGroup toggleGroup) {\r\n        toggleBoutonLire.setToggleGroup(toggleGroup);\r\n        toggleButtonVariable.setToggleGroup(toggleGroup);\r\n\r\n        toggleBoutonLire.setOnMouseClicked(event -> {\r\n            if (toggleBoutonLire.isSelected()) {\r\n                toggleBoutonLire.setText(\"écrire\");\r\n                toggleButtonVariable.setDisable(true);\r\n                gererEcrire();\r\n            } else {\r\n                toggleBoutonLire.setText(\"lire\");\r\n                gererLire(toggleButtonVariable);\r\n                toggleButtonVariable.setDisable(false);\r\n            }\r\n        });\r\n\r\n        toggleButtonVariable.setOnMouseClicked(event -> {\r\n            if (toggleButtonVariable.isSelected()) {\r\n                toggleButtonVariable.setText(\"valeur\");\r\n            } else {\r\n                toggleButtonVariable.setText(\"variable\");\r\n            }\r\n        });\r\n    }\r\n\r\n    /**\r\n     * Gère l'action de lecture lorsqu'une variable est double-cliquée dans la liste des variables.\r\n     *\r\n     * @param toggleButtonVariable Le bouton de bascule pour sélectionner la valeur ou la variable.\r\n     */\r\n    private void gererLire(ToggleButton toggleButtonVariable) {\r\n\r\n        calculatriceController.getListeVariables().setOnMouseClicked(event -> {\r\n            if (event.getClickCount() == 2) {\r\n                String stringAAjouter = calculatriceController.getListeVariables().getSelectionModel().getSelectedItem().split(\"=\")[0];\r\n                if (toggleButtonVariable.getText() == \"valeur\") {\r\n                    stringAAjouter = String.valueOf((moteurCalcul.getVariableValueMap().get(stringAAjouter)).getConstantValue());\r\n                }\r\n                calculatriceController.setStringAffiche(calculatriceController.getStringAfficheTexte() + stringAAjouter);\r\n            }\r\n        });\r\n    }\r\n\r\n    /**\r\n     * Gère l'action d'écriture lorsqu'une variable est double-cliquée dans la liste des variables.\r\n     */\r\n    private void gererEcrire() {\r\n        calculatriceController.getListeVariables().setOnMouseClicked(event -> {\r\n            if (event.getClickCount() == 2) {\r\n                String nomVariableAChanger = calculatriceController.getListeVariables().getSelectionModel().getSelectedItem().split(\"=\")[0];\r\n                try {\r\n                    Constant nouvelleConstante = new Constant(nomVariableAChanger, Double.parseDouble(calculatriceController.getStringAfficheTexte()));\r\n                    moteurCalcul.getVariableValueMap().put(nomVariableAChanger, nouvelleConstante);\r\n                    calculatriceController.getListeVariables().getItems().remove(calculatriceController.getListeVariables().getSelectionModel().getSelectedItem());\r\n                    calculatriceController.getListeVariables().getItems().add(String.valueOf(nouvelleConstante.getConstantName() + \" = \" + nouvelleConstante.getConstantValue()));\r\n                } catch (Exception e) {\r\n                    System.out.println(\"veuillez enter une valeur numérique seulement\");\r\n                }\r\n            }\r\n        });\r\n    }\r\n\r\n    public void setMenuItemCalculPasDeTemps(MenuItem boutonCalculPasDeTemps) {\r\n        //TODO faire l'autre fenetre ofc\r\n    }\r\n\r\n    public void setMenuItemEnregistrer(MenuItem menuItemEnregistrer) {\r\n        menuItemEnregistrer.setOnAction(event -> {\r\n            FileChooser fileChooser = new FileChooser();\r\n            fileChooser.getExtensionFilters().add(0, new FileChooser.ExtensionFilter(\"fichier texte\", \"*.txt\"));\r\n            File fichierEnregistrer = fileChooser.showSaveDialog(stage);\r\n//TODO appeler enregistreur\r\n        });\r\n    }\r\n\r\n    public void setMenuItemCharger(MenuItem menuItemCharger) {\r\n    }\r\n\r\n    public MoteurCalcul getMoteurCalcul() {\r\n        return moteurCalcul;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/a23/sim203/tp3/app/GestionAffichage.java b/src/main/java/a23/sim203/tp3/app/GestionAffichage.java
+--- a/src/main/java/a23/sim203/tp3/app/GestionAffichage.java	(revision 3bf7842ca8cf528f2ddaf04721d3d78fa58db55f)
++++ b/src/main/java/a23/sim203/tp3/app/GestionAffichage.java	(date 1699901703627)
+@@ -17,10 +17,8 @@
+ import javafx.stage.Stage;
+ import org.mariuszgromada.math.mxparser.Constant;
+ 
+-import java.io.BufferedWriter;
+-import java.io.File;
+-import java.io.FileWriter;
+-import java.io.IOException;
++import java.io.*;
++import java.util.ArrayList;
+ 
+ public class GestionAffichage {
+     MoteurCalcul moteurCalcul;
+@@ -41,6 +39,7 @@
+ //        ajouterEquationsDeBase();
+     }
+ 
++
+     /**
+      * Ajoute les équations demandées aux listes et au moteur de calcul.
+      */
+@@ -291,11 +290,31 @@
+             FileChooser fileChooser = new FileChooser();
+             fileChooser.getExtensionFilters().add(0, new FileChooser.ExtensionFilter("fichier texte", "*.txt"));
+             File fichierEnregistrer = fileChooser.showSaveDialog(stage);
+-//TODO appeler enregistreur
++            new Enregistreur().enregistreEquation(moteurCalcul.getAllEquationsString(), moteurCalcul.getToutesLesVariables(), new ArrayList<>(), fichierEnregistrer);
+         });
+     }
+ 
+     public void setMenuItemCharger(MenuItem menuItemCharger) {
++        menuItemCharger.setOnAction(event -> {
++            FileChooser fileChooser = new FileChooser();
++            fileChooser.getExtensionFilters().add(0, new FileChooser.ExtensionFilter("fichier texte", "*.txt"));
++            File fichierACharger = fileChooser.showOpenDialog(stage);
++            try {
++                Enregistreur.EquationsConstantesEtVariables equationsConstantesEtVariables = new Enregistreur().chargeModele(fichierACharger);
++
++            } catch (FileNotFoundException e) {
++                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
++                alert.setHeaderText("Fichier non valide");
++                alert.setTitle("Calculateur avancée");
++                alert.setContentText("Réessayez plz");
++                alert.showAndWait();
++            }
++        });
++    }
++
++
++    public void setStage(Stage stage) {
++        this.stage = stage;
+     }
+ 
+     public MoteurCalcul getMoteurCalcul() {
+Index: src/main/java/a23/sim203/tp3/app/SimulateurApp.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package a23.sim203.tp3.app;\r\n\r\nimport a23.sim203.tp3.controller.CalculatriceController;\r\nimport javafx.application.Application;\r\nimport javafx.fxml.FXMLLoader;\r\nimport javafx.scene.Node;\r\nimport javafx.scene.Parent;\r\nimport javafx.scene.Scene;\r\nimport javafx.stage.Stage;\r\n\r\npublic class SimulateurApp extends Application {\r\n    private Stage stage;\r\n    GestionAffichage gestionAffichage;\r\n    CalculatriceController calculatriceController;\r\n    Enregistreur enregistreur;\r\n\r\n    @Override\r\n    public void start(Stage primaryStage) throws Exception {\r\n        stage = primaryStage;\r\n        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource(\"calculatriceV2.fxml\"));\r\n        Node root = fxmlLoader.load();\r\n        Scene scene = new Scene((Parent) root);\r\n        primaryStage.setScene(scene);\r\n\r\n        calculatriceController = fxmlLoader.getController();\r\n        gestionAffichage = calculatriceController.getGestionAffichage();\r\n        gestionAffichage.setCalculatriceController(calculatriceController);\r\n        primaryStage.show();\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/a23/sim203/tp3/app/SimulateurApp.java b/src/main/java/a23/sim203/tp3/app/SimulateurApp.java
+--- a/src/main/java/a23/sim203/tp3/app/SimulateurApp.java	(revision 3bf7842ca8cf528f2ddaf04721d3d78fa58db55f)
++++ b/src/main/java/a23/sim203/tp3/app/SimulateurApp.java	(date 1699901703627)
+@@ -23,8 +23,8 @@
+         primaryStage.setScene(scene);
+ 
+         calculatriceController = fxmlLoader.getController();
+-        gestionAffichage = calculatriceController.getGestionAffichage();
+-        gestionAffichage.setCalculatriceController(calculatriceController);
++        gestionAffichage = new GestionAffichage(calculatriceController);
++        gestionAffichage.setStage(primaryStage);
+         primaryStage.show();
+     }
+ }
+\ No newline at end of file
+Index: src/main/java/a23/sim203/tp3/controller/CalculatriceController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>/**\r\n * Classe contrôleur pour l'application de calculatrice.\r\n * Responsable de la gestion des interactions utilisateur, de la gestion\r\n * des éléments de l'interface graphique (GUI) et de la liaison avec le moteur\r\n * de calcul sous-jacent.\r\n *\r\n * @author Émile Roy, Jayke Gagné, Antoine Houde\r\n */\r\npackage a23.sim203.tp3.controller;\r\n\r\nimport a23.sim203.tp3.app.GestionAffichage;\r\nimport a23.sim203.tp3.modele.MoteurCalcul;\r\nimport javafx.collections.ObservableList;\r\nimport javafx.event.ActionEvent;\r\nimport javafx.event.Event;\r\nimport javafx.fxml.FXML;\r\nimport javafx.fxml.Initializable;\r\nimport javafx.scene.control.*;\r\nimport javafx.scene.control.cell.PropertyValueFactory;\r\nimport javafx.scene.input.MouseEvent;\r\nimport javafx.scene.layout.GridPane;\r\n\r\nimport javax.security.auth.callback.Callback;\r\nimport java.net.URL;\r\nimport java.util.ResourceBundle;\r\n\r\npublic class CalculatriceController implements Initializable {\r\n\r\n    GestionAffichage gestionAffichage;\r\n    @FXML\r\n    private MenuItem menuItemAPropos;\r\n    @FXML\r\n    private Button bouton0;\r\n    @FXML\r\n    private Button bouton1;\r\n    @FXML\r\n    private Button bouton2;\r\n    @FXML\r\n    private Button bouton3;\r\n    @FXML\r\n    private Button bouton4;\r\n    @FXML\r\n    private Button bouton5;\r\n    @FXML\r\n    private Button bouton6;\r\n    @FXML\r\n    private Button bouton7;\r\n    @FXML\r\n    private Button bouton8;\r\n    @FXML\r\n    private Button bouton9;\r\n    @FXML\r\n    private Button boutonAdditionner;\r\n    @FXML\r\n    private Button boutonAjoute;\r\n    @FXML\r\n    private Button boutonDiviser;\r\n    @FXML\r\n    private Button boutonEffacer;\r\n    @FXML\r\n    private Button boutonEgal;\r\n    @FXML\r\n    private Button boutonMultiplier;\r\n    @FXML\r\n    private Button boutonParentheseD;\r\n    @FXML\r\n    private Button boutonParentheseG;\r\n    @FXML\r\n    private Button boutonPlusMinus;\r\n    @FXML\r\n    private Button boutonPoint;\r\n    @FXML\r\n    private Button boutonReculer;\r\n    @FXML\r\n    private Button boutonSoustraire;\r\n    @FXML\r\n    private Button boutonSupprime;\r\n    @FXML\r\n    private ToggleButton toggleBoutonVariable;\r\n    @FXML\r\n    private ListView<String> listeVariables;\r\n\r\n    @FXML\r\n    private GridPane gridPane;\r\n    @FXML\r\n    private ListView<String> listeEquations;\r\n    @FXML\r\n    private ListView<?> listeConstantes;\r\n    @FXML\r\n    private Menu menuAssistance;\r\n    @FXML\r\n    private CheckMenuItem menuItemAssistanceVisuelle;\r\n    @FXML\r\n    private ToggleButton toggleBoutonLire;\r\n    @FXML\r\n    private TextField stringAffiche;    // TODO Changer ID dans SceneBuilder\r\n    @FXML\r\n    private MenuItem MenuItemCalculPasDeTemps;\r\n    @FXML\r\n    private MenuItem MenuItemCharger;\r\n    @FXML\r\n    private MenuItem MenuItemEnregistrer;\r\n\r\n    /**\r\n     * Configure les boutons de la calculatrice en associant les caractères\r\n     * et les actions correspondantes à chaque bouton de l'interface graphique.\r\n     * Les actions incluent l'ajout de caractères, le retrait, l'inversion, etc.\r\n     * Les boutons associés aux opérations mathématiques et aux parenthèses sont également configurés.\r\n     */\r\n    @FXML\r\n    void setBoutonsCalculatrice() {\r\n        gestionAffichage.setBoutonCaractere('0', bouton0);\r\n        gestionAffichage.setBoutonCaractere('1', bouton1);\r\n        gestionAffichage.setBoutonCaractere('2', bouton2);\r\n        gestionAffichage.setBoutonCaractere('3', bouton3);\r\n        gestionAffichage.setBoutonCaractere('4', bouton4);\r\n        gestionAffichage.setBoutonCaractere('5', bouton5);\r\n        gestionAffichage.setBoutonCaractere('6', bouton6);\r\n        gestionAffichage.setBoutonCaractere('7', bouton7);\r\n        gestionAffichage.setBoutonCaractere('8', bouton8);\r\n        gestionAffichage.setBoutonCaractere('9', bouton9);\r\n        gestionAffichage.setBoutonCaractere('+', boutonAdditionner);\r\n        gestionAffichage.setBoutonCaractere('-', boutonSoustraire);\r\n        gestionAffichage.setBoutonCaractere('/', boutonDiviser);\r\n        gestionAffichage.setBoutonCaractere('*', boutonMultiplier);\r\n        gestionAffichage.setBoutonCaractere('(', boutonParentheseG);\r\n        gestionAffichage.setBoutonCaractere(')', boutonParentheseD);\r\n        gestionAffichage.setBoutonCaractere('.', boutonPoint);\r\n        gestionAffichage.actionBoutonReculer(boutonReculer);\r\n        gestionAffichage.actionBoutonEffacer(boutonEffacer);\r\n        gestionAffichage.actionBoutonPlusMinus(boutonPlusMinus);\r\n        gestionAffichage.actionBoutonEgal(boutonEgal);\r\n        gestionAffichage.actionBoutonAjoute(boutonAjoute);\r\n        gestionAffichage.actionBoutonSupprime(boutonSupprime);\r\n        gestionAffichage.setMenuItemCalculPasDeTemps(MenuItemCalculPasDeTemps);\r\n        gestionAffichage.setMenuItemEnregistrer(MenuItemEnregistrer);\r\n        gestionAffichage.setMenuItemCharger(MenuItemCharger);\r\n\r\n        ToggleGroup toggleGroup = new ToggleGroup();\r\n        gestionAffichage.actionToggleBoutons(toggleBoutonLire, toggleBoutonVariable, toggleGroup);\r\n    }\r\n\r\n    /**\r\n     * Crée et configure l'action associée à l'élément de menu \"À propos\".\r\n     * Lorsque l'élément de menu est déclenché, une boîte de dialogue d'information\r\n     * est affichée avec des détails sur le cours de programmation et les auteurs du programme.\r\n     */\r\n    private void createMenuAPropos() {\r\n        menuItemAPropos.setOnAction(event -> {\r\n            Alert alert = new Alert(Alert.AlertType.INFORMATION, \"Cours de programmation 203 en SIM\\n\" +\r\n                    \"Cégep Limoilou A23\\n\" +\r\n                    \"par: Émile Roy, Jayke Gagné et Antoine Houde :)\");\r\n            alert.setHeaderText(\"SIM 203\");\r\n            alert.setTitle(\"Calculateur Avancé\");\r\n            alert.show();\r\n        });\r\n    }\r\n\r\n    /**\r\n     * Définit le texte affiché dans le champ de texte de l'interface graphique.\r\n     *\r\n     * @param stringAAfficher Le texte à afficher dans le champ de texte.\r\n     */\r\n    public void setStringAffiche(String stringAAfficher) {\r\n        stringAffiche.setText(stringAAfficher);\r\n    }\r\n\r\n    /**\r\n     * Récupère l'instance de la classe GestionAffichage associée à ce contrôleur.\r\n     *\r\n     * @return L'instance de la classe GestionAffichage.\r\n     */\r\n    public GestionAffichage getGestionAffichage() {\r\n        return this.gestionAffichage;\r\n    }\r\n\r\n    /**\r\n     * Récupère la liste des variables de l'interface graphique.\r\n     *\r\n     * @return La liste des variables sous forme de ListView<String>.\r\n     */\r\n    public ListView<String> getListeVariables() {\r\n        return listeVariables;\r\n    }\r\n\r\n    /**\r\n     * Récupère la liste des équations de l'interface graphique.\r\n     *\r\n     * @return La liste des équations sous forme de ListView<String>.\r\n     */\r\n    public ListView<String> getListeEquations() {\r\n        return listeEquations;\r\n    }\r\n\r\n    /**\r\n     * Récupère le champ de texte de l'interface graphique utilisé pour afficher du texte.\r\n     *\r\n     * @return Le champ de texte sous forme de TextField.\r\n     */\r\n    public TextField getStringAffiche() {\r\n        return stringAffiche;\r\n    }\r\n\r\n\r\n\r\n    /**\r\n     * Récupère le texte actuellement affiché dans le champ de texte de l'interface graphique.\r\n     *\r\n     * @return Le texte actuellement affiché dans le champ de texte.\r\n     */\r\n    public String getStringAfficheTexte() {\r\n        return stringAffiche.getText();\r\n    }\r\n\r\n    /**\r\n     * Récupère l'élément de menu associé à l'assistance visuelle dans l'interface graphique.\r\n     *\r\n     * @return L'élément de menu de type CheckMenuItem associé à l'assistance visuelle.\r\n     */\r\n    public CheckMenuItem getMenuItemAssistanceVisuelle() {\r\n        return menuItemAssistanceVisuelle;\r\n    }\r\n\r\n    /**\r\n     * Initialise le contrôleur, crée les instances nécessaires,\r\n     * configure les éléments de l'interface graphique et gère les initialisations.\r\n     *\r\n     * @param location  L'emplacement utilisé pour résoudre les chemins relatifs\r\n     *                  pour l'objet racine, ou null si l'emplacement n'est pas connu.\r\n     * @param resources Les ressources utilisées pour localiser l'objet racine,\r\n     *                  ou null si l'objet racine n'a pas été localisé.\r\n     */\r\n    @Override\r\n    public void initialize(URL location, ResourceBundle resources) {\r\n        gestionAffichage = new GestionAffichage(this);\r\n        setBoutonsCalculatrice();\r\n        createMenuAPropos();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/a23/sim203/tp3/controller/CalculatriceController.java b/src/main/java/a23/sim203/tp3/controller/CalculatriceController.java
+--- a/src/main/java/a23/sim203/tp3/controller/CalculatriceController.java	(revision 3bf7842ca8cf528f2ddaf04721d3d78fa58db55f)
++++ b/src/main/java/a23/sim203/tp3/controller/CalculatriceController.java	(date 1699901703628)
+@@ -174,6 +174,10 @@
+         return this.gestionAffichage;
+     }
+ 
++    public void setGestionAffichage(GestionAffichage gestionAffichage) {
++        this.gestionAffichage = gestionAffichage;
++    }
++
+     /**
+      * Récupère la liste des variables de l'interface graphique.
+      *
+Index: src/main/java/a23/sim203/tp3/app/Enregistreur.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package a23.sim203.tp3.app;\r\n\r\nimport a23.sim203.tp3.modele.Equation;\r\nimport javafx.stage.FileChooser;\r\nimport javafx.stage.Stage;\r\nimport javafx.stage.Window;\r\n\r\nimport java.io.BufferedWriter;\r\nimport java.io.File;\r\nimport java.io.FileWriter;\r\nimport java.io.IOException;\r\nimport java.util.ArrayList;\r\nimport java.util.Collection;\r\n\r\npublic class Enregistreur {\r\n\r\n    public void enregistreEquation(Collection<String> equations, Collection<String> variables, ArrayList constantes, File fichier) {\r\n        String stringEnregistrer = \"Équations:\\n\";\r\n        for (String equation : equations) {\r\n            stringEnregistrer += equation + \"\\n\";\r\n        }\r\n        stringEnregistrer += \"Variables:\\n\";\r\n        for (String variable : variables) {\r\n            stringEnregistrer += variable + \"\\n\";\r\n        }\r\n\r\n        try {\r\n            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fichier));\r\n            bufferedWriter.write(stringEnregistrer);\r\n            bufferedWriter.close();\r\n        } catch (IOException e) {\r\n            throw new RuntimeException(e);\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/a23/sim203/tp3/app/Enregistreur.java b/src/main/java/a23/sim203/tp3/app/Enregistreur.java
+--- a/src/main/java/a23/sim203/tp3/app/Enregistreur.java	(revision 3bf7842ca8cf528f2ddaf04721d3d78fa58db55f)
++++ b/src/main/java/a23/sim203/tp3/app/Enregistreur.java	(date 1699901703626)
+@@ -4,13 +4,12 @@
+ import javafx.stage.FileChooser;
+ import javafx.stage.Stage;
+ import javafx.stage.Window;
++import org.mariuszgromada.math.mxparser.Constant;
+ 
+-import java.io.BufferedWriter;
+-import java.io.File;
+-import java.io.FileWriter;
+-import java.io.IOException;
++import java.io.*;
+ import java.util.ArrayList;
+ import java.util.Collection;
++import java.util.HashMap;
+ 
+ public class Enregistreur {
+ 
+@@ -32,4 +31,50 @@
+             throw new RuntimeException(e);
+         }
+     }
++
++    public EquationsConstantesEtVariables chargeModele(File fichier) throws FileNotFoundException {
++        BufferedReader reader = new BufferedReader(new FileReader(fichier));
++        EquationsConstantesEtVariables eCET = new EquationsConstantesEtVariables();
++
++        try {
++            String lecture = reader.readLine();
++            while (lecture.equals("Variables:")) {
++                lecture = reader.readLine();
++
++            }
++
++        } catch (IOException e) {
++            throw new RuntimeException(e);
++        }
++        return null;
++    }
++
++    public class EquationsConstantesEtVariables {
++
++        public EquationsConstantesEtVariables() {
++            variableMap = new HashMap<>();
++            equationMap = new HashMap<>();
++            mapAncienneValeur = new HashMap<>();
++        }
++
++        private HashMap<String, Constant> variableMap;
++
++        private HashMap<String, Equation> equationMap;
++
++        private HashMap<String, Constant> mapAncienneValeur;
++
++        public HashMap<String, Constant> getMapAncienneValeur() {
++            return mapAncienneValeur;
++        }
++
++        public HashMap<String, Constant> getVariableMap() {
++            return variableMap;
++        }
++
++        public HashMap<String, Equation> getEquationMap() {
++            return equationMap;
++        }
++    }
++
++//    public void addVariable()
+ }
+Index: .idea/TP3-Jayke_Emile_Antoine.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/TP3-Jayke_Emile_Antoine.iml b/.idea/TP3-Jayke_Emile_Antoine.iml
+new file mode 100644
+--- /dev/null	(date 1699901703622)
++++ b/.idea/TP3-Jayke_Emile_Antoine.iml	(date 1699901703622)
+@@ -0,0 +1,9 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<module type="JAVA_MODULE" version="4">
++  <component name="NewModuleRootManager" inherit-compiler-output="true">
++    <exclude-output />
++    <content url="file://$MODULE_DIR$" />
++    <orderEntry type="inheritedJdk" />
++    <orderEntry type="sourceFolder" forTests="false" />
++  </component>
++</module>
+\ No newline at end of file
+Index: .gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>target/\r\n!.mvn/wrapper/maven-wrapper.jar\r\n!**/src/main/**/target/\r\n!**/src/test/**/target/\r\n\r\n### IntelliJ IDEA ###\r\n.idea/modules.xml\r\n.idea/jarRepositories.xml\r\n.idea/compiler.xml\r\n.idea/libraries/\r\n*.iws\r\n*.iml\r\n*.ipr\r\n\r\n### Eclipse ###\r\n.apt_generated\r\n.classpath\r\n.factorypath\r\n.project\r\n.settings\r\n.springBeans\r\n.sts4-cache\r\n\r\n### NetBeans ###\r\n/nbproject/private/\r\n/nbbuild/\r\n/dist/\r\n/nbdist/\r\n/.nb-gradle/\r\nbuild/\r\n!**/src/main/**/build/\r\n!**/src/test/**/build/\r\n\r\n### VS Code ###\r\n.vscode/\r\n\r\n### Mac OS ###\r\n.DS_Store
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.gitignore b/.gitignore
+--- a/.gitignore	(revision 3bf7842ca8cf528f2ddaf04721d3d78fa58db55f)
++++ b/.gitignore	(date 1699901703622)
+@@ -1,16 +1,7 @@
+-target/
+-!.mvn/wrapper/maven-wrapper.jar
+-!**/src/main/**/target/
+-!**/src/test/**/target/
+-
+ ### IntelliJ IDEA ###
+-.idea/modules.xml
+-.idea/jarRepositories.xml
+-.idea/compiler.xml
+-.idea/libraries/
+-*.iws
+-*.iml
+-*.ipr
++out/
++!**/src/main/**/out/
++!**/src/test/**/out/
+ 
+ ### Eclipse ###
+ .apt_generated
+@@ -20,6 +11,9 @@
+ .settings
+ .springBeans
+ .sts4-cache
++bin/
++!**/src/main/**/bin/
++!**/src/test/**/bin/
+ 
+ ### NetBeans ###
+ /nbproject/private/
+@@ -27,9 +21,6 @@
+ /dist/
+ /nbdist/
+ /.nb-gradle/
+-build/
+-!**/src/main/**/build/
+-!**/src/test/**/build/
+ 
+ ### VS Code ###
+ .vscode/
+Index: .idea/modules.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/modules.xml b/.idea/modules.xml
+new file mode 100644
+--- /dev/null	(date 1699901703624)
++++ b/.idea/modules.xml	(date 1699901703624)
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ProjectModuleManager">
++    <modules>
++      <module fileurl="file://$PROJECT_DIR$/TP3_Officiel.iml" filepath="$PROJECT_DIR$/TP3_Officiel.iml" />
++    </modules>
++  </component>
++</project>
+\ No newline at end of file
+Index: TP3_Officiel.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TP3_Officiel.iml b/TP3_Officiel.iml
+new file mode 100644
+--- /dev/null	(date 1699901703625)
++++ b/TP3_Officiel.iml	(date 1699901703625)
+@@ -0,0 +1,9 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<module version="4">
++  <component name="AdditionalModuleElements">
++    <content url="file://$MODULE_DIR$" dumb="true">
++      <sourceFolder url="file://$MODULE_DIR$/src/code fourni/test/java" isTestSource="true" />
++      <sourceFolder url="file://$MODULE_DIR$/src/code fourni/test/resources" type="java-test-resource" />
++    </content>
++  </component>
++</module>
+\ No newline at end of file
+Index: .idea/jarRepositories.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/jarRepositories.xml b/.idea/jarRepositories.xml
+new file mode 100644
+--- /dev/null	(date 1699901703623)
++++ b/.idea/jarRepositories.xml	(date 1699901703623)
+@@ -0,0 +1,20 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="RemoteRepositoriesConfiguration">
++    <remote-repository>
++      <option name="id" value="central" />
++      <option name="name" value="Central Repository" />
++      <option name="url" value="https://repo.maven.apache.org/maven2" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="central" />
++      <option name="name" value="Maven Central repository" />
++      <option name="url" value="https://repo1.maven.org/maven2" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="jboss.community" />
++      <option name="name" value="JBoss Community repository" />
++      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
++    </remote-repository>
++  </component>
++</project>
+\ No newline at end of file
+Index: TP3-Jayke_Emile_Antoine.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TP3-Jayke_Emile_Antoine.iml b/TP3-Jayke_Emile_Antoine.iml
+new file mode 100644
+--- /dev/null	(date 1699901703625)
++++ b/TP3-Jayke_Emile_Antoine.iml	(date 1699901703625)
+@@ -0,0 +1,15 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<module type="JAVA_MODULE" version="4">
++  <component name="NewModuleRootManager" inherit-compiler-output="true">
++    <exclude-output />
++    <content url="file://$MODULE_DIR$">
++      <sourceFolder url="file://$MODULE_DIR$/src/code fourni/test/java" isTestSource="true" />
++      <sourceFolder url="file://$MODULE_DIR$/src/code fourni/test/resources" type="java-test-resource" />
++      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
++      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
++      <excludeFolder url="file://$MODULE_DIR$/target" />
++    </content>
++    <orderEntry type="inheritedJdk" />
++    <orderEntry type="sourceFolder" forTests="false" />
++  </component>
++</module>
+\ No newline at end of file
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/compiler.xml b/.idea/compiler.xml
+new file mode 100644
+--- /dev/null	(date 1699901703623)
++++ b/.idea/compiler.xml	(date 1699901703623)
+@@ -0,0 +1,13 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="CompilerConfiguration">
++    <annotationProcessing>
++      <profile name="Maven default annotation processors profile" enabled="true">
++        <sourceOutputDir name="target/generated-sources/annotations" />
++        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
++        <outputRelativeToContentRoot value="true" />
++        <module name="TP3_Officiel" />
++      </profile>
++    </annotationProcessing>
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"08ffff6b-565a-4d17-9ab7-59c25cfa882a\" name=\"Changes\" comment=\"Méthode avancePasDeTemps() fait!\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/a23/sim203/tp3/modele/MoteurCalcul.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/a23/sim203/tp3/modele/MoteurCalcul.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\">\r\n    <option name=\"selectedUrlAndAccountId\">\r\n      <UrlAndAccount>\r\n        <option name=\"accountId\" value=\"183200bd-5e4d-4e6d-a91a-c2253af9dd81\" />\r\n        <option name=\"url\" value=\"https://github.com/wnfhfh/TP3-Jayke_Emile_Antoine\" />\r\n      </UrlAndAccount>\r\n    </option>\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"MavenImportPreferences\">\r\n    <option name=\"generalSettings\">\r\n      <MavenGeneralSettings>\r\n        <option name=\"useMavenConfig\" value=\"true\" />\r\n      </MavenGeneralSettings>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2XoX0uxFu9BoQ66D27Hcmaffc3j\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,\r\n    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,\r\n    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,\r\n    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,\r\n    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,\r\n    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;zulu-17&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;C:/Desktop/Prog2023/Session 3/TP3-Jayke_Emile_Antoine&quot;,\r\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,\r\n    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,\r\n    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,\r\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"U:\\Prog2023\\Session 3\\TP3-Jayke_Emile_Antoine\\src\\main\\resources\" />\r\n      <recent name=\"U:\\Prog2023\\Session 3\\TP3-Jayke_Emile_Antoine\\src\\main\\resources\\java\" />\r\n      <recent name=\"U:\\Prog2023\\Session 3\\TP3-Jayke_Emile_Antoine\\src\\main\\resources\\a23\\sim203\\tp3\\app\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\" selected=\"JUnit.EnregistreurTest.enregsitreEquationSimple\">\r\n    <configuration name=\"SimulateurApp\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"ALTERNATIVE_JRE_PATH\" value=\"zulu-17\" />\r\n      <option name=\"ALTERNATIVE_JRE_PATH_ENABLED\" value=\"true\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"a23.sim203.tp3.app.SimulateurApp\" />\r\n      <module name=\"TP3-Jayke_Emile_Antoine\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"a23.sim203.tp3.app.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"EnregistreurTest.enregsitreEquationSimple\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"TP3-Jayke_Emile_Antoine\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"a23.sim203.tp3.modele.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <option name=\"PACKAGE_NAME\" value=\"a23.sim203.tp3.modele\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"a23.sim203.tp3.modele.EnregistreurTest\" />\r\n      <option name=\"METHOD_NAME\" value=\"enregsitreEquationSimple\" />\r\n      <option name=\"TEST_OBJECT\" value=\"method\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"JUnit.EnregistreurTest.enregsitreEquationSimple\" />\r\n        <item itemvalue=\"Application.SimulateurApp\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"08ffff6b-565a-4d17-9ab7-59c25cfa882a\" name=\"Changes\" comment=\"\" />\r\n      <created>1699296186337</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1699296186337</updated>\r\n      <workItem from=\"1699296187461\" duration=\"763000\" />\r\n      <workItem from=\"1699455731034\" duration=\"635000\" />\r\n      <workItem from=\"1699456404864\" duration=\"1003000\" />\r\n      <workItem from=\"1699459365480\" duration=\"2310000\" />\r\n      <workItem from=\"1699637920098\" duration=\"109000\" />\r\n      <workItem from=\"1699638389290\" duration=\"3827000\" />\r\n      <workItem from=\"1699808304263\" duration=\"4784000\" />\r\n      <workItem from=\"1699826898159\" duration=\"633000\" />\r\n      <workItem from=\"1699828715781\" duration=\"7537000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"depart\">\r\n      <created>1699296937677</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1699296937677</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"depart\">\r\n      <created>1699457085301</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1699457085301</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"amener code de TP2\">\r\n      <created>1699458093035</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1699458093035</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"simulateur app\">\r\n      <created>1699458360913</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1699458360913</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"Méthode avancePasDeTemps() fait!\">\r\n      <created>1699888060708</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1699888060708</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"6\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"depart\" />\r\n    <MESSAGE value=\"amener code de TP2\" />\r\n    <MESSAGE value=\"simulateur app\" />\r\n    <MESSAGE value=\"Méthode avancePasDeTemps() fait!\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Méthode avancePasDeTemps() fait!\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 3bf7842ca8cf528f2ddaf04721d3d78fa58db55f)
++++ b/.idea/workspace.xml	(date 1699901703624)
+@@ -5,7 +5,19 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="08ffff6b-565a-4d17-9ab7-59c25cfa882a" name="Changes" comment="Méthode avancePasDeTemps() fait!">
++      <change afterPath="$PROJECT_DIR$/.idea/TP3-Jayke_Emile_Antoine.iml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/TP3-Jayke_Emile_Antoine.iml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/TP3_Officiel.iml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/code fourni/test/java/a23/sim203/tp3/modele/EnregistreurTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/code fourni/test/java/a23/sim203/tp3/modele/EnregistreurTest.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/Enregistreur.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/Enregistreur.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/GestionAffichage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/GestionAffichage.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/SimulateurApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/SimulateurApp.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/CalculatriceController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/CalculatriceController.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/modele/MoteurCalcul.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/modele/MoteurCalcul.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+@@ -50,28 +62,29 @@
+   <component name="ProjectViewState">
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent">{
+-  &quot;keyToString&quot;: {
+-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;zulu-17&quot;,
+-    &quot;last_opened_file_path&quot;: &quot;C:/Desktop/Prog2023/Session 3/TP3-Jayke_Emile_Antoine&quot;,
+-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
++  <component name="PropertiesComponent"><![CDATA[{
++  "keyToString": {
++    "Downloaded.Files.Path.Enabled": "false",
++    "Repository.Attach.Annotations": "false",
++    "Repository.Attach.JavaDocs": "false",
++    "Repository.Attach.Sources": "false",
++    "RunOnceActivity.OpenProjectViewOnStart": "true",
++    "RunOnceActivity.ShowReadmeOnStart": "true",
++    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
++    "WebServerToolWindowFactoryState": "false",
++    "jdk.selected.JAVA_MODULE": "zulu-17",
++    "last_opened_file_path": "U:/Prog2023/Session 3/TP3-Jayke_Emile_Antoine",
++    "node.js.detected.package.eslint": "true",
++    "node.js.detected.package.tslint": "true",
++    "node.js.selected.package.eslint": "(autodetect)",
++    "node.js.selected.package.tslint": "(autodetect)",
++    "project.structure.last.edited": "Modules",
++    "project.structure.proportion": "0.15",
++    "project.structure.side.proportion": "0.2",
++    "settings.editor.selected.configurable": "preferences.lookFeel",
++    "vue.rearranger.settings.migration": "true"
+   }
+-}</component>
++}]]></component>
+   <component name="RecentsManager">
+     <key name="MoveFile.RECENT_KEYS">
+       <recent name="U:\Prog2023\Session 3\TP3-Jayke_Emile_Antoine\src\main\resources" />
+@@ -84,7 +97,7 @@
+       <option name="ALTERNATIVE_JRE_PATH" value="zulu-17" />
+       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+       <option name="MAIN_CLASS_NAME" value="a23.sim203.tp3.app.SimulateurApp" />
+-      <module name="TP3-Jayke_Emile_Antoine" />
++      <module name="TP3_Officiel" />
+       <extension name="coverage">
+         <pattern>
+           <option name="PATTERN" value="a23.sim203.tp3.app.*" />
+@@ -96,7 +109,7 @@
+       </method>
+     </configuration>
+     <configuration name="EnregistreurTest.enregsitreEquationSimple" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+-      <module name="TP3-Jayke_Emile_Antoine" />
++      <module name="TP3_Officiel" />
+       <extension name="coverage">
+         <pattern>
+           <option name="PATTERN" value="a23.sim203.tp3.modele.*" />
+@@ -107,6 +120,24 @@
+       <option name="MAIN_CLASS_NAME" value="a23.sim203.tp3.modele.EnregistreurTest" />
+       <option name="METHOD_NAME" value="enregsitreEquationSimple" />
+       <option name="TEST_OBJECT" value="method" />
++      <method v="2">
++        <option name="Make" enabled="true" />
++      </method>
++    </configuration>
++    <configuration name="a23.sim203.tp3.modele in TP3_Officiel" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
++      <module name="TP3_Officiel" />
++      <extension name="coverage">
++        <pattern>
++          <option name="PATTERN" value="a23.sim203.tp3.modele.*" />
++          <option name="ENABLED" value="true" />
++        </pattern>
++      </extension>
++      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
++      <option name="ALTERNATIVE_JRE_PATH" value="zulu-17" />
++      <option name="PACKAGE_NAME" value="a23.sim203.tp3.modele" />
++      <option name="MAIN_CLASS_NAME" value="" />
++      <option name="METHOD_NAME" value="" />
++      <option name="TEST_OBJECT" value="package" />
+       <method v="2">
+         <option name="Make" enabled="true" />
+       </method>
+@@ -115,6 +146,7 @@
+       <list>
+         <item itemvalue="JUnit.EnregistreurTest.enregsitreEquationSimple" />
+         <item itemvalue="Application.SimulateurApp" />
++        <item itemvalue="JUnit.a23.sim203.tp3.modele in TP3_Officiel" />
+       </list>
+     </recent_temporary>
+   </component>
+@@ -135,6 +167,8 @@
+       <workItem from="1699808304263" duration="4784000" />
+       <workItem from="1699826898159" duration="633000" />
+       <workItem from="1699828715781" duration="7537000" />
++      <workItem from="1699891326956" duration="23000" />
++      <workItem from="1699891708033" duration="6811000" />
+     </task>
+     <task id="LOCAL-00001" summary="depart">
+       <created>1699296937677</created>
