@@ -174,6 +174,10 @@ public class CalculatriceController implements Initializable {
         return this.gestionAffichage;
     }
 
+    public void setGestionAffichage(GestionAffichage gestionAffichage) {
+        this.gestionAffichage = gestionAffichage;
+    }
+
     /**
      * Récupère la liste des variables de l'interface graphique.
      *

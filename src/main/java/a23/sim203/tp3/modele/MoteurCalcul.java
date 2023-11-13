@@ -52,10 +52,11 @@ public class MoteurCalcul {
         historique = new HashMap<>();
 
     }
-    public long avancePasDeTemps(){
+
+    public long avancePasDeTemps() {
         historique = new HashMap<>((Map) mapAncienneValeur.values());
         long nouveauPasDeCalcul = 0;
-        for (int i = 0; i < pasDeTempsEnCours.intValue() ; i++) {
+        for (int i = 0; i < pasDeTempsEnCours.intValue(); i++) {
             nouveauPasDeCalcul = avancePasDeTemps() + i;
         }
         mapAncienneValeur.put(mapNouvelleValeur.keySet().toString(), (Constant) mapNouvelleValeur.values());
@@ -92,6 +93,14 @@ public class MoteurCalcul {
         variableMap.put(nomVariable, new Constant(nomVariable, valeur));
     }
 
+    public void setEquationMap(HashMap<String, Equation> equationMap) {
+        this.equationMap = equationMap;
+    }
+
+    public void setVariableMap(HashMap<String, Constant> variableMap) {
+        this.variableMap = variableMap;
+    }
+
     /**
      * Ajoute une nouvelle équation au calculateur.
      *
@@ -110,7 +119,7 @@ public class MoteurCalcul {
             if (!equationEstRecursive(equation.getNom())) {
                 equationEtVariableMap.put(equation.getNom(), equation);
                 addVariablesFromEquation(equation);
-                mapAncienneValeur.put(equation.getNom(),(Constant) variableMap.values()); // ajoute variable dans la Map des variable
+                mapAncienneValeur.put(equation.getNom(), (Constant) variableMap.values()); // ajoute variable dans la Map des variable
                 variableMap.remove(equation.getNom()); // Supprime la variable existante avec le même nom
             } else {
                 // Affiche une alerte en cas d'expression récursive
@@ -125,6 +134,14 @@ public class MoteurCalcul {
         }
     }
 
+    public Collection<String> getAllEquationsString() {
+        Collection<String> equationsString = new ArrayList<>();
+        for (Equation equation :
+                getAllEquations()) {
+            equationsString.add(equation.toString());
+        }
+        return equationsString;
+    }
 
     /**
      * Retire les variables inutiles du calculateur.

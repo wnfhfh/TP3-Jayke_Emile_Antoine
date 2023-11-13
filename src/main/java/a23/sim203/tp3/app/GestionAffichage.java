@@ -17,10 +17,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.mariuszgromada.math.mxparser.Constant;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
 
 public class GestionAffichage {
     MoteurCalcul moteurCalcul;
@@ -40,6 +38,7 @@ public class GestionAffichage {
         calculatriceController.getListeEquations();
 //        ajouterEquationsDeBase();
     }
+
 
     /**
      * Ajoute les équations demandées aux listes et au moteur de calcul.
@@ -290,11 +289,31 @@ public class GestionAffichage {
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(0, new FileChooser.ExtensionFilter("fichier texte", "*.txt"));
             File fichierEnregistrer = fileChooser.showSaveDialog(stage);
-//TODO appeler enregistreur
+            new Enregistreur().enregistreEquation(moteurCalcul.getAllEquationsString(), moteurCalcul.getToutesLesVariables(), new ArrayList<>(), fichierEnregistrer);
         });
     }
 
     public void setMenuItemCharger(MenuItem menuItemCharger) {
+        menuItemCharger.setOnAction(event -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().add(0, new FileChooser.ExtensionFilter("fichier texte", "*.txt"));
+            File fichierACharger = fileChooser.showOpenDialog(stage);
+            try {
+                Enregistreur.EquationsConstantesEtVariables equationsConstantesEtVariables = new Enregistreur().chargeModele(fichierACharger);
+
+            } catch (FileNotFoundException e) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setHeaderText("Fichier non valide");
+                alert.setTitle("Calculateur avancée");
+                alert.setContentText("Réessayez plz");
+                alert.showAndWait();
+            }
+        });
+    }
+
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
     public MoteurCalcul getMoteurCalcul() {
