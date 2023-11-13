@@ -62,6 +62,7 @@ public class MoteurCalcul {
         mapNouvelleValeur.clear();
         return nouveauPasDeCalcul;
     }
+
     /**
      * Retourne l'ensemble des variables requises en tant que {@code Set<String>}.
      *
@@ -109,6 +110,7 @@ public class MoteurCalcul {
             if (!equationEstRecursive(equation.getNom())) {
                 equationEtVariableMap.put(equation.getNom(), equation);
                 addVariablesFromEquation(equation);
+                mapAncienneValeur.put(equation.getNom(),(Constant) variableMap.values()); // ajoute variable dans la Map des variable
                 variableMap.remove(equation.getNom()); // Supprime la variable existante avec le même nom
             } else {
                 // Affiche une alerte en cas d'expression récursive
@@ -224,6 +226,8 @@ public class MoteurCalcul {
             Equation equation = equationMap.get(nomEquation);
             Expression associatedExpression = new Expression(equation.getExpression());
             equationMap.remove(nomEquation);
+            mapAncienneValeur.remove(nomEquation);
+            mapNouvelleValeur.remove(nomEquation);
 
             // Met à jour l'expression dans variableMap avec la nouvelle valeur NaN
             variableMap.replace(associatedExpression.getExpressionString(), new Constant(associatedExpression.getExpressionString(), Double.NaN));
