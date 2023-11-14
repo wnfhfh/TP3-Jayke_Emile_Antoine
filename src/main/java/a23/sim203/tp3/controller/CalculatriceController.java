@@ -201,7 +201,9 @@ public class CalculatriceController implements Initializable {
         return stringAffiche;
     }
 
-
+    public void setGestionAffichage(GestionAffichage gestionAffichage) {
+        this.gestionAffichage = gestionAffichage;
+    }
 
     /**
      * Récupère le texte actuellement affiché dans le champ de texte de l'interface graphique.

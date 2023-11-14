@@ -462,6 +462,22 @@ public class MoteurCalcul {
         return pasDeTempsEnCours;
     }
 
+    public Collection<String> getAllEquationsString() {
+        Collection<String> equationsString = new ArrayList<>();
+        for (Equation equation :
+                getAllEquations()) {
+            equationsString.add(equation.toString());
+        }
+        return equationsString;
+    }
+
+    public void setEquationMap(HashMap<String, Equation> equationMap) {
+        this.equationMap = equationMap;
+    }
+
+    public void setVariableMap(HashMap<String, Constant> variableMap) {
+        this.constantMap = variableMap;
+    }
     public void setValeurInitiale(String nom, Double x) {
         mapAncienneValeur.put(nom, new Constant("",x));
     }
