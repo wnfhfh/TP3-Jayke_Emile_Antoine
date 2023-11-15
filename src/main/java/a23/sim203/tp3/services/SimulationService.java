@@ -12,14 +12,17 @@ public class SimulationService extends ScheduledService<Void> {
     private long startTime;
     private long endTime;
     private long deltaTemps;
-    private long intervalleDeTemps;
+//    public void setDeltaTemps(long deltaTemps) {
+//        this.deltaTemps = 3;
+//    }
+//
+//    public void setStartTime(long startTime) {
+//        this.startTime = System.currentTimeMillis();
+//    }
 
-    public void setDeltaTemps(long deltaTemps) {
-        this.deltaTemps = 3;
-    }
 
-    public void setStartTime(long startTime) {
-        this.startTime = System.currentTimeMillis();
+    public void setMoteurCalcul(MoteurCalcul moteurCalcul) {
+        this.moteurCalcul = moteurCalcul;
     }
 
     @Override
@@ -27,8 +30,8 @@ public class SimulationService extends ScheduledService<Void> {
         return new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                moteurCalcul.calcule("sim_");
-                moteurCalcul.avancePasDeTemps();
+//                moteurCalcul.calcule("sim_");
+//                moteurCalcul.avancePasDeTemps();
                 return null;
             }
         };

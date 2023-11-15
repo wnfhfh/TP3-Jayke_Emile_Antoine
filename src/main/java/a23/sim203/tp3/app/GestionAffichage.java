@@ -7,6 +7,7 @@ package a23.sim203.tp3.app;
 
 
 import a23.sim203.tp3.controller.CalculatriceController;
+import a23.sim203.tp3.controller.SimFenetreController;
 import a23.sim203.tp3.modele.Equation;
 import a23.sim203.tp3.modele.MoteurCalcul;
 import javafx.event.Event;
@@ -23,9 +24,9 @@ import org.mariuszgromada.math.mxparser.Constant;
 import java.io.*;
 
 public class GestionAffichage {
-    MoteurCalcul moteurCalcul;
-    String stringAffiche;
-    CalculatriceController calculatriceController;
+    private MoteurCalcul moteurCalcul;
+    private String stringAffiche;
+    private CalculatriceController calculatriceController;
     private Stage stage = new Stage();
 
     /**
@@ -292,6 +293,8 @@ public class GestionAffichage {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+            SimFenetreController controller = fxmlLoader.getController();
+            controller.setMoteurCalcul(moteurCalcul);
             Scene sceneSimulation = new Scene(root);
             stage.setScene(sceneSimulation);
             stage.show();
