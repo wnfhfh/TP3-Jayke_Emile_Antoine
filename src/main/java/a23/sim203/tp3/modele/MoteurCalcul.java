@@ -13,6 +13,7 @@ import org.mariuszgromada.math.mxparser.Constant;
 import org.mariuszgromada.math.mxparser.Expression;
 import org.mariuszgromada.math.mxparser.License;
 
+import java.security.Key;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -58,7 +59,9 @@ public class MoteurCalcul {
         for (int i = 0; i < pasDeTempsEnCours.intValue(); i++) {
             nouveauPasDeCalcul = avancePasDeTemps() + i;
         }
-        mapAncienneValeur.put(mapNouvelleValeur.keySet().toString(), (Constant) mapNouvelleValeur.values());
+        for (String key : mapNouvelleValeur.keySet()) {
+            mapAncienneValeur.put(key, mapNouvelleValeur.get(key));
+        }
         mapNouvelleValeur.clear();
         return nouveauPasDeCalcul;
     }
@@ -243,11 +246,11 @@ public class MoteurCalcul {
      */
     public double calcule(String nomEquation) {
         Double resultat;
-        Pattern pattern = Pattern.compile("[a-z]");
+        Pattern pattern = Pattern.compile("[a-zA-Z0-9]");
         Matcher matcher = pattern.matcher(nomEquation);
 
         if (matcher.find()) resultat = calcule(equationMap.get(nomEquation));
-        else resultat = calcule(new Equation("o9", nomEquation.replace(" ", "")));
+        else resultat = calcule(new Equation("o_", nomEquation.replace(" ", "")));
         return resultat;
     }
 
@@ -319,9 +322,9 @@ public class MoteurCalcul {
         if (Objects.equals(equation.getNom(), mapAncienneValeur.toString())) {
             mapNouvelleValeur.put(resultat.toString(), constants.get(resultat.intValue()));
         }
-        for (int i = 0; i < avancePasDeTemps(); i++) {
-            mapNouvelleValeur = mapAncienneValeur;
-        }
+//        for (int i = 0; i < avancePasDeTemps(); i++) {
+//            mapNouvelleValeur = mapAncienneValeur;
+//        }
         return resultat;
     }
 
