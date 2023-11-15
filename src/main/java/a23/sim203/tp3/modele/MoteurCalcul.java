@@ -114,10 +114,8 @@ public class MoteurCalcul {
                 constantMap.remove(equation.getNom()); // Supprime la variable existante avec le même nom
             } else {
                 // Affiche une alerte en cas d'expression récursive
-
                 equationMap.remove(equation.getNom());
                 equationEtconstantMap.remove(equation.getNom());
-
             }
     }
 

@@ -298,7 +298,7 @@ public class GestionAffichage {
             fileChooser.getExtensionFilters().add(0, new FileChooser.ExtensionFilter("fichier texte", "*.txt"));
             File fichierACharger = fileChooser.showOpenDialog(stage);
             try {
-                Enregistreur.EquationsConstantesEtVariables equationsConstantesEtVariables = new Enregistreur().chargeModele(fichierACharger);
+                Enregistreur.EquationsConstantesEtVariables equationsConstantesEtVariables = new Enregistreur(moteurCalcul, this).chargeModele(fichierACharger);
 
             } catch (FileNotFoundException e) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -309,7 +309,6 @@ public class GestionAffichage {
             }
         });
     }
-
 
     public void setStage(Stage stage) {
         this.stage = stage;
