@@ -52,16 +52,22 @@ public class Enregistreur {
             String lecture = reader.readLine();
             while (!lecture.equals("Variables:")) {
                 lecture = reader.readLine();
-                eCET.getEquations().put(lecture.split("=")[0], new Equation(lecture.split("=")[0], lecture.split("=")[1]));
+                if (!lecture.equals("Variables:")) {
+                    eCET.getEquations().put(lecture.split("=")[0], new Equation(lecture.split("=")[0], lecture.split("=")[1]));
+                }
             }
             reader.readLine();
             while (!lecture.equals("Constantes:")) {
                 lecture = reader.readLine();
-                eCET.getVariables().put(lecture.split("=")[0], new Constant(lecture.split("=")[0], Double.parseDouble(lecture.split("=")[1])));
+                if (!lecture.equals("Constantes:")) {
+                    eCET.getVariables().put(lecture.split("=")[0], new Constant(lecture.split("=")[0], Double.parseDouble(lecture.split("=")[1])));
+                }
             }
-            while (lecture!=null) {
+            while (lecture != null) {
                 lecture = reader.readLine();
-                eCET.getMapAncienneValeur().put(lecture.split("=")[0], new Constant(lecture.split("=")[0], Double.parseDouble(lecture.split("=")[1])));
+                if (lecture != null) {
+                    eCET.getMapAncienneValeur().put(lecture.split("=")[0], new Constant(lecture.split("=")[0], Double.parseDouble(lecture.split("=")[1])));
+                }
             }
 
         } catch (IOException e) {

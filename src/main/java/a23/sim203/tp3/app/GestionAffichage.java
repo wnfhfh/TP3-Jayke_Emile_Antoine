@@ -298,9 +298,12 @@ public class GestionAffichage {
             fileChooser.getExtensionFilters().add(0, new FileChooser.ExtensionFilter("fichier texte", "*.txt"));
             File fichierACharger = fileChooser.showOpenDialog(stage);
             try {
-                Enregistreur.EquationsConstantesEtVariables equationsConstantesEtVariables = new Enregistreur(moteurCalcul, this).chargeModele(fichierACharger);
-
-            } catch (FileNotFoundException e) {
+                Enregistreur.EquationsConstantesEtVariables eCET = new Enregistreur(moteurCalcul, this).chargeModele(fichierACharger);
+                moteurCalcul.setEquationMap(eCET.getEquations());
+                moteurCalcul.setConstantMap(eCET.getVariables());
+                moteurCalcul.setMapAncienneValeur(eCET.getMapAncienneValeur());
+                refreshAffichage();
+            } catch (Exception e) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setHeaderText("Fichier non valide");
                 alert.setTitle("Calculateur avancée");
@@ -308,6 +311,10 @@ public class GestionAffichage {
                 alert.showAndWait();
             }
         });
+    }
+
+    private void refreshAffichage() {
+
     }
 
     public void setStage(Stage stage) {

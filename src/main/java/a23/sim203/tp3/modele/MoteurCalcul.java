@@ -476,9 +476,14 @@ public class MoteurCalcul {
         this.equationMap = equationMap;
     }
 
-    public void setVariableMap(HashMap<String, Constant> variableMap) {
-        this.constantMap = variableMap;
+    public void setConstantMap(HashMap<String, Constant> constantMap) {
+        this.constantMap = constantMap;
     }
+
+    public void setMapAncienneValeur(HashMap<String, Constant> mapAncienneValeur) {
+        this.mapAncienneValeur = mapAncienneValeur;
+    }
+
     public void setValeurInitiale(String nom, Double x) {
         mapAncienneValeur.put(nom, new Constant("",x));
     }
