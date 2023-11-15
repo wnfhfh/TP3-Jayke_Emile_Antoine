@@ -11,6 +11,8 @@ import a23.sim203.tp3.modele.Equation;
 import a23.sim203.tp3.modele.MoteurCalcul;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
@@ -281,6 +283,9 @@ public class GestionAffichage {
 
     public void setMenuItemCalculPasDeTemps(MenuItem boutonCalculPasDeTemps) {
         //TODO faire l'autre fenetre ofc
+        boutonCalculPasDeTemps.setOnAction(n->{
+
+        });
     }
 
     public void setMenuItemEnregistrer(MenuItem menuItemEnregistrer) {

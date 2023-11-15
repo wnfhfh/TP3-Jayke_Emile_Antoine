@@ -26,5 +26,6 @@ public class SimulateurApp extends Application {
         gestionAffichage = new GestionAffichage(calculatriceController);
         gestionAffichage.setStage(primaryStage);
         primaryStage.show();
+
     }
 }
