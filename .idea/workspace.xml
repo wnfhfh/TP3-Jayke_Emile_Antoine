@@ -4,90 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="08ffff6b-565a-4d17-9ab7-59c25cfa882a" name="Changes" comment="Id à jour">
+    <list default="true" id="428df2d5-9642-4a86-9148-b88ca024bcb2" name="Changes" comment="ajout de fenetre simulation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/Enregistreur.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/Enregistreur.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/GestionAffichage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/GestionAffichage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/modele/MoteurCalcul.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/modele/MoteurCalcul.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
+  <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
       <list>
-        <option value="Class" />
+        <option value="Emile &lt;a@a.com&gt;" />
       </list>
     </option>
-  </component>
-  <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;
-  }
-}</component>
-  <component name="GithubPullRequestsUISettings">
-    <option name="selectedUrlAndAccountId">
-      <UrlAndAccount>
-        <option name="accountId" value="183200bd-5e4d-4e6d-a91a-c2253af9dd81" />
-        <option name="url" value="https://github.com/wnfhfh/TP3-Jayke_Emile_Antoine" />
-      </UrlAndAccount>
-    </option>
-  </component>
-  <component name="MarkdownSettingsMigration">
-    <option name="stateVersion" value="1" />
-  </component>
-  <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="useMavenConfig" value="true" />
-      </MavenGeneralSettings>
-    </option>
-  </component>
-  <component name="ProjectId" id="2XoX0uxFu9BoQ66D27Hcmaffc3j" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="ProjectViewState">
-    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Downloaded.Files.Path.Enabled": "false",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "jdk.selected.JAVA_MODULE": "zulu-17",
-    "last_opened_file_path": "C:/Desktop/Prog2023/Session_3/TP3-Jayke_Emile_Antoine",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "vue.rearranger.settings.migration": "true"
+    "node.js.selected.package.tslint": "(autodetect)"
   }
-}</component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="U:\Prog2023\Session 3\TP3-Jayke_Emile_Antoine\src\main\resources" />
-      <recent name="U:\Prog2023\Session 3\TP3-Jayke_Emile_Antoine\src\main\resources\java" />
-      <recent name="U:\Prog2023\Session 3\TP3-Jayke_Emile_Antoine\src\main\resources\a23\sim203\tp3\app" />
-    </key>
-  </component>
-  <component name="RunManager" selected="JUnit.MoteurCalculTest">
+}]]></component>
+  <component name="RunManager">
     <configuration name="SimulateurApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="ALTERNATIVE_JRE_PATH" value="zulu-17" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="a23.sim203.tp3.app.SimulateurApp" />
-      <module name="TP3-Jayke_Emile_Antoine" />
+      <module name="TP3_Officiel" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="a23.sim203.tp3.app.*" />
@@ -98,146 +39,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="EnregistreurTest.ChargeEquationSimple" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TP3-Jayke_Emile_Antoine" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="a23.sim203.tp3.modele.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="a23.sim203.tp3.modele" />
-      <option name="MAIN_CLASS_NAME" value="a23.sim203.tp3.modele.EnregistreurTest" />
-      <option name="METHOD_NAME" value="ChargeEquationSimple" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="EnregistreurTest.enregsitreEquationSimple" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TP3-Jayke_Emile_Antoine" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="a23.sim203.tp3.modele.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="a23.sim203.tp3.modele" />
-      <option name="MAIN_CLASS_NAME" value="a23.sim203.tp3.modele.EnregistreurTest" />
-      <option name="METHOD_NAME" value="enregsitreEquationSimple" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MoteurCalculTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TP3_Officiel" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="a23.sim203.tp3.modele.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="a23.sim203.tp3.modele" />
-      <option name="MAIN_CLASS_NAME" value="a23.sim203.tp3.modele.MoteurCalculTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MoteurCalculTest.testAjoute1Variable" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TP3_Officiel" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="a23.sim203.tp3.modele.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="a23.sim203.tp3.modele" />
-      <option name="MAIN_CLASS_NAME" value="a23.sim203.tp3.modele.MoteurCalculTest" />
-      <option name="METHOD_NAME" value="testAjoute1Variable" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.MoteurCalculTest" />
-        <item itemvalue="JUnit.MoteurCalculTest.testAjoute1Variable" />
-        <item itemvalue="JUnit.EnregistreurTest.ChargeEquationSimple" />
         <item itemvalue="Application.SimulateurApp" />
-        <item itemvalue="JUnit.EnregistreurTest.enregsitreEquationSimple" />
       </list>
     </recent_temporary>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="08ffff6b-565a-4d17-9ab7-59c25cfa882a" name="Changes" comment="" />
-      <created>1699296186337</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1699296186337</updated>
-      <workItem from="1699296187461" duration="763000" />
-      <workItem from="1699455731034" duration="635000" />
-      <workItem from="1699456404864" duration="1003000" />
-      <workItem from="1699459365480" duration="2310000" />
-      <workItem from="1699637920098" duration="109000" />
-      <workItem from="1699638389290" duration="3827000" />
-      <workItem from="1699808304263" duration="4784000" />
-      <workItem from="1699826898159" duration="633000" />
-      <workItem from="1699828715781" duration="7537000" />
-      <workItem from="1700062463595" duration="2224000" />
-      <workItem from="1700065061965" duration="532000" />
-    </task>
-    <task id="LOCAL-00001" summary="depart">
-      <created>1699296937677</created>
+    <task id="LOCAL-00001" summary="ajout de fenetre simulation">
+      <created>1700066788266</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1699296937677</updated>
+      <updated>1700066788266</updated>
     </task>
-    <task id="LOCAL-00002" summary="depart">
-      <created>1699457085301</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1699457085301</updated>
-    </task>
-    <task id="LOCAL-00003" summary="amener code de TP2">
-      <created>1699458093035</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1699458093035</updated>
-    </task>
-    <task id="LOCAL-00004" summary="simulateur app">
-      <created>1699458360913</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1699458360913</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Méthode avancePasDeTemps() fait!">
-      <created>1699888060708</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1699888060708</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Id à jour">
-      <created>1700062682566</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1700062682566</updated>
-    </task>
-    <option name="localTasksCounter" value="7" />
+    <option name="localTasksCounter" value="2" />
     <servers />
-  </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -251,22 +68,7 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="depart" />
-    <MESSAGE value="amener code de TP2" />
-    <MESSAGE value="simulateur app" />
-    <MESSAGE value="Méthode avancePasDeTemps() fait!" />
-    <MESSAGE value="Id à jour" />
-    <option name="LAST_COMMIT_MESSAGE" value="Id à jour" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/Enregistreur.java</url>
-          <line>55</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="ajout de fenetre simulation" />
+    <option name="LAST_COMMIT_MESSAGE" value="ajout de fenetre simulation" />
   </component>
 </project>

@@ -12,6 +12,7 @@ import a23.sim203.tp3.modele.MoteurCalcul;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -25,7 +26,7 @@ public class GestionAffichage {
     MoteurCalcul moteurCalcul;
     String stringAffiche;
     CalculatriceController calculatriceController;
-    private Stage stage;
+    private Stage stage = new Stage();
 
     /**
      * Constructeur de la classe GestionAffichage.
@@ -284,7 +285,16 @@ public class GestionAffichage {
     public void setMenuItemCalculPasDeTemps(MenuItem boutonCalculPasDeTemps) {
         //TODO faire l'autre fenetre ofc
         boutonCalculPasDeTemps.setOnAction(n->{
-
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("testFenetreSimulation.fxml"));
+            Parent root = null;
+            try {
+                root = fxmlLoader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            Scene sceneSimulation = new Scene(root);
+            stage.setScene(sceneSimulation);
+            stage.show();
         });
     }
 
