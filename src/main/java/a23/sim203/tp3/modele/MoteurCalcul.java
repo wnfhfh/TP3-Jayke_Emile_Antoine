@@ -24,7 +24,7 @@ public class MoteurCalcul {
     /**
      * Stock les variables avec leur nom et valeur associés.
      */
-    private HashMap<String, Constant> variableMap;
+    private HashMap<String, Constant> constantMap;
     /**
      * Stock les équations avec leur nom et expression associés.
      */
@@ -32,11 +32,11 @@ public class MoteurCalcul {
     /**
      * Stock les équations et variables utilisées dans le calcul.
      */
-    private HashMap<String, Object> equationEtVariableMap;
+    private HashMap<String, Object> equationEtconstantMap;
 
     private HashMap<String, Constant> mapAncienneValeur;
     private HashMap<String, Constant> mapNouvelleValeur;
-    private HashMap<String, Map> historique;
+    private HashMap<String, Map<String, Constant>> historique;
 
     /**
      * Constructeur par défaut du moteur de calcul.
@@ -44,18 +44,18 @@ public class MoteurCalcul {
      */
     public MoteurCalcul() {
         License.iConfirmNonCommercialUse("Cegep Limoilou");
-        variableMap = new HashMap<>();
+        constantMap = new HashMap<>();
         equationMap = new HashMap<>();
-        equationEtVariableMap = new HashMap<>();
+        equationEtconstantMap = new HashMap<>();
         mapAncienneValeur = new HashMap<>();
         mapNouvelleValeur = new HashMap<>();
         historique = new HashMap<>();
-
     }
-    public long avancePasDeTemps(){
+
+    public long avancePasDeTemps() {
         historique = new HashMap<>((Map) mapAncienneValeur.values());
         long nouveauPasDeCalcul = 0;
-        for (int i = 0; i < pasDeTempsEnCours.intValue() ; i++) {
+        for (int i = 0; i < pasDeTempsEnCours.intValue(); i++) {
             nouveauPasDeCalcul = avancePasDeTemps() + i;
         }
         mapAncienneValeur.put(mapNouvelleValeur.keySet().toString(), (Constant) mapNouvelleValeur.values());
@@ -79,7 +79,7 @@ public class MoteurCalcul {
      * @param valeur   La valeur de la variable à ajouter.
      */
     private void ajouteVariable(String variable, double valeur) {
-        variableMap.put(variable, new Constant(variable, valeur));
+        constantMap.put(variable, new Constant(variable, valeur));
     }
 
     /**
@@ -89,7 +89,7 @@ public class MoteurCalcul {
      * @param valeur      La nouvelle valeur de la variable.
      */
     public void setValeurVariable(String nomVariable, double valeur) {
-        variableMap.put(nomVariable, new Constant(nomVariable, valeur));
+        constantMap.put(nomVariable, new Constant(nomVariable, valeur));
     }
 
     /**
@@ -104,25 +104,21 @@ public class MoteurCalcul {
      * @param nouvelleEquation La chaîne de caractères représentant la nouvelle équation.
      */
     public void ajouteEquation(String nouvelleEquation) {
-        try {
+
             Equation equation = parseEquation(nouvelleEquation);
             equationMap.put(equation.getNom(), equation);
             if (!equationEstRecursive(equation.getNom())) {
-                equationEtVariableMap.put(equation.getNom(), equation);
+                equationEtconstantMap.put(equation.getNom(), equation);
                 addVariablesFromEquation(equation);
-                mapAncienneValeur.put(equation.getNom(),(Constant) variableMap.values()); // ajoute variable dans la Map des variable
-                variableMap.remove(equation.getNom()); // Supprime la variable existante avec le même nom
+                mapAncienneValeur.put(equation.getNom(), new Constant(equation.getNom(), calcule(equation))); // ajoute variable dans la Map des variable
+                constantMap.remove(equation.getNom()); // Supprime la variable existante avec le même nom
             } else {
                 // Affiche une alerte en cas d'expression récursive
-                new Alert(Alert.AlertType.CONFIRMATION, "Expression récursive", ButtonType.OK).showAndWait();
+
                 equationMap.remove(equation.getNom());
-                equationEtVariableMap.remove(equation.getNom());
+                equationEtconstantMap.remove(equation.getNom());
 
             }
-        } catch (RuntimeException e) {
-            // Affiche une alerte en cas d'équation non valide
-            new Alert(Alert.AlertType.ERROR, "Équation non valide").showAndWait();
-        }
     }
 
 
@@ -146,8 +142,8 @@ public class MoteurCalcul {
             Iterator<String> iterator = variablesInutiles.iterator();
             while (iterator.hasNext()) {
                 String variableTemp = iterator.next();
-                variableMap.remove(variableTemp);
-                equationEtVariableMap.remove(variableTemp);
+                constantMap.remove(variableTemp);
+                equationEtconstantMap.remove(variableTemp);
             }
         }
     }
@@ -204,9 +200,9 @@ public class MoteurCalcul {
         Iterator<String> iterator = elementsRequis.iterator();
         while (iterator.hasNext()) {
             String nomVariable = iterator.next();
-            if (!equationEtVariableMap.containsKey(nomVariable)) {
+            if (!equationEtconstantMap.containsKey(nomVariable)) {
                 ajouteVariable(nomVariable, Double.NaN);
-                equationEtVariableMap.put(nomVariable, Double.NaN);
+                equationEtconstantMap.put(nomVariable, Double.NaN);
             }
         }
     }
@@ -229,8 +225,8 @@ public class MoteurCalcul {
             mapAncienneValeur.remove(nomEquation);
             mapNouvelleValeur.remove(nomEquation);
 
-            // Met à jour l'expression dans variableMap avec la nouvelle valeur NaN
-            variableMap.replace(associatedExpression.getExpressionString(), new Constant(associatedExpression.getExpressionString(), Double.NaN));
+            // Met à jour l'expression dans constantMap avec la nouvelle valeur NaN
+            constantMap.replace(associatedExpression.getExpressionString(), new Constant(associatedExpression.getExpressionString(), Double.NaN));
             retireVariablesInutiles();
         }
     }
@@ -263,7 +259,7 @@ public class MoteurCalcul {
      * @return L'ensemble de toutes les variables.
      */
     public Set<String> getAllVariables() {
-        return variableMap.keySet();
+        return constantMap.keySet();
     }
 
     /**
@@ -282,7 +278,7 @@ public class MoteurCalcul {
      * @return La carte des valeurs des variables.
      */
     public HashMap<String, Constant> getVariableValues() {
-        return variableMap;
+        return constantMap;
     }
 
     /**
@@ -314,15 +310,20 @@ public class MoteurCalcul {
         ArrayList<Constant> constants = new ArrayList();
 
         for (String element : elementsRequis) {
-            if (variableMap.containsKey(element))
-                constants.add(variableMap.get(element));
+            if (constantMap.containsKey(element))
+                constants.add(constantMap.get(element));
         }
 
         for (int i = 0; i < constants.size(); i++) {
             expressionStringTemp = expressionStringTemp.replace(constants.get(i).getConstantName(), Double.toString(constants.get(i).getConstantValue()));
         }
         resultat = new Expression(expressionStringTemp).calculate();
-
+        if (Objects.equals(equation.getNom(), mapAncienneValeur.toString())) {
+            mapNouvelleValeur.put(resultat.toString(), constants.get(resultat.intValue()));
+        }
+        for (int i = 0; i < avancePasDeTemps(); i++) {
+            mapNouvelleValeur = mapAncienneValeur;
+        }
         return resultat;
     }
 
@@ -364,7 +365,7 @@ public class MoteurCalcul {
     public Collection<String> getToutesLesVariables() {
         HashSet<String> toutesLesVariables = new HashSet<String>();
 
-        Iterator<Constant> iteratorValues = variableMap.values().iterator();
+        Iterator<Constant> iteratorValues = constantMap.values().iterator();
         while (iteratorValues.hasNext()) {
             Constant constantTemp = iteratorValues.next();
             toutesLesVariables.add(constantTemp.getConstantName() + " = " + constantTemp.getConstantValue());
@@ -379,7 +380,7 @@ public class MoteurCalcul {
      * @return La carte des noms de variables associés à leurs valeurs.
      */
     public Map<String, Constant> getVariableValueMap() {
-        return variableMap;
+        return constantMap;
     }
 
     /**
@@ -440,4 +441,29 @@ public class MoteurCalcul {
         }
         return estRecursive;
     }
+
+    public HashMap<String, Constant> getConstanteValeurMap() {
+        return constantMap;
+    }
+
+    public HashMap<String, Constant> getAncienneValeurVariableMap() {
+        return mapAncienneValeur;
+    }
+
+    public HashMap<String, Constant> getNouvelleValeurVariableMap() {
+        return mapNouvelleValeur;
+    }
+
+    public void setValeurConstante(String x, Double i) {
+        new Constant(x, i);
+    }
+
+    public Long getPasDeTempsActuel() {
+        return pasDeTempsEnCours;
+    }
+
+    public void setValeurInitiale(String nom, Double x) {
+        mapAncienneValeur.put(nom, new Constant("",x));
+    }
+
 }

@@ -142,7 +142,7 @@ public class GestionAffichage {
     public void actionBoutonEgal(Button bouton) {
         actionAssistanceVisuelle(bouton);
         bouton.setOnAction(event -> {
-            double reponse = moteurCalcul.calcule(calculatriceController.getStringAfficheTexte());
+            double reponse = moteurCalcul.calcule(calculatriceController.getStringAfficheTexte().split("=")[0]);
             calculatriceController.setStringAffiche(String.valueOf(reponse));
         });
     }
@@ -172,7 +172,8 @@ public class GestionAffichage {
                 calculatriceController.getListeEquations().refresh();
                 calculatriceController.getListeVariables().getItems().setAll(moteurCalcul.getToutesLesVariables());
             } catch (Exception e) {
-                System.out.println("équation invalide");
+                // Affiche une alerte en cas d'équation non valide
+                new Alert(Alert.AlertType.ERROR, "Équation non valide").showAndWait();
             }
         });
     }
