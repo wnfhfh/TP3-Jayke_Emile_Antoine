@@ -114,10 +114,8 @@ public class MoteurCalcul {
                 constantMap.remove(equation.getNom()); // Supprime la variable existante avec le même nom
             } else {
                 // Affiche une alerte en cas d'expression récursive
-
                 equationMap.remove(equation.getNom());
                 equationEtconstantMap.remove(equation.getNom());
-
             }
     }
 
@@ -462,6 +460,22 @@ public class MoteurCalcul {
         return pasDeTempsEnCours;
     }
 
+    public Collection<String> getAllEquationsString() {
+        Collection<String> equationsString = new ArrayList<>();
+        for (Equation equation :
+                getAllEquations()) {
+            equationsString.add(equation.toString());
+        }
+        return equationsString;
+    }
+
+    public void setEquationMap(HashMap<String, Equation> equationMap) {
+        this.equationMap = equationMap;
+    }
+
+    public void setVariableMap(HashMap<String, Constant> variableMap) {
+        this.constantMap = variableMap;
+    }
     public void setValeurInitiale(String nom, Double x) {
         mapAncienneValeur.put(nom, new Constant("",x));
     }
