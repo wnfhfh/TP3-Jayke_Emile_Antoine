@@ -115,10 +115,6 @@ public class MoteurCalcul {
                 addVariablesFromEquation(equation);
                 mapAncienneValeur.put(equation.getNom(), new Constant(equation.getNom(), calcule(equation))); // ajoute variable dans la Map des variable
                 constantMap.remove(equation.getNom()); // Supprime la variable existante avec le même nom
-            } else {
-                // Affiche une alerte en cas d'expression récursive
-                equationMap.remove(equation.getNom());
-                equationEtconstantMap.remove(equation.getNom());
             }
     }
 
@@ -246,7 +242,7 @@ public class MoteurCalcul {
      */
     public double calcule(String nomEquation) {
         Double resultat;
-        Pattern pattern = Pattern.compile("[a-zA-Z0-9]");
+        Pattern pattern = Pattern.compile("[a-zA-Z]");
         Matcher matcher = pattern.matcher(nomEquation);
 
         if (matcher.find()) resultat = calcule(equationMap.get(nomEquation));
@@ -319,8 +315,8 @@ public class MoteurCalcul {
             expressionStringTemp = expressionStringTemp.replace(constants.get(i).getConstantName(), Double.toString(constants.get(i).getConstantValue()));
         }
         resultat = new Expression(expressionStringTemp).calculate();
-        if (Objects.equals(equation.getNom(), mapAncienneValeur.toString())) {
-            mapNouvelleValeur.put(resultat.toString(), constants.get(resultat.intValue()));
+        if (mapAncienneValeur.containsKey(equation.getNom())) {
+            mapNouvelleValeur.put(equation.getNom(), constants.get(resultat.intValue()));
         }
 //        for (int i = 0; i < avancePasDeTemps(); i++) {
 //            mapNouvelleValeur = mapAncienneValeur;
@@ -455,10 +451,6 @@ public class MoteurCalcul {
         return mapNouvelleValeur;
     }
 
-    public void setValeurConstante(String x, Double i) {
-        new Constant(x, i);
-    }
-
     public Long getPasDeTempsActuel() {
         return pasDeTempsEnCours;
     }
@@ -484,8 +476,11 @@ public class MoteurCalcul {
         this.mapAncienneValeur = mapAncienneValeur;
     }
 
-    public void setValeurInitiale(String nom, Double x) {
+    public void setValeurConstante(String nom, Double x) {
         mapAncienneValeur.put(nom, new Constant("",x));
     }
 
+    public void setValeurInitiale(String nom, Double x) {
+        mapAncienneValeur.put(nom, new Constant("",x));
+    }
 }

@@ -12,7 +12,6 @@ public class SimulateurApp extends Application {
     private Stage stage;
     GestionAffichage gestionAffichage;
     CalculatriceController calculatriceController;
-    Enregistreur enregistreur;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
