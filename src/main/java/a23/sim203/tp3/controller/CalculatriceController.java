@@ -85,7 +85,7 @@ public class CalculatriceController implements Initializable {
     @FXML
     private ListView<String> listeEquations;
     @FXML
-    private ListView<?> listeConstantes;
+    private ListView<String> listeConstantes;
     @FXML
     private Menu menuAssistance;
     @FXML
@@ -109,6 +109,23 @@ public class CalculatriceController implements Initializable {
      */
     @FXML
     void setBoutonsCalculatrice() {
+        setBoutonsCaractères();
+        gestionAffichage.actionBoutonReculer(boutonReculer);
+        gestionAffichage.actionBoutonEffacer(boutonEffacer);
+        gestionAffichage.actionBoutonPlusMinus(boutonPlusMinus);
+        gestionAffichage.actionBoutonEgal(boutonEgal);
+        gestionAffichage.actionBoutonAjoute(boutonAjoute);
+        gestionAffichage.actionBoutonSupprime(boutonSupprime);
+        gestionAffichage.setMenuItemCalculPasDeTemps(MenuItemCalculPasDeTemps);
+        gestionAffichage.setMenuItemEnregistrer(MenuItemEnregistrer);
+
+        gestionAffichage.setMenuItemCharger(MenuItemCharger);
+
+        ToggleGroup toggleGroup = new ToggleGroup();
+        gestionAffichage.actionToggleBoutons(toggleBoutonLire, toggleBoutonVariable, toggleGroup);
+    }
+
+    private void setBoutonsCaractères() {
         gestionAffichage.setBoutonCaractere('0', bouton0);
         gestionAffichage.setBoutonCaractere('1', bouton1);
         gestionAffichage.setBoutonCaractere('2', bouton2);
@@ -126,18 +143,6 @@ public class CalculatriceController implements Initializable {
         gestionAffichage.setBoutonCaractere('(', boutonParentheseG);
         gestionAffichage.setBoutonCaractere(')', boutonParentheseD);
         gestionAffichage.setBoutonCaractere('.', boutonPoint);
-        gestionAffichage.actionBoutonReculer(boutonReculer);
-        gestionAffichage.actionBoutonEffacer(boutonEffacer);
-        gestionAffichage.actionBoutonPlusMinus(boutonPlusMinus);
-        gestionAffichage.actionBoutonEgal(boutonEgal);
-        gestionAffichage.actionBoutonAjoute(boutonAjoute);
-        gestionAffichage.actionBoutonSupprime(boutonSupprime);
-        gestionAffichage.setMenuItemCalculPasDeTemps(MenuItemCalculPasDeTemps);
-        gestionAffichage.setMenuItemEnregistrer(MenuItemEnregistrer);
-        gestionAffichage.setMenuItemCharger(MenuItemCharger);
-
-        ToggleGroup toggleGroup = new ToggleGroup();
-        gestionAffichage.actionToggleBoutons(toggleBoutonLire, toggleBoutonVariable, toggleGroup);
     }
 
     /**
@@ -221,6 +226,10 @@ public class CalculatriceController implements Initializable {
      */
     public CheckMenuItem getMenuItemAssistanceVisuelle() {
         return menuItemAssistanceVisuelle;
+    }
+
+    public ListView<String> getListeConstantes() {
+        return listeConstantes;
     }
 
     /**

@@ -51,19 +51,15 @@ public class MoteurCalcul {
         mapAncienneValeur = new HashMap<>();
         mapNouvelleValeur = new HashMap<>();
         historique = new HashMap<>();
+        pasDeTempsEnCours = 1l;
     }
 
     public long avancePasDeTemps() {
-        historique = new HashMap<>((Map) mapAncienneValeur.values());
-        long nouveauPasDeCalcul = 0;
-        for (int i = 0; i < pasDeTempsEnCours.intValue(); i++) {
-            nouveauPasDeCalcul = avancePasDeTemps() + i;
-        }
-        for (String key : mapNouvelleValeur.keySet()) {
-            mapAncienneValeur.put(key, mapNouvelleValeur.get(key));
-        }
+        historique.put(pasDeTempsEnCours.toString(), mapAncienneValeur);
+        pasDeTempsEnCours++;
+        mapAncienneValeur = mapNouvelleValeur;
         mapNouvelleValeur.clear();
-        return nouveauPasDeCalcul;
+        return pasDeTempsEnCours;
     }
 
     /**
@@ -72,7 +68,7 @@ public class MoteurCalcul {
      * @return L'ensemble des variables requises.
      */
     private Set<String> determineToutesVariablesRequises() {
-        return (Set<String>) getToutesLesVariables();
+        return (Set<String>) getToutesLesConstantesString();
     }
 
     /**
@@ -108,14 +104,15 @@ public class MoteurCalcul {
      */
     public void ajouteEquation(String nouvelleEquation) {
 
-            Equation equation = parseEquation(nouvelleEquation);
-            equationMap.put(equation.getNom(), equation);
-            if (!equationEstRecursive(equation.getNom())) {
-                equationEtconstantMap.put(equation.getNom(), equation);
-                addVariablesFromEquation(equation);
-                mapAncienneValeur.put(equation.getNom(), new Constant(equation.getNom(), calcule(equation))); // ajoute variable dans la Map des variable
-                constantMap.remove(equation.getNom()); // Supprime la variable existante avec le même nom
-            }
+        Equation equation = parseEquation(nouvelleEquation);
+        equationMap.put(equation.getNom(), equation);
+        if (!equationEstRecursive(equation.getNom())) {
+            equationEtconstantMap.put(equation.getNom(), equation);
+            addVariablesFromEquation(equation);
+            constantMap.remove(equation.getNom()); // Supprime la variable existante avec le même nom
+        }
+        mapAncienneValeur.put(equation.getNom(), new Constant(equation.getNom(), Double.NaN)); // ajoute variable dans la Map des variable
+        mapNouvelleValeur.put(equation.getNom(), new Constant(equation.getNom(), calcule(equation))); // ajoute variable dans la Map des variable
     }
 
 
@@ -131,8 +128,8 @@ public class MoteurCalcul {
      * </p>
      */
 
-    public void retireVariablesInutiles() {
-        Set<String> variablesInutiles = getAllVariables();
+    public void retireConstantesInutiles() { //todo verif s'il faut retirer variables of const inutiles
+        Set<String> variablesInutiles = getAllConstantes();
         variablesInutiles.removeAll(getAllElementsRequis());
 
         if (variablesInutiles.size() > 0) {
@@ -197,7 +194,7 @@ public class MoteurCalcul {
         Iterator<String> iterator = elementsRequis.iterator();
         while (iterator.hasNext()) {
             String nomVariable = iterator.next();
-            if (!equationEtconstantMap.containsKey(nomVariable)) {
+            if (!equationEtconstantMap.containsKey(nomVariable) && nomVariable != equation.getNom()) {
                 ajouteVariable(nomVariable, Double.NaN);
                 equationEtconstantMap.put(nomVariable, Double.NaN);
             }
@@ -224,7 +221,7 @@ public class MoteurCalcul {
 
             // Met à jour l'expression dans constantMap avec la nouvelle valeur NaN
             constantMap.replace(associatedExpression.getExpressionString(), new Constant(associatedExpression.getExpressionString(), Double.NaN));
-            retireVariablesInutiles();
+            retireConstantesInutiles();
         }
     }
 
@@ -255,7 +252,7 @@ public class MoteurCalcul {
      *
      * @return L'ensemble de toutes les variables.
      */
-    public Set<String> getAllVariables() {
+    public Set<String> getAllConstantes() {
         return constantMap.keySet();
     }
 
@@ -301,8 +298,7 @@ public class MoteurCalcul {
     public double calcule(Equation equation) {
         Double resultat;
 
-        String expressionStringTemp = equation.getExpression();
-        expressionStringTemp = remplacerEquations(expressionStringTemp);
+        String expressionStringTemp = remplacerEquations(equation);
         Set<String> elementsRequis = new Equation("a_", expressionStringTemp).getElementsRequis();
         ArrayList<Constant> constants = new ArrayList();
 
@@ -315,9 +311,8 @@ public class MoteurCalcul {
             expressionStringTemp = expressionStringTemp.replace(constants.get(i).getConstantName(), Double.toString(constants.get(i).getConstantValue()));
         }
         resultat = new Expression(expressionStringTemp).calculate();
-        if (mapAncienneValeur.containsKey(equation.getNom())) {
-            mapNouvelleValeur.put(equation.getNom(), constants.get(resultat.intValue()));
-        }
+        mapNouvelleValeur.put(equation.getNom(), new Constant(equation.getNom(), resultat));
+
 //        for (int i = 0; i < avancePasDeTemps(); i++) {
 //            mapNouvelleValeur = mapAncienneValeur;
 //        }
@@ -332,20 +327,60 @@ public class MoteurCalcul {
      * leurs expressions respectives enveloppées de parenthèses, et retourne la nouvelle expression.
      * </p>
      *
-     * @param expressionStringTemp L'expression à traiter.
+     * @param equation L'equation à traiter.
      * @return La nouvelle expression avec les équations remplacées.
      */
-    private String remplacerEquations(String expressionStringTemp) {
+    private String remplacerEquations(Equation equation) {
         String equationDecompressee = "";
+        String expressionStringTemp = equation.getExpression();
+        Set<String> equations = equationMap.keySet();
+        ArrayList<String> dejaRemplace = new ArrayList<>();
+
+        for (String nomEquationTemp : equations) {
+            String equationUpdate;
+            if (Objects.equals(nomEquationTemp, equation.getNom())) {
+                equationUpdate = expressionStringTemp.replace(nomEquationTemp, '(' + String.valueOf(mapAncienneValeur.get(nomEquationTemp).getConstantValue()) + ')');
+                dejaRemplace.add(nomEquationTemp);
+            } else {
+                equationUpdate = expressionStringTemp.replace(nomEquationTemp, '(' + equationMap.get(nomEquationTemp).getExpression() + ')');
+                dejaRemplace.add(nomEquationTemp);
+            }
+
+            if (equationUpdate.length() > equationDecompressee.length()) equationDecompressee = equationUpdate;
+        }
+        if (equationDecompressee.isEmpty()) equationDecompressee = expressionStringTemp;
+        if (!equationDecompressee.equals(expressionStringTemp))
+            equationDecompressee = remplacerEquations(new Equation(equation.getNom(), equationDecompressee), dejaRemplace);
+
+        return equationDecompressee;
+    }
+
+    private String remplacerEquations(Equation equation, ArrayList<String> dejaRemplace) {
+        String equationDecompressee = "";
+        String expressionStringTemp = equation.getExpression();
         Set<String> equations = equationMap.keySet();
 
         for (String nomEquationTemp : equations) {
-            String equationUpdate = expressionStringTemp.replace(nomEquationTemp, '(' + equationMap.get(nomEquationTemp).getExpression() + ')');
-            if (equationUpdate.length() > equationDecompressee.length()) equationDecompressee = equationUpdate;
+            String equationUpdate = null;
+            if (nomEquationTemp == equation.getNom()) {
+                if (!dejaRemplace.contains(nomEquationTemp)) {
+                    equationUpdate = expressionStringTemp.replace(nomEquationTemp, '(' + String.valueOf(mapAncienneValeur.get(nomEquationTemp).getConstantValue()) + ')');
+                    dejaRemplace.add(nomEquationTemp);
+                }
+            } else {
+                if (!dejaRemplace.contains(nomEquationTemp)) {
+                    equationUpdate = expressionStringTemp.replace(nomEquationTemp, '(' + equationMap.get(nomEquationTemp).getExpression() + ')');
+                    dejaRemplace.add(nomEquationTemp);
+                }
+            }
+
+            if (equationUpdate != null && equationUpdate.length() > equationDecompressee.length())
+                equationDecompressee = equationUpdate;
         }
         if (equationDecompressee == "") equationDecompressee = expressionStringTemp;
         if (!equationDecompressee.equals(expressionStringTemp))
-            equationDecompressee = remplacerEquations(equationDecompressee);
+            equationDecompressee = remplacerEquations(new Equation(equation.getNom(), equationDecompressee), dejaRemplace);
+
         return equationDecompressee;
     }
 
@@ -359,16 +394,16 @@ public class MoteurCalcul {
      *
      * @return La collection de toutes les variables avec leurs noms et valeurs.
      */
-    public Collection<String> getToutesLesVariables() {
-        HashSet<String> toutesLesVariables = new HashSet<String>();
+    public Collection<String> getToutesLesConstantesString() {
+        HashSet<String> toutesLesConstantes = new HashSet<String>();
 
         Iterator<Constant> iteratorValues = constantMap.values().iterator();
         while (iteratorValues.hasNext()) {
             Constant constantTemp = iteratorValues.next();
-            toutesLesVariables.add(constantTemp.getConstantName() + " = " + constantTemp.getConstantValue());
+            toutesLesConstantes.add(constantTemp.getConstantName() + " = " + constantTemp.getConstantValue());
         }
 
-        return toutesLesVariables;
+        return toutesLesConstantes;
     }
 
     /**
@@ -477,10 +512,10 @@ public class MoteurCalcul {
     }
 
     public void setValeurConstante(String nom, Double x) {
-        mapAncienneValeur.put(nom, new Constant("",x));
+        constantMap.put(nom, new Constant(nom, x));
     }
 
     public void setValeurInitiale(String nom, Double x) {
-        mapAncienneValeur.put(nom, new Constant("",x));
+        mapAncienneValeur.put(nom, new Constant(nom, x));
     }
 }
