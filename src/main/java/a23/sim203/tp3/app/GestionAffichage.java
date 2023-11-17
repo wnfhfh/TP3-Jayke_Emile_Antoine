@@ -285,7 +285,6 @@ public class GestionAffichage {
     }
 
     public void setMenuItemCalculPasDeTemps(MenuItem boutonCalculPasDeTemps) {
-        //TODO faire l'autre fenetre ofc
         boutonCalculPasDeTemps.setOnAction(n->{
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("testFenetreSimulation.fxml"));
             Parent root = null;
