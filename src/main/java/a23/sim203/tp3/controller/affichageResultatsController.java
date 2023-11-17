@@ -1,5 +1,6 @@
 package a23.sim203.tp3.controller;
 
+import a23.sim203.tp3.modele.MoteurCalcul;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
@@ -20,11 +21,17 @@ public class affichageResultatsController implements Initializable {
     NumberAxis axeX;
     NumberAxis axeY;
 
+    MoteurCalcul moteurCalcul;
+
     private void creerLineChart() {
         axeX = new NumberAxis();
         axeY = new NumberAxis();
         lineChart = new LineChart(axeX, axeY);
         
+    }
+
+    public void setMoteurCalcul(MoteurCalcul moteurCalcul) {
+        this.moteurCalcul = moteurCalcul;
     }
 
     @Override

@@ -8,7 +8,6 @@ package a23.sim203.tp3.app;
 
 import a23.sim203.tp3.controller.CalculatriceController;
 import a23.sim203.tp3.controller.SimFenetreController;
-import a23.sim203.tp3.modele.Equation;
 import a23.sim203.tp3.modele.MoteurCalcul;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -295,6 +294,7 @@ public class GestionAffichage {
             }
             SimFenetreController controller = fxmlLoader.getController();
             controller.setMoteurCalcul(moteurCalcul);
+            controller.setGestionAffichage(this);
             Scene sceneSimulation = new Scene(root);
             stage.setScene(sceneSimulation);
             stage.show();
@@ -333,12 +333,16 @@ public class GestionAffichage {
 
     private void refreshAffichage() {
         calculatriceController.getListeEquations().getItems().addAll(moteurCalcul.getAllEquationsString());
-        calculatriceController.getListeVariables().getItems().addAll(moteurCalcul.getAllConstantes());
+        calculatriceController.getListeVariables().getItems().addAll(moteurCalcul.getToutesLesVariablesString());
         calculatriceController.getListeConstantes().getItems().addAll(moteurCalcul.getToutesLesConstantesString());
     }
 
     public void setStage(Stage stage) {
         this.stage = stage;
+    }
+
+    public Stage getStage() {
+        return stage;
     }
 
     public MoteurCalcul getMoteurCalcul() {

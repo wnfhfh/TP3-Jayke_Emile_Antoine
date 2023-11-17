@@ -406,11 +406,23 @@ public class MoteurCalcul {
         return toutesLesConstantes;
     }
 
-    /**
-     * Retourne une carte représentant les noms de variables associés à leurs valeurs actuelles dans le calculateur.
-     *
-     * @return La carte des noms de variables associés à leurs valeurs.
-     */
+    public Collection<String> getToutesLesVariablesString() {
+        HashSet<String> toutesLesVariables = new HashSet<String>();
+
+        Iterator<Constant> iteratorValues = mapAncienneValeur.values().iterator();
+        while (iteratorValues.hasNext()) {
+            Constant variableTemp = iteratorValues.next();
+            toutesLesVariables.add(variableTemp.getConstantName() + " = " + variableTemp.getConstantValue());
+        }
+
+        return toutesLesVariables;
+    }
+
+        /**
+         * Retourne une carte représentant les noms de variables associés à leurs valeurs actuelles dans le calculateur.
+         *
+         * @return La carte des noms de variables associés à leurs valeurs.
+         */
     public Map<String, Constant> getVariableValueMap() {
         return constantMap;
     }
