@@ -293,11 +293,12 @@ public class GestionAffichage {
                 throw new RuntimeException(e);
             }
             SimFenetreController controller = fxmlLoader.getController();
-            controller.setMoteurCalcul(moteurCalcul);
+//            controller.setMoteurCalcul(moteurCalcul);
             controller.setGestionAffichage(this);
             Scene sceneSimulation = new Scene(root);
             stage.setScene(sceneSimulation);
             stage.show();
+            controller.setMoteurCalcul(moteurCalcul);
         });
     }
 

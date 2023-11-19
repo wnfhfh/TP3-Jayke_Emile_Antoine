@@ -4,150 +4,50 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="428df2d5-9642-4a86-9148-b88ca024bcb2" name="Changes" comment="Debut lien entre moteurCalcul GestionAffichage et moteurCalcul SimFenetreController" />
+    <list default="true" id="befd7eba-a942-471e-8707-72f79c403d3b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-11-13_13_57__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-11-13_13_57__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/GestionAffichage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/GestionAffichage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/SimFenetreController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/SimFenetreController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/services/SimulationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/services/SimulationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/a23/sim203/tp3/app/testFenetreSimulation.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/a23/sim203/tp3/app/testFenetreSimulation.fxml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="PREVIOUS_COMMIT_AUTHORS">
-      <list>
-        <option value="Emile &lt;a@a.com&gt;" />
-      </list>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;
-  }
-}</component>
-  <component name="GithubPullRequestsUISettings">
-    <option name="selectedUrlAndAccountId">
-      <UrlAndAccount>
-        <option name="accountId" value="183200bd-5e4d-4e6d-a91a-c2253af9dd81" />
-        <option name="url" value="https://github.com/wnfhfh/TP3-Jayke_Emile_Antoine" />
-      </UrlAndAccount>
-    </option>
-  </component>
-  <component name="MarkdownSettingsMigration">
-    <option name="stateVersion" value="1" />
-  </component>
-  <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="useMavenConfig" value="true" />
-      </MavenGeneralSettings>
-    </option>
-  </component>
-  <component name="ProjectId" id="2XoX0uxFu9BoQ66D27Hcmaffc3j" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="ProjectViewState">
-    <option name="showLibraryContents" value="true" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Downloaded.Files.Path.Enabled": "false",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
+    "ASKED_ADD_EXTERNAL_FILES": "true",
     "jdk.selected.JAVA_MODULE": "zulu-17",
-    "last_opened_file_path": "C:/Desktop/Prog2023/Session_3/TP3-Jayke_Emile_Antoine",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "vue.rearranger.settings.migration": "true"
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
   }
-}</component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="U:\Prog2023\Session 3\TP3-Jayke_Emile_Antoine\src\main\resources" />
-      <recent name="U:\Prog2023\Session 3\TP3-Jayke_Emile_Antoine\src\main\resources\java" />
-      <recent name="U:\Prog2023\Session 3\TP3-Jayke_Emile_Antoine\src\main\resources\a23\sim203\tp3\app" />
-    </key>
-  </component>
-  <component name="RunManager" selected="JUnit.MoteurCalculTest">
+}]]></component>
+  <component name="RunManager">
     <configuration name="SimulateurApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="a23.sim203.tp3.app.SimulateurApp" />
-      <module name="TP3_Officiel" />
+      <module name="TP3-Jayke_Emile_Antoine" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="a23.sim203.tp3.app.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="EnregistreurTest.ChargeEquationSimple" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TP3-Jayke_Emile_Antoine" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="a23.sim203.tp3.modele.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="a23.sim203.tp3.modele" />
-      <option name="MAIN_CLASS_NAME" value="a23.sim203.tp3.modele.EnregistreurTest" />
-      <option name="METHOD_NAME" value="ChargeEquationSimple" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="EnregistreurTest.enregsitreEquationSimple" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TP3-Jayke_Emile_Antoine" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="a23.sim203.tp3.modele.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="a23.sim203.tp3.modele" />
-      <option name="MAIN_CLASS_NAME" value="a23.sim203.tp3.modele.EnregistreurTest" />
-      <option name="METHOD_NAME" value="enregsitreEquationSimple" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MoteurCalculTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TP3_Officiel" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="a23.sim203.tp3.modele.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="a23.sim203.tp3.modele" />
-      <option name="MAIN_CLASS_NAME" value="a23.sim203.tp3.modele.MoteurCalculTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MoteurCalculTest.testAjoute1Variable" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TP3_Officiel" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="a23.sim203.tp3.modele.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="a23.sim203.tp3.modele" />
-      <option name="MAIN_CLASS_NAME" value="a23.sim203.tp3.modele.MoteurCalculTest" />
-      <option name="METHOD_NAME" value="testAjoute1Variable" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -159,45 +59,20 @@
     </recent_temporary>
   </component>
   <component name="TaskManager">
-    <task id="LOCAL-00001" summary="ajout de fenetre simulation">
-      <created>1700066788266</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1700066788266</updated>
-    </task>
-    <task id="LOCAL-00002" summary="ajout de fenetre simulation">
-      <created>1700067366692</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1700067366692</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Debut lien entre moteurCalcul GestionAffichage et moteurCalcul SimFenetreController">
-      <created>1700070033838</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1700070033838</updated>
-    </task>
-    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixup! ajout de fenetre simulation" />
-    <MESSAGE value="ajout de fenetre simulation" />
-    <MESSAGE value="Debut lien entre moteurCalcul GestionAffichage et moteurCalcul SimFenetreController" />
-    <option name="LAST_COMMIT_MESSAGE" value="Debut lien entre moteurCalcul GestionAffichage et moteurCalcul SimFenetreController" />
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/a23/sim203/tp3/services/SimulationService.java</url>
+          <line>36</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

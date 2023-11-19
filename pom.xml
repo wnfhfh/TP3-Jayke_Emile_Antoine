@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>TP3_Officiel</artifactId>
+    <artifactId>TP3-Jayke_Emile_Antoine</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -18,12 +18,6 @@
             <groupId>org.mariuszgromada.math</groupId>
             <artifactId>MathParser.org-mXparser</artifactId>
             <version>5.2.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>5.8.1</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
