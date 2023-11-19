@@ -302,6 +302,25 @@ public class GestionAffichage {
         });
     }
 
+    public void setMenuItemTableTemps (MenuItem boutonTableau){
+        boutonTableau.setOnAction(n->{
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("affichageTableau"));
+            Parent root = null;
+            try {
+                root = fxmlLoader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            SimFenetreController controller = fxmlLoader.getController();
+            controller.setGestionAffichage(this);
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+            controller.setMoteurCalcul(moteurCalcul);
+        });
+    }
+
+
     public void setMenuItemEnregistrer(MenuItem menuItemEnregistrer) {
         menuItemEnregistrer.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();

@@ -96,6 +96,7 @@ public class CalculatriceController implements Initializable {
     private TextField stringAffiche;    // TODO Changer ID dans SceneBuilder
     @FXML
     private MenuItem MenuItemCalculPasDeTemps;
+    private MenuItem MenuItemTemps;
     @FXML
     private MenuItem MenuItemCharger;
     @FXML
@@ -117,6 +118,7 @@ public class CalculatriceController implements Initializable {
         gestionAffichage.actionBoutonAjoute(boutonAjoute);
         gestionAffichage.actionBoutonSupprime(boutonSupprime);
         gestionAffichage.setMenuItemCalculPasDeTemps(MenuItemCalculPasDeTemps);
+        gestionAffichage.setMenuItemTableTemps(MenuItemTemps);
         gestionAffichage.setMenuItemEnregistrer(MenuItemEnregistrer);
 
         gestionAffichage.setMenuItemCharger(MenuItemCharger);
