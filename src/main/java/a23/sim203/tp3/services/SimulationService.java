@@ -35,11 +35,9 @@ public class SimulationService extends ScheduledService<Void> {
             @Override
             protected Void call() throws Exception {
                 double deltaTemps = getPeriod().toSeconds() * timeScale;
-                moteurCalcul.getConstanteValeurMap().put("dt_", new Constant("dt_", deltaTemps));
-                moteurCalcul.ajouteEquation("t_=t_+dt_");
                 moteurCalcul.calculeSim();
                 moteurCalcul.avancePasDeTemps();
-                System.out.println(getPeriod().toSeconds());
+                System.out.println(moteurCalcul.getNouvelleValeurVariableMap().get("t_"));
                 System.out.println("service roule");
                 return null;
             }

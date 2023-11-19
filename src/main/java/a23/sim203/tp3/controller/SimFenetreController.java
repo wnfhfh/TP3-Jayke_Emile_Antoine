@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.mariuszgromada.math.mxparser.Constant;
 
 import java.io.IOException;
 
@@ -47,6 +48,8 @@ public class SimFenetreController {
             double scale = Double.parseDouble(echelleTemporelleTextField.getText());
             setMoteurCalcul(moteurCalcul, scale);
             simulationService.setPeriod(Duration.valueOf(dtTextField.getText() + "s"));
+            moteurCalcul.getConstanteValeurMap().put("dt_", new Constant("dt_", simulationService.getPeriod().toSeconds() * scale));
+            moteurCalcul.ajouteEquation("t_=t_+dt_");
             simulationService.start();
             boutonLancer.setDisable(true);
         }catch (Exception e){

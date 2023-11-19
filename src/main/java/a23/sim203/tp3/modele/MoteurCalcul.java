@@ -107,7 +107,7 @@ public class MoteurCalcul {
             addVariablesFromEquation(equation);
             constantMap.remove(equation.getNom()); // Supprime la variable existante avec le même nom
         }
-        mapAncienneValeur.put(equation.getNom(), new Constant(equation.getNom(), Double.NaN)); // ajoute variable dans la Map des variable
+        mapAncienneValeur.put(equation.getNom(), new Constant(equation.getNom(), 0)); // TODO figure out par quoi le remplacer
     }
 
 
