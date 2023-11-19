@@ -4,6 +4,7 @@ import a23.sim203.tp3.modele.MoteurCalcul;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import org.mariuszgromada.math.mxparser.Constant;
 
 import java.time.LocalDateTime;
 
@@ -23,7 +24,7 @@ public class SimulationService extends ScheduledService<Void> {
         this.moteurCalcul = moteurCalcul;
     }
 
-    public void setMoteurCalcul(MoteurCalcul moteurCalcul,double scale) {
+    public void setMoteurCalculEtScale(MoteurCalcul moteurCalcul, double scale) {
         this.moteurCalcul = moteurCalcul;
         this.timeScale = scale;
     }
@@ -33,11 +34,11 @@ public class SimulationService extends ScheduledService<Void> {
         return new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                double deltaTemps = getPeriod().toSeconds()*timeScale;
-                moteurCalcul.ajouteEquation("dt_ = "+ deltaTemps);
-                moteurCalcul.ajouteEquation("t_ = ");
-//                moteurCalcul.calcule("sim_");
-//                moteurCalcul.avancePasDeTemps();
+                double deltaTemps = getPeriod().toSeconds() * timeScale;
+                moteurCalcul.getConstanteValeurMap().put("dt_", new Constant("dt_", deltaTemps));
+                moteurCalcul.ajouteEquation("t_=t_+dt_");
+                moteurCalcul.calculeSim();
+                moteurCalcul.avancePasDeTemps();
                 System.out.println(getPeriod().toSeconds());
                 System.out.println("service roule");
                 return null;
