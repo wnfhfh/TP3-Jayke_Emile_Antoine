@@ -207,7 +207,7 @@ class MoteurCalculTest {
     @Test
     void testCalcule2PasDeTemps2EquationsConstante() {
 
-        moteurCalcul.ajouteEquation("y_=x_+1+");
+        moteurCalcul.ajouteEquation("y_=x_+1");
         moteurCalcul.ajouteEquation("x_=c_+5");
         moteurCalcul.setValeurConstante("c_", 0.5);
 
@@ -216,6 +216,8 @@ class MoteurCalculTest {
         assertEquals(6.5, moteurCalcul.getNouvelleValeurVariableMap().get("y_").getConstantValue());
         assertTrue(Double.isNaN(moteurCalcul.getAncienneValeurVariableMap().get("x_").getConstantValue()));
         assertEquals(5.5, moteurCalcul.getNouvelleValeurVariableMap().get("x_").getConstantValue());
+ //todo comprendre comment ca se fait que x_ dans nouvelleVariableMap devrait etre 5.5, faut que x_ soit update meme si il est pas recalculer
+
 
         assertEquals(2, moteurCalcul.avancePasDeTemps());
         assertEquals(6.5, moteurCalcul.calcule("y_"));

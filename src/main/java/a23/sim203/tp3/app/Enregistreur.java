@@ -2,9 +2,6 @@ package a23.sim203.tp3.app;
 
 import a23.sim203.tp3.modele.Equation;
 import a23.sim203.tp3.modele.MoteurCalcul;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 import org.mariuszgromada.math.mxparser.Constant;
 
 import java.io.*;
@@ -25,19 +22,24 @@ public class Enregistreur {
     public Enregistreur() {
     }
 
-    public void enregistreEquation(Collection<String> equations, Collection<String> variables, ArrayList constantes, File fichier) {
-        String stringEnregistrer = "Équations:\n";
+    public void enregistreEquation(Collection<String> equations, Collection<String> variables, ArrayList<Constant> constantes, File fichier) {
+        StringBuilder stringEnregistrer = new StringBuilder("Équations:\n");
         for (String equation : equations) {
-            stringEnregistrer += equation + "\n";
+            stringEnregistrer.append(equation).append("\n");
         }
-        stringEnregistrer += "Variables:\n";
+        stringEnregistrer.append("Variables:\n");
         for (String variable : variables) {
-            stringEnregistrer += variable + "\n";
+            stringEnregistrer.append(variable).append("\n");
+        }
+
+        stringEnregistrer.append("Constantes:\n");
+        for (Constant constante : constantes) {
+            stringEnregistrer.append(constante.getConstantName()).append('=').append(constante.getConstantValue()).append("\n");
         }
 
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fichier));
-            bufferedWriter.write(stringEnregistrer);
+            bufferedWriter.write(stringEnregistrer.toString());
             bufferedWriter.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -56,7 +58,7 @@ public class Enregistreur {
                     eCET.getEquations().put(lecture.split("=")[0], new Equation(lecture.split("=")[0], lecture.split("=")[1]));
                 }
             }
-            reader.readLine();
+
             while (!lecture.equals("Constantes:")) {
                 lecture = reader.readLine();
                 if (!lecture.equals("Constantes:")) {

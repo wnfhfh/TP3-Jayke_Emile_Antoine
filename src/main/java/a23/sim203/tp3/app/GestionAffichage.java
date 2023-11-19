@@ -8,7 +8,6 @@ package a23.sim203.tp3.app;
 
 import a23.sim203.tp3.controller.CalculatriceController;
 import a23.sim203.tp3.controller.SimFenetreController;
-import a23.sim203.tp3.modele.Equation;
 import a23.sim203.tp3.modele.MoteurCalcul;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -22,6 +21,7 @@ import javafx.stage.Stage;
 import org.mariuszgromada.math.mxparser.Constant;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class GestionAffichage {
     private MoteurCalcul moteurCalcul;
@@ -171,7 +171,7 @@ public class GestionAffichage {
                 moteurCalcul.ajouteEquation(calculatriceController.getStringAfficheTexte());
                 calculatriceController.getListeEquations().getItems().add(moteurCalcul.getEquationMap().get((calculatriceController.getStringAfficheTexte()).split("=")[0]).toString());
                 calculatriceController.getListeEquations().refresh();
-                calculatriceController.getListeVariables().getItems().setAll(moteurCalcul.getToutesLesVariables());
+                calculatriceController.getListeVariables().getItems().setAll(moteurCalcul.getToutesLesConstantesString());
             } catch (Exception e) {
                 // Affiche une alerte en cas d'équation non valide
                 new Alert(Alert.AlertType.ERROR, "Équation non valide").showAndWait();
@@ -210,7 +210,7 @@ public class GestionAffichage {
         bouton.setOnAction(event -> {
             moteurCalcul.getEquationMap().remove(calculatriceController.getListeEquations().getSelectionModel().getSelectedItem().split("=")[0]);
             calculatriceController.getListeEquations().getItems().remove(calculatriceController.getListeEquations().getSelectionModel().getSelectedItem());
-            moteurCalcul.retireVariablesInutiles();
+            moteurCalcul.retireConstantesInutiles();
         });
     }
 
@@ -284,7 +284,6 @@ public class GestionAffichage {
     }
 
     public void setMenuItemCalculPasDeTemps(MenuItem boutonCalculPasDeTemps) {
-        //TODO faire l'autre fenetre ofc
         boutonCalculPasDeTemps.setOnAction(n->{
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("testFenetreSimulation.fxml"));
             Parent root = null;
@@ -295,6 +294,7 @@ public class GestionAffichage {
             }
             SimFenetreController controller = fxmlLoader.getController();
             controller.setMoteurCalcul(moteurCalcul);
+            controller.setGestionAffichage(this);
             Scene sceneSimulation = new Scene(root);
             stage.setScene(sceneSimulation);
             stage.show();
@@ -306,7 +306,7 @@ public class GestionAffichage {
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(0, new FileChooser.ExtensionFilter("fichier texte", "*.txt"));
             File fichierEnregistrer = fileChooser.showSaveDialog(stage);
-//TODO appeler enregistreur
+            new Enregistreur().enregistreEquation(moteurCalcul.getAllEquationsString(),moteurCalcul.getToutesLesConstantesString(),new ArrayList<Constant>(moteurCalcul.getConstanteValeurMap().values()),fichierEnregistrer);
         });
     }
 
@@ -332,11 +332,17 @@ public class GestionAffichage {
     }
 
     private void refreshAffichage() {
-
+        calculatriceController.getListeEquations().getItems().addAll(moteurCalcul.getAllEquationsString());
+        calculatriceController.getListeVariables().getItems().addAll(moteurCalcul.getToutesLesVariablesString());
+        calculatriceController.getListeConstantes().getItems().addAll(moteurCalcul.getToutesLesConstantesString());
     }
 
     public void setStage(Stage stage) {
         this.stage = stage;
+    }
+
+    public Stage getStage() {
+        return stage;
     }
 
     public MoteurCalcul getMoteurCalcul() {
