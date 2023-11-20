@@ -98,8 +98,9 @@ public class SimFenetreController {
         fxmlLoader.setController(new TableauController());
         TableauController controller = fxmlLoader.getController();
         Scene scene = new Scene(root);
-        gestionAffichage.getStage().setScene(scene);
-        gestionAffichage.getStage().show();
+        Stage stageTableau = new Stage();
+        stageTableau.setScene(scene);
+        stageTableau.show();
         controller.setMoteurCalcul(moteurCalcul);
     }
 
