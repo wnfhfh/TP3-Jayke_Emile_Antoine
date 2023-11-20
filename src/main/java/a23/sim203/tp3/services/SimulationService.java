@@ -10,9 +10,9 @@ import java.time.LocalDateTime;
 
 public class SimulationService extends ScheduledService<Void> {
     private MoteurCalcul moteurCalcul;
-    private long startTime;
-    private long endTime;
+    private double endTime;
     private double timeScale;
+    private double startTime = 0;
 
 //
 //    public void setStartTime(long startTime) {
@@ -34,10 +34,13 @@ public class SimulationService extends ScheduledService<Void> {
         return new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                double deltaTemps = getPeriod().toSeconds() * timeScale;
+                endTime = System.currentTimeMillis() + startTime;
+                double deltaTemps = (endTime - System.currentTimeMillis()) * timeScale;
+                startTime = endTime;
                 moteurCalcul.calculeSim();
                 moteurCalcul.avancePasDeTemps();
-                System.out.println(moteurCalcul.getNouvelleValeurVariableMap().get("t_"));
+                System.out.println(moteurCalcul.getNouvelleValeurVariableMap().get("dt_"));
+                System.out.println(moteurCalcul.getAncienneValeurVariableMap().get("dt_"));
                 System.out.println("service roule");
                 return null;
             }
