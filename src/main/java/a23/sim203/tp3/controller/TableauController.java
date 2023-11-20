@@ -26,4 +26,11 @@ public class TableauController {
 
     GestionAffichage gestionAffichage;
 
+public class TableauController {
+    @FXML
+    private Button button;
+    GestionAffichage gestionAffichage;
+    MoteurCalcul moteurCalcul;
+}
+
 }
