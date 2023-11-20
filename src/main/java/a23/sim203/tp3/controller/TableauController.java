@@ -25,5 +25,5 @@ public class TableauController {
     MoteurCalcul moteurCalcul;
 
     GestionAffichage gestionAffichage;
-    
+
 }
