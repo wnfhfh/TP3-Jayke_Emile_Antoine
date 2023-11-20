@@ -1,7 +1,6 @@
 package a23.sim203.tp3.controller;
 
 import a23.sim203.tp3.app.GestionAffichage;
-import a23.sim203.tp3.controller.affichageResultatsController;
 import a23.sim203.tp3.modele.MoteurCalcul;
 import a23.sim203.tp3.services.SimulationService;
 import javafx.application.Application;
@@ -68,7 +67,7 @@ public class SimFenetreController {
     }
 
     @FXML
-    void boutonVoirGraphiqueOnAction(ActionEvent event) {
+    void afficherGraphiqueOnAction(ActionEvent event) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("affichageResultats.fxml"));
         Parent root = null;
         try {
@@ -76,21 +75,27 @@ public class SimFenetreController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        affichageResultatsController controller = fxmlLoader.getController();
+        AffichageResultatsController controller = new AffichageResultatsController();
+        fxmlLoader.setController(controller);
         controller.setMoteurCalcul(moteurCalcul);
-        Scene sceneGraph = new Scene(root);
-        gestionAffichage.getStage().setScene(sceneGraph);
+        controller.creerLineChart();
+        gestionAffichage.getStage().setScene(new Scene(root));
         gestionAffichage.getStage().show();
+        controller.rafraichirEquationsBouton.setOnAction(event1 -> {
+            controller.rafraichirEquationsOnAction();
+        });
     }
+
     @FXML
     public void setMenuItemTableTemps(ActionEvent event) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/controller/affichageTableau.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("affichageTableau.fxml"));
         Parent root = null;
         try {
             root = fxmlLoader.load();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        fxmlLoader.setController(new TableauController());
         TableauController controller = fxmlLoader.getController();
         Scene scene = new Scene(root);
         gestionAffichage.getStage().setScene(scene);

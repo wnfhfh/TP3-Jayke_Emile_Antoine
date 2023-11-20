@@ -43,5 +43,6 @@
          </children>
       </HBox>
       <Button mnemonicParsing="false" onAction="#setMenuItemTableTemps" text="Tableau" />
+      <Button layoutX="400.0" layoutY="357.0" mnemonicParsing="false" onAction="#afficherGraphiqueOnAction" text="Afficher Graphique" />
    </children>
 </AnchorPane>
