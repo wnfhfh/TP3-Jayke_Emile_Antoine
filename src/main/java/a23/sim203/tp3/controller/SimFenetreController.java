@@ -53,7 +53,6 @@ public class SimFenetreController {
     void boutonPauseOnAction(ActionEvent event) {
 
     }
-
     @FXML
     void boutonVoirGraphiqueOnAction(ActionEvent event) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("affichageResultats.fxml"));

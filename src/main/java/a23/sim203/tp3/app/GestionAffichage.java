@@ -302,9 +302,17 @@ public class GestionAffichage {
         });
     }
 
-    public void setMenuItemTableTemps (MenuItem boutonTableau){
+    public void setMenuItemEnregistrer(MenuItem menuItemEnregistrer) {
+        menuItemEnregistrer.setOnAction(event -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().add(0, new FileChooser.ExtensionFilter("fichier texte", "*.txt"));
+            File fichierEnregistrer = fileChooser.showSaveDialog(stage);
+            new Enregistreur().enregistreEquation(moteurCalcul.getAllEquationsString(),moteurCalcul.getToutesLesConstantesString(),new ArrayList<Constant>(moteurCalcul.getConstanteValeurMap().values()),fichierEnregistrer);
+        });
+    }
+    public void setMenuItemTableTemps (Button boutonTableau){
         boutonTableau.setOnAction(n->{
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("affichageTableau"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("affichageTableau.fxml"));
             Parent root = null;
             try {
                 root = fxmlLoader.load();
@@ -317,16 +325,6 @@ public class GestionAffichage {
             stage.setScene(scene);
             stage.show();
             controller.setMoteurCalcul(moteurCalcul);
-        });
-    }
-
-
-    public void setMenuItemEnregistrer(MenuItem menuItemEnregistrer) {
-        menuItemEnregistrer.setOnAction(event -> {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.getExtensionFilters().add(0, new FileChooser.ExtensionFilter("fichier texte", "*.txt"));
-            File fichierEnregistrer = fileChooser.showSaveDialog(stage);
-            new Enregistreur().enregistreEquation(moteurCalcul.getAllEquationsString(),moteurCalcul.getToutesLesConstantesString(),new ArrayList<Constant>(moteurCalcul.getConstanteValeurMap().values()),fichierEnregistrer);
         });
     }
 
