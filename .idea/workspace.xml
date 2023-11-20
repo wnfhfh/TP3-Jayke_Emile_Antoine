@@ -6,7 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="befd7eba-a942-471e-8707-72f79c403d3b" name="Changes" comment="Interface Créé">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/AffichageResultatsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/AffichageResultatsController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/SimFenetreController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/SimFenetreController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/services/Services.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/a23/sim203/tp3/controller/affichageResultats.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/a23/sim203/tp3/controller/affichageResultats.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,6 +20,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="FxmlFile" />
       </list>
     </option>
   </component>

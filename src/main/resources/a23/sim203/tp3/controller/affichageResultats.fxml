@@ -27,7 +27,7 @@
                     <HBox.margin>
                         <Insets bottom="10.0" left="60.0" right="60.0" top="10.0" />
                     </HBox.margin></Button>
-                <Button fx:id="rafraichirEquationsBouton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefWidth="100.0" text="Rafraîchir équations" HBox.hgrow="ALWAYS">
+                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#rafraichirEquationsOnAction" prefWidth="100.0" text="Rafraîchir équations" HBox.hgrow="ALWAYS">
                     <HBox.margin>
                         <Insets bottom="10.0" left="60.0" right="60.0" top="10.0" />
                     </HBox.margin>

@@ -23,9 +23,6 @@ public class AffichageResultatsController implements Initializable {
     private LineChart lineChart;
 
     @FXML
-    public Button rafraichirEquationsBouton = new Button();
-
-    @FXML
     private TilePane tilePaneEquations;
 
     NumberAxis axeX;
@@ -48,6 +45,7 @@ public class AffichageResultatsController implements Initializable {
 
     }
 
+    @FXML
     public void rafraichirEquationsOnAction() {
         for (Equation equation :
                 moteurCalcul.getAllEquations()) {
@@ -72,6 +70,7 @@ public class AffichageResultatsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        moteurCalcul = new MoteurCalcul();
         equationsDansGraphique = new HashSet<>();
     }
 }
