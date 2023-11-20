@@ -18,6 +18,7 @@ import javafx.util.Duration;
 import org.mariuszgromada.math.mxparser.Constant;
 
 import java.io.IOException;
+import java.net.URL;
 
 public class SimFenetreController {
 
@@ -52,7 +53,7 @@ public class SimFenetreController {
             moteurCalcul.ajouteEquation("t_=t_+dt_");
             simulationService.start();
             boutonLancer.setDisable(true);
-        }catch (Exception e){
+        } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setHeaderText("Veuillez entrer des valeurs valides");
             alert.setTitle("Calculateur avancée");
@@ -65,6 +66,7 @@ public class SimFenetreController {
     void boutonPauseOnAction(ActionEvent event) {
 
     }
+
     @FXML
     void boutonVoirGraphiqueOnAction(ActionEvent event) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("affichageResultats.fxml"));
@@ -79,6 +81,21 @@ public class SimFenetreController {
         Scene sceneGraph = new Scene(root);
         gestionAffichage.getStage().setScene(sceneGraph);
         gestionAffichage.getStage().show();
+    }
+    @FXML
+    public void setMenuItemTableTemps(ActionEvent event) {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/controller/affichageTableau.fxml"));
+        Parent root = null;
+        try {
+            root = fxmlLoader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        TableauController controller = fxmlLoader.getController();
+        Scene scene = new Scene(root);
+        gestionAffichage.getStage().setScene(scene);
+        gestionAffichage.getStage().show();
+        controller.setMoteurCalcul(moteurCalcul);
     }
 
     public void setMoteurCalcul(MoteurCalcul moteurCalcul) {
@@ -96,5 +113,6 @@ public class SimFenetreController {
     public void setGestionAffichage(GestionAffichage gestionAffichage) {
         this.gestionAffichage = gestionAffichage;
     }
+
 }
 

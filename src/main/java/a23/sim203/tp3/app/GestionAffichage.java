@@ -8,9 +8,13 @@ package a23.sim203.tp3.app;
 
 import a23.sim203.tp3.controller.CalculatriceController;
 import a23.sim203.tp3.controller.SimFenetreController;
+import a23.sim203.tp3.controller.TableauController;
 import a23.sim203.tp3.modele.MoteurCalcul;
+import a23.sim203.tp3.services.SimulationService;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -21,12 +25,14 @@ import javafx.stage.Stage;
 import org.mariuszgromada.math.mxparser.Constant;
 
 import java.io.*;
+import java.net.http.WebSocket;
 import java.util.ArrayList;
 
 public class GestionAffichage {
     private MoteurCalcul moteurCalcul;
     private String stringAffiche;
     private CalculatriceController calculatriceController;
+    private SimFenetreController simFenetreController;
     private Stage stage = new Stage();
 
     /**
@@ -39,6 +45,7 @@ public class GestionAffichage {
         stringAffiche = "";
         this.calculatriceController = controller;
         calculatriceController.getListeEquations();
+
 //        ajouterEquationsDeBase();
     }
 
@@ -308,23 +315,6 @@ public class GestionAffichage {
             fileChooser.getExtensionFilters().add(0, new FileChooser.ExtensionFilter("fichier texte", "*.txt"));
             File fichierEnregistrer = fileChooser.showSaveDialog(stage);
             new Enregistreur().enregistreEquation(moteurCalcul.getAllEquationsString(),moteurCalcul.getToutesLesConstantesString(),new ArrayList<Constant>(moteurCalcul.getConstanteValeurMap().values()),fichierEnregistrer);
-        });
-    }
-    public void setMenuItemTableTemps (Button boutonTableau){
-        boutonTableau.setOnAction(n->{
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("affichageTableau.fxml"));
-            Parent root = null;
-            try {
-                root = fxmlLoader.load();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            SimFenetreController controller = fxmlLoader.getController();
-            controller.setGestionAffichage(this);
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-            controller.setMoteurCalcul(moteurCalcul);
         });
     }
 
