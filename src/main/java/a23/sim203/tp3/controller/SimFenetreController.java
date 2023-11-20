@@ -18,6 +18,7 @@ import org.mariuszgromada.math.mxparser.Constant;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Stack;
 
 public class SimFenetreController {
 
@@ -79,11 +80,9 @@ public class SimFenetreController {
         fxmlLoader.setController(controller);
         controller.setMoteurCalcul(moteurCalcul);
         controller.creerLineChart();
-        gestionAffichage.getStage().setScene(new Scene(root));
-        gestionAffichage.getStage().show();
-        controller.rafraichirEquationsBouton.setOnAction(event1 -> {
-            controller.rafraichirEquationsOnAction();
-        });
+        Stage stageGraphique = new Stage();
+        stageGraphique.setScene(new Scene(root));
+        stageGraphique.show();
     }
 
     @FXML
