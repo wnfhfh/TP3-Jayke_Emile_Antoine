@@ -332,6 +332,7 @@ public class GestionAffichage {
         menuItemCharger.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(0, new FileChooser.ExtensionFilter("fichier texte", "*.txt"));
+            fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
             File fichierACharger = fileChooser.showOpenDialog(stage);
             try {
                 Enregistreur.EquationsConstantesEtVariables eCET = new Enregistreur(moteurCalcul, this).chargeModele(fichierACharger);

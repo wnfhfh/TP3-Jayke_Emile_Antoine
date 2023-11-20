@@ -10,10 +10,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.mariuszgromada.math.mxparser.Constant;
 
 import java.io.IOException;
 
@@ -42,11 +44,21 @@ public class SimFenetreController {
 
     @FXML
     void boutonLancerOnAction(ActionEvent event) {
-        double scale = Double.valueOf(echelleTemporelleTextField.getText());
-        setMoteurCalcul(moteurCalcul,scale);
-        simulationService.setPeriod(Duration.valueOf(dtTextField.getText() + "s"));
-        simulationService.start();
-        boutonLancer.setDisable(true);
+        try {
+            double scale = Double.parseDouble(echelleTemporelleTextField.getText());
+            setMoteurCalcul(moteurCalcul, scale);
+            simulationService.setPeriod(Duration.valueOf(dtTextField.getText() + "s"));
+            moteurCalcul.getConstanteValeurMap().put("dt_", new Constant("dt_", simulationService.getPeriod().toSeconds() * scale));
+            moteurCalcul.ajouteEquation("t_=t_+dt_");
+            simulationService.start();
+            boutonLancer.setDisable(true);
+        }catch (Exception e){
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setHeaderText("Veuillez entrer des valeurs valides");
+            alert.setTitle("Calculateur avancée");
+            alert.setContentText("Réessayez plz");
+            alert.showAndWait();
+        }
     }
 
     @FXML
@@ -75,10 +87,10 @@ public class SimFenetreController {
         simulationService.setMoteurCalcul(moteurCalcul);
     }
 
-    public void setMoteurCalcul(MoteurCalcul moteurCalcul,double scale) {
+    public void setMoteurCalcul(MoteurCalcul moteurCalcul, double scale) {
 //        double scale = Double.valueOf(echelleTemporelleTextField.getText());
         this.moteurCalcul = moteurCalcul;
-        simulationService.setMoteurCalcul(moteurCalcul,scale);
+        simulationService.setMoteurCalculEtScale(moteurCalcul, scale);
     }
 
     public void setGestionAffichage(GestionAffichage gestionAffichage) {

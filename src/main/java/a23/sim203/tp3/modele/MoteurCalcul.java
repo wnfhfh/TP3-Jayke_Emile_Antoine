@@ -6,14 +6,10 @@
  */
 package a23.sim203.tp3.modele;
 
-import a23.sim203.tp3.app.GestionAffichage;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import org.mariuszgromada.math.mxparser.Constant;
 import org.mariuszgromada.math.mxparser.Expression;
 import org.mariuszgromada.math.mxparser.License;
 
-import java.security.Key;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,7 +17,7 @@ import java.util.regex.Pattern;
 public class MoteurCalcul {
 
     // ajoutez les attributs pour stocker les équations et les variables
-    private Long pasDeTempsEnCours;
+    private Long pasDeTempsActuel;
     /**
      * Stock les variables avec leur nom et valeur associés.
      */
@@ -51,15 +47,15 @@ public class MoteurCalcul {
         mapAncienneValeur = new HashMap<>();
         mapNouvelleValeur = new HashMap<>();
         historique = new HashMap<>();
-        pasDeTempsEnCours = 1l;
+        pasDeTempsActuel = 1l;
     }
 
     public long avancePasDeTemps() {
-        historique.put(pasDeTempsEnCours.toString(), mapAncienneValeur);
-        pasDeTempsEnCours++;
+        historique.put(pasDeTempsActuel.toString(), mapAncienneValeur);
+        pasDeTempsActuel++;
         mapAncienneValeur = mapNouvelleValeur;
         mapNouvelleValeur.clear();
-        return pasDeTempsEnCours;
+        return pasDeTempsActuel;
     }
 
     /**
@@ -111,8 +107,7 @@ public class MoteurCalcul {
             addVariablesFromEquation(equation);
             constantMap.remove(equation.getNom()); // Supprime la variable existante avec le même nom
         }
-        mapAncienneValeur.put(equation.getNom(), new Constant(equation.getNom(), Double.NaN)); // ajoute variable dans la Map des variable
-        mapNouvelleValeur.put(equation.getNom(), new Constant(equation.getNom(), calcule(equation))); // ajoute variable dans la Map des variable
+        mapAncienneValeur.put(equation.getNom(), new Constant(equation.getNom(), 0)); // TODO figure out par quoi le remplacer
     }
 
 
@@ -312,10 +307,6 @@ public class MoteurCalcul {
         }
         resultat = new Expression(expressionStringTemp).calculate();
         mapNouvelleValeur.put(equation.getNom(), new Constant(equation.getNom(), resultat));
-
-//        for (int i = 0; i < avancePasDeTemps(); i++) {
-//            mapNouvelleValeur = mapAncienneValeur;
-//        }
         return resultat;
     }
 
@@ -337,13 +328,15 @@ public class MoteurCalcul {
         ArrayList<String> dejaRemplace = new ArrayList<>();
 
         for (String nomEquationTemp : equations) {
-            String equationUpdate;
-            if (Objects.equals(nomEquationTemp, equation.getNom())) {
-                equationUpdate = expressionStringTemp.replace(nomEquationTemp, '(' + String.valueOf(mapAncienneValeur.get(nomEquationTemp).getConstantValue()) + ')');
-                dejaRemplace.add(nomEquationTemp);
-            } else {
-                equationUpdate = expressionStringTemp.replace(nomEquationTemp, '(' + equationMap.get(nomEquationTemp).getExpression() + ')');
-                dejaRemplace.add(nomEquationTemp);
+            String equationUpdate = "";
+            if (expressionStringTemp.contains(nomEquationTemp)) {
+                if (Objects.equals(nomEquationTemp, equation.getNom())) {
+                    equationUpdate = expressionStringTemp.replace(nomEquationTemp, '(' + String.valueOf(mapAncienneValeur.get(nomEquationTemp).getConstantValue()) + ')');
+                    dejaRemplace.add(nomEquationTemp);
+                } else {
+                    equationUpdate = expressionStringTemp.replace(nomEquationTemp, '(' + equationMap.get(nomEquationTemp).getExpression() + ')');
+                    dejaRemplace.add(nomEquationTemp);
+                }
             }
 
             if (equationUpdate.length() > equationDecompressee.length()) equationDecompressee = equationUpdate;
@@ -362,15 +355,17 @@ public class MoteurCalcul {
 
         for (String nomEquationTemp : equations) {
             String equationUpdate = null;
-            if (nomEquationTemp == equation.getNom()) {
-                if (!dejaRemplace.contains(nomEquationTemp)) {
-                    equationUpdate = expressionStringTemp.replace(nomEquationTemp, '(' + String.valueOf(mapAncienneValeur.get(nomEquationTemp).getConstantValue()) + ')');
-                    dejaRemplace.add(nomEquationTemp);
-                }
-            } else {
-                if (!dejaRemplace.contains(nomEquationTemp)) {
-                    equationUpdate = expressionStringTemp.replace(nomEquationTemp, '(' + equationMap.get(nomEquationTemp).getExpression() + ')');
-                    dejaRemplace.add(nomEquationTemp);
+            if (expressionStringTemp.contains(nomEquationTemp)) {
+                if (nomEquationTemp == equation.getNom()) {
+                    if (!dejaRemplace.contains(nomEquationTemp)) {
+                        equationUpdate = expressionStringTemp.replace(nomEquationTemp, '(' + String.valueOf(mapAncienneValeur.get(nomEquationTemp).getConstantValue()) + ')');
+                        dejaRemplace.add(nomEquationTemp);
+                    }
+                } else {
+                    if (!dejaRemplace.contains(nomEquationTemp)) {
+                        equationUpdate = expressionStringTemp.replace(nomEquationTemp, '(' + equationMap.get(nomEquationTemp).getExpression() + ')');
+                        dejaRemplace.add(nomEquationTemp);
+                    }
                 }
             }
 
@@ -418,11 +413,11 @@ public class MoteurCalcul {
         return toutesLesVariables;
     }
 
-        /**
-         * Retourne une carte représentant les noms de variables associés à leurs valeurs actuelles dans le calculateur.
-         *
-         * @return La carte des noms de variables associés à leurs valeurs.
-         */
+    /**
+     * Retourne une carte représentant les noms de variables associés à leurs valeurs actuelles dans le calculateur.
+     *
+     * @return La carte des noms de variables associés à leurs valeurs.
+     */
     public Map<String, Constant> getVariableValueMap() {
         return constantMap;
     }
@@ -499,7 +494,7 @@ public class MoteurCalcul {
     }
 
     public Long getPasDeTempsActuel() {
-        return pasDeTempsEnCours;
+        return pasDeTempsActuel;
     }
 
     public Collection<String> getAllEquationsString() {
@@ -529,5 +524,16 @@ public class MoteurCalcul {
 
     public void setValeurInitiale(String nom, Double x) {
         mapAncienneValeur.put(nom, new Constant(nom, x));
+    }
+
+    public void calculeSim() {
+        StringBuilder expressionSim = new StringBuilder("");
+        for (Equation equation :
+                equationMap.values()) {
+            expressionSim.append(equation.getNom() + "+");
+        }
+        equationMap.put("sim_", new Equation("sim_", expressionSim.substring(0, expressionSim.length() - 1)));
+        mapAncienneValeur.put("sim_", new Constant("sim_", 0));
+        calcule("sim_");
     }
 }
