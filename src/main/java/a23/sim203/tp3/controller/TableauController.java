@@ -19,6 +19,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableView;
 import javafx.util.Callback;
 
 import java.net.URL;
@@ -40,8 +41,8 @@ public class TableauController implements Initializable {
     public void list(Button button){
 
         button.setOnAction(event -> {
-            ListView<String> listView1 = new ListView<>();
-            listView1.getItems().add(moteurCalcul.getAllConstantes().toString());
+            TableView<String> tableView = new TableView<>();
+            tableView.getItems().add(moteurCalcul.getAllConstantes().toString());
         });
         simFenetreController.setMenuItemTableTemps(new ActionEvent());
     }
