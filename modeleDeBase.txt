@@ -1,0 +1,8 @@
+Équations:
+b_=c_*3
+a_=a_+b_
+Variables:
+b_=3.0
+a_=5.0
+Constantes:
+c_=2.0

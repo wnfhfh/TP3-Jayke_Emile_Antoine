@@ -62,13 +62,13 @@ public class Enregistreur {
             while (!lecture.equals("Constantes:")) {
                 lecture = reader.readLine();
                 if (!lecture.equals("Constantes:")) {
-                    eCET.getVariables().put(lecture.split("=")[0], new Constant(lecture.split("=")[0], Double.parseDouble(lecture.split("=")[1])));
+                    eCET.getMapAncienneValeur().put(lecture.split("=")[0], new Constant(lecture.split("=")[0], Double.parseDouble(lecture.split("=")[1])));
                 }
             }
             while (lecture != null) {
                 lecture = reader.readLine();
                 if (lecture != null) {
-                    eCET.getMapAncienneValeur().put(lecture.split("=")[0], new Constant(lecture.split("=")[0], Double.parseDouble(lecture.split("=")[1])));
+                    eCET.getVariables().put(lecture.split("=")[0], new Constant(lecture.split("=")[0], Double.parseDouble(lecture.split("=")[1])));
                 }
             }
 

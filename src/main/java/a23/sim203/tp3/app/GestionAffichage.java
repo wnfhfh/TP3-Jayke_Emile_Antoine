@@ -9,6 +9,7 @@ package a23.sim203.tp3.app;
 import a23.sim203.tp3.controller.CalculatriceController;
 import a23.sim203.tp3.controller.SimFenetreController;
 import a23.sim203.tp3.controller.TableauController;
+import a23.sim203.tp3.modele.Equation;
 import a23.sim203.tp3.modele.MoteurCalcul;
 import a23.sim203.tp3.services.SimulationService;
 import javafx.event.ActionEvent;
@@ -46,28 +47,41 @@ public class GestionAffichage {
         this.calculatriceController = controller;
         calculatriceController.getListeEquations();
 
-//        ajouterEquationsDeBase();
+        ajouterEquationsDeBase();
     }
 
     /**
      * Ajoute les équations demandées aux listes et au moteur de calcul.
      */
-//    private void ajouterEquationsDeBase() {
-//        moteurCalcul.ajouteEquation("sin0=sin(x0)");
-//        moteurCalcul.ajouteEquation("cos0=cos(x0)");
-//        moteurCalcul.ajouteEquation("inverse0=1/x0");
-//        moteurCalcul.ajouteEquation("exp0 = x0^e0");
-//        moteurCalcul.ajouteEquation("linear0 = a0*x0+b0");
+    private void ajouterEquationsDeBase() {
+//        moteurCalcul.ajouteEquation("sin_=sin(x_)");
+//        moteurCalcul.ajouteEquation("cos_=cos(x_)");
+//        moteurCalcul.ajouteEquation("inverse_=1/x_");
+//        moteurCalcul.ajouteEquation("exp_ = x_^e_");
+//        moteurCalcul.ajouteEquation("linear_ = a_*x_+b_");
 //
-//        for (Equation equation :
-//                moteurCalcul.getAllEquations()) {
-//            calculatriceController.getListeEquations().getItems().add(equation.toString());
+//        if (calculatriceController.getListeEquations().getItems().size() == 0) {
+//            for (Equation equation :
+//                    moteurCalcul.getAllEquations()) {
+//                calculatriceController.getListeEquations().getItems().add(equation.toString());
+//            }
+//            for (Constant constante :
+//                    moteurCalcul.getConstanteValeurMap().values()) {
+//                calculatriceController.getListeConstantes().getItems().add(constante.getConstantName() + " = " + constante.getConstantValue());
+//            }
 //        }
-//        for (String variable :
-//                moteurCalcul.getAllVariables()) {
-//            calculatriceController.getListeVariables().getItems().add(variable + " = " +moteurCalcul.getVariableValues().get(variable).getConstantValue());
-//        }
-//    }
+
+        Enregistreur enregistreur = new Enregistreur(moteurCalcul, this);
+        try {
+            Enregistreur.EquationsConstantesEtVariables eCET = enregistreur.chargeModele(new File(System.getProperty("user.dir") + "//modeleDeBase.txt"));
+            moteurCalcul.setEquationMap(eCET.getEquations());
+            moteurCalcul.setConstantMap(eCET.getVariables());
+            moteurCalcul.setMapAncienneValeur(eCET.getMapAncienneValeur());
+            refreshAffichage();
+        } catch (FileNotFoundException e) {
+            System.out.println("bug loader modeleDeBase.txt");
+        }
+    }
 
     /**
      * Configure le bouton pour afficher un caractère lorsqu'il est cliqué.
@@ -291,7 +305,7 @@ public class GestionAffichage {
     }
 
     public void setMenuItemCalculPasDeTemps(MenuItem boutonCalculPasDeTemps) {
-        boutonCalculPasDeTemps.setOnAction(n->{
+        boutonCalculPasDeTemps.setOnAction(n -> {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("testFenetreSimulation.fxml"));
             Parent root = null;
             try {
@@ -314,7 +328,7 @@ public class GestionAffichage {
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(0, new FileChooser.ExtensionFilter("fichier texte", "*.txt"));
             File fichierEnregistrer = fileChooser.showSaveDialog(stage);
-            new Enregistreur().enregistreEquation(moteurCalcul.getAllEquationsString(),moteurCalcul.getToutesLesConstantesString(),new ArrayList<Constant>(moteurCalcul.getConstanteValeurMap().values()),fichierEnregistrer);
+            new Enregistreur().enregistreEquation(moteurCalcul.getAllEquationsString(), moteurCalcul.getToutesLesConstantesString(), new ArrayList<Constant>(moteurCalcul.getConstanteValeurMap().values()), fichierEnregistrer);
         });
     }
 

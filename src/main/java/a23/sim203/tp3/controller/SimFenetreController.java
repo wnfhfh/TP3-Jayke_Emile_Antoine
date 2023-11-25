@@ -77,10 +77,12 @@ public class SimFenetreController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        AffichageResultatsController controller = new AffichageResultatsController();
-        fxmlLoader.setController(controller);
+        AffichageResultatsController controller = fxmlLoader.getController();
         controller.setMoteurCalcul(moteurCalcul);
         controller.creerLineChart();
+        controller.rafraichirEquationsOnAction(event);
+        simulationService.setAffichageResultatsController(controller);
+
         Stage stageGraphique = new Stage();
         stageGraphique.setScene(new Scene(root));
         stageGraphique.show();

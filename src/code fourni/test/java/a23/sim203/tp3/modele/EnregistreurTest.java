@@ -38,7 +38,7 @@ class EnregistreurTest {
     void ChargeEquationSimple() throws IOException {
         File fichier1 = new File(getClass().getResource("test1.txt").getFile());
 
-        Enregistreur.EquationsConstantesEtVariables resultat = enregistreur.chargeModele(fichier1);
+        Enregistreur.EquationsConstantesEtVariables resultat = enregistreur.chargeModele(new File(String.valueOf(this.getClass().getResource(fichier1.getName()))));
 
         assertTrue(resultat.getEquations().values().containsAll(List.of("force_=masse_0*acceleration_0")));
         assertTrue(resultat.getVariables().values().containsAll(List.of("masse_0=345.56", "acceleration_0=-12.54")));

@@ -1,5 +1,6 @@
 package a23.sim203.tp3.services;
 
+import a23.sim203.tp3.controller.AffichageResultatsController;
 import a23.sim203.tp3.modele.MoteurCalcul;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Service;
@@ -13,6 +14,7 @@ public class SimulationService extends ScheduledService<Void> {
     private double endTime;
     private double timeScale;
     private double startTime = 0;
+    private AffichageResultatsController affichageResultatsController;
 
 //
 //    public void setStartTime(long startTime) {
@@ -24,9 +26,20 @@ public class SimulationService extends ScheduledService<Void> {
         this.moteurCalcul = moteurCalcul;
     }
 
+    public void setAffichageResultatsController(AffichageResultatsController aRC) {
+        this.affichageResultatsController = aRC;
+    }
+
     public void setMoteurCalculEtScale(MoteurCalcul moteurCalcul, double scale) {
         this.moteurCalcul = moteurCalcul;
         this.timeScale = scale;
+    }
+
+    private void gererAffichageGraphique() {
+        for (String equationAMettreDansGraphique :
+                affichageResultatsController.getToutesEquationsGraphiques()) {
+            affichageResultatsController.rafraichirGraphique(equationAMettreDansGraphique, moteurCalcul.getNouvelleValeurVariableMap().get(equationAMettreDansGraphique), endTime);
+        }
     }
 
     @Override
@@ -41,6 +54,11 @@ public class SimulationService extends ScheduledService<Void> {
                 moteurCalcul.avancePasDeTemps();
                 System.out.println(moteurCalcul.getNouvelleValeurVariableMap().get("dt_"));
                 System.out.println(moteurCalcul.getAncienneValeurVariableMap().get("dt_"));
+                try {
+                    gererAffichageGraphique();
+                } catch (Exception e) {
+                    System.out.println("erreur affichage" + e.getMessage());
+                }
                 System.out.println("service roule");
                 return null;
             }

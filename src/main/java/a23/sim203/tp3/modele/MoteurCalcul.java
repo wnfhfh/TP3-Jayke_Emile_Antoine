@@ -70,11 +70,12 @@ public class MoteurCalcul {
     /**
      * Ajoute une variable à la carte des variables avec la valeur spécifiée.
      *
-     * @param variable Le nom de la variable à ajouter.
+     * @param constante Le nom de la variable à ajouter.
      * @param valeur   La valeur de la variable à ajouter.
      */
-    private void ajouteVariable(String variable, double valeur) {
-        constantMap.put(variable, new Constant(variable, valeur));
+    private void ajouteConstante(String constante, double valeur) {
+        constantMap.remove(constante);
+        constantMap.put(constante, new Constant(constante, valeur));
     }
 
     /**
@@ -83,7 +84,8 @@ public class MoteurCalcul {
      * @param nomVariable Le nom de la variable à laquelle définir la valeur.
      * @param valeur      La nouvelle valeur de la variable.
      */
-    public void setValeurVariable(String nomVariable, double valeur) {
+    public void setValeurConstante(String nomVariable, double valeur) {
+        constantMap.remove(nomVariable);
         constantMap.put(nomVariable, new Constant(nomVariable, valeur));
     }
 
@@ -104,7 +106,7 @@ public class MoteurCalcul {
         equationMap.put(equation.getNom(), equation);
         if (!equationEstRecursive(equation.getNom())) {
             equationEtconstantMap.put(equation.getNom(), equation);
-            addVariablesFromEquation(equation);
+            addConstantesFromEquation(equation);
             constantMap.remove(equation.getNom()); // Supprime la variable existante avec le même nom
         }
         mapAncienneValeur.put(equation.getNom(), new Constant(equation.getNom(), 0)); // TODO figure out par quoi le remplacer
@@ -184,13 +186,13 @@ public class MoteurCalcul {
      *
      * @param equation L'équation dont les variables nécessaires doivent être ajoutées à la carte des variables.
      */
-    private void addVariablesFromEquation(Equation equation) {
+    private void addConstantesFromEquation(Equation equation) {
         Set<String> elementsRequis = equation.getElementsRequis();
         Iterator<String> iterator = elementsRequis.iterator();
         while (iterator.hasNext()) {
             String nomVariable = iterator.next();
             if (!equationEtconstantMap.containsKey(nomVariable) && nomVariable != equation.getNom()) {
-                ajouteVariable(nomVariable, Double.NaN);
+                ajouteConstante(nomVariable, Double.NaN);
                 equationEtconstantMap.put(nomVariable, Double.NaN);
             }
         }

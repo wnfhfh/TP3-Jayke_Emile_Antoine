@@ -22,7 +22,7 @@ public class SimulateurApp extends Application {
         primaryStage.setScene(scene);
 
         calculatriceController = fxmlLoader.getController();
-        gestionAffichage = new GestionAffichage(calculatriceController);
+        gestionAffichage = calculatriceController.getGestionAffichage();
         gestionAffichage.setStage(primaryStage);
         primaryStage.show();
 
