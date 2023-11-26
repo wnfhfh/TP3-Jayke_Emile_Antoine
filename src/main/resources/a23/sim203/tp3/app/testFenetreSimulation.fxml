@@ -8,7 +8,7 @@
 <?import javafx.scene.shape.Polygon?>
 <?import javafx.scene.shape.Rectangle?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="a23.sim203.tp3.controller.SimFenetreController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="a23.sim203.tp3.controller.SimFenetreController">
    <children>
       <Button fx:id="boutonLancer" layoutX="14.0" layoutY="353.0" mnemonicParsing="false" onAction="#boutonLancerOnAction" prefHeight="33.0" prefWidth="33.0">
          <graphic>
@@ -33,16 +33,16 @@
       <HBox layoutX="135.0" layoutY="353.0" prefHeight="33.0" prefWidth="115.0" spacing="2.0">
          <children>
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="79.0" prefWidth="60.0" text="Intervalle&#10;de temps&#10;" textAlignment="CENTER" />
-            <TextField fx:id="dtTextField" prefHeight="33.0" prefWidth="50.0" />
+            <TextField fx:id="dtTextField" prefHeight="33.0" prefWidth="50.0" text="1" />
          </children>
       </HBox>
       <HBox layoutX="256.0" layoutY="353.0" prefHeight="33.0" prefWidth="115.0" spacing="2.0">
          <children>
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="79.0" prefWidth="60.0" text="Échelle&#10;temporelle&#10;" textAlignment="CENTER" />
-            <TextField fx:id="echelleTemporelleTextField" prefHeight="33.0" prefWidth="50.0" />
+            <TextField fx:id="echelleTemporelleTextField" prefHeight="33.0" prefWidth="50.0" text="1" />
          </children>
       </HBox>
-      <Button mnemonicParsing="false" onAction="#setMenuItemTableTemps" text="Tableau" />
+      <Button layoutX="546.0" layoutY="357.0" mnemonicParsing="false" onAction="#setMenuItemTableTemps" text="Tableau" />
       <Button layoutX="400.0" layoutY="357.0" mnemonicParsing="false" onAction="#afficherGraphiqueOnAction" text="Afficher Graphique" />
    </children>
 </AnchorPane>

@@ -33,7 +33,7 @@ public class AffichageResultatsController implements Initializable {
     private NumberAxis axeY;
 
     private MoteurCalcul moteurCalcul;
-    private HashSet<String> toutesEquationsGraphiques;
+    private HashSet<String> boutonsCliques;
     private HashSet<XYChart.Series> equationsDejaDansGraphique;
 
     public void creerLineChart() {
@@ -50,7 +50,9 @@ public class AffichageResultatsController implements Initializable {
             droiteEquation.getData().add(new XYChart.Data<Double, Double>(endTime, y.getConstantValue()));
             lineChart.getData().add(droiteEquation);
         } else {
-            dejaDansGraphique(nomEquation).getData().add(new XYChart.Data<Double, Double>(endTime, y.getConstantValue()));
+            XYChart.Series aAjouter = new XYChart.Series<>();
+            aAjouter.getData().add(new XYChart.Data<Double, Double>(1d, y.getConstantValue()));
+            lineChart.getData().add(aAjouter);
         }
     }
 
@@ -63,16 +65,23 @@ public class AffichageResultatsController implements Initializable {
         return seriesDejaDansGraphique;
     }
 
-    public HashSet<String> getToutesEquationsGraphiques() {
-        return toutesEquationsGraphiques;
+    public HashSet<String> getBoutonsCliques() {
+        return boutonsCliques;
     }
 
     public void ajouterEquationAGraph(String nomEquation) {
-        toutesEquationsGraphiques.add(nomEquation);
+        boutonsCliques.add(nomEquation);
     }
 
     @FXML
     public void rafraichirEquationsOnAction(ActionEvent event) {
+        for (Node node :
+                tilePaneEquations.getChildren()) {
+            Button bouton = (Button) node;
+            if (!moteurCalcul.getEquationMap().containsKey(bouton.getText()) || boutonsCliques.contains(bouton.getText())) {
+                tilePaneEquations.getChildren().remove(node);
+            }
+        }
         for (Equation equation :
                 moteurCalcul.getAllEquations()) {
             Button button = new Button(equation.getNom());
@@ -85,13 +94,6 @@ public class AffichageResultatsController implements Initializable {
             tilePaneEquations.getChildren().add(button);
 
         }
-        for (Node node :
-                tilePaneEquations.getChildren()) {
-            Button bouton = (Button) node;
-            if (!moteurCalcul.getEquationMap().containsKey(bouton.getText()) || toutesEquationsGraphiques.contains(bouton.getText())) {
-                tilePaneEquations.getChildren().remove(node);
-            }
-        }
     }
 
     public void setMoteurCalcul(MoteurCalcul moteurCalcul) {
@@ -101,7 +103,7 @@ public class AffichageResultatsController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         moteurCalcul = new MoteurCalcul();
-        toutesEquationsGraphiques = new HashSet<>();
+        boutonsCliques = new HashSet<>();
         equationsDejaDansGraphique = new HashSet<>();
         tilePaneEquations.setPadding(new Insets(10, 10, 10, 10));
     }

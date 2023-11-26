@@ -1,0 +1,12 @@
+Équations:
+a_=b_+4*c_ requiert: [c_, b_]
+Variables:
+b_ = 55.0
+c_ = 55.0
+b_ = NaN
+c_ = NaN
+Constantes:
+b_=55.0
+c_=55.0
+c_=NaN
+b_=NaN
