@@ -1,9 +1,9 @@
 package a23.sim203.tp3.controller;
 
 import a23.sim203.tp3.app.GestionAffichage;
+import a23.sim203.tp3.modele.Equation;
 import a23.sim203.tp3.modele.MoteurCalcul;
 import a23.sim203.tp3.services.SimulationService;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,14 +11,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.mariuszgromada.math.mxparser.Constant;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.Stack;
 
 public class SimFenetreController {
 
@@ -90,7 +89,10 @@ public class SimFenetreController {
 
     @FXML
     public void setMenuItemTableTemps(ActionEvent event) {
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("affichageTableau.fxml"));
+        TableauController tableauController = fxmlLoader.getController();
+        tableauController.tableau(moteurCalcul.getAllEquations(),moteurCalcul.getAllConstantes());
         Parent root = null;
         try {
             root = fxmlLoader.load();

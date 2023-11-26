@@ -10,45 +10,39 @@ DA: 2264136
 package a23.sim203.tp3.controller;
 
 import a23.sim203.tp3.app.GestionAffichage;
+import a23.sim203.tp3.modele.Equation;
 import a23.sim203.tp3.modele.MoteurCalcul;
 import a23.sim203.tp3.services.SimulationService;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableView;
-import javafx.util.Callback;
+import javafx.scene.control.*;
+import org.mariuszgromada.math.mxparser.Constant;
 
 import java.net.URL;
-import java.util.EventListener;
+import java.util.Collection;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 public class TableauController implements Initializable {
 
     MoteurCalcul moteurCalcul;
-    SimFenetreController simFenetreController;
     private Button button;
 
-    GestionAffichage gestionAffichage;
+    @FXML
+    TableView<Collection<Equation>> tableViewG;
+    @FXML
+    TableView<Set<String>> tableViewD;
 
     public TableauController() {
         button = new Button();
     }
 
-    public void list(Button button){
-
-        button.setOnAction(event -> {
-            TableView<String> tableView = new TableView<>();
-            tableView.getItems().add(moteurCalcul.getAllConstantes().toString());
-        });
-        simFenetreController.setMenuItemTableTemps(new ActionEvent());
+    public void tableau(Collection<Equation> equation, Set<String> constant){
+        tableViewG.getItems().add(equation);
+        tableViewD.getItems().add(constant);
     }
 
     public void setMoteurCalcul(MoteurCalcul moteurCalcul) {
-//        double scale = Double.valueOf(echelleTemporelleTextField.getText());
         this.moteurCalcul = moteurCalcul;
     }
 
