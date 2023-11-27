@@ -97,13 +97,15 @@ public class SimFenetreController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        fxmlLoader.setController(new TableauController());
-        TableauController controller = fxmlLoader.getController();
+        TableauController controller = new TableauController();
+        fxmlLoader.setController(controller);
+        controller.setMoteurCalcul(moteurCalcul);
+        controller.ajouterEquationTableau();
+        simulationService.setTableauController(controller);
         Scene scene = new Scene(root);
         Stage stageTableau = new Stage();
         stageTableau.setScene(scene);
         stageTableau.show();
-        controller.setMoteurCalcul(moteurCalcul);
     }
 
     public void setMoteurCalcul(MoteurCalcul moteurCalcul) {
