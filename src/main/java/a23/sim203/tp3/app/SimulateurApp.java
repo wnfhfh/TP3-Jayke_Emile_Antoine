@@ -1,6 +1,7 @@
 package a23.sim203.tp3.app;
 
 import a23.sim203.tp3.controller.CalculatriceController;
+import a23.sim203.tp3.vue.Animations;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -12,6 +13,8 @@ public class SimulateurApp extends Application {
     private Stage stage;
     GestionAffichage gestionAffichage;
     CalculatriceController calculatriceController;
+
+    Animations animations;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -25,6 +28,5 @@ public class SimulateurApp extends Application {
         gestionAffichage = calculatriceController.getGestionAffichage();
         gestionAffichage.setStage(primaryStage);
         primaryStage.show();
-
     }
 }

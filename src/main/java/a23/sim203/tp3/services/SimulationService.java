@@ -13,16 +13,13 @@ public class SimulationService extends ScheduledService<Void> {
     private MoteurCalcul moteurCalcul;
     private double endTime;
     private double timeScale;
-    private double startTime = 0;
+    private double startTime;
+    private double dt;
     private AffichageResultatsController affichageResultatsController;
-
-//
-//    public void setStartTime(long startTime) {
-//        this.startTime = System.currentTimeMillis();
-//    }
 
 
     public void setMoteurCalcul(MoteurCalcul moteurCalcul) {
+        startTime = System.currentTimeMillis()/1000;
         this.moteurCalcul = moteurCalcul;
     }
 
@@ -31,6 +28,8 @@ public class SimulationService extends ScheduledService<Void> {
     }
 
     public void setMoteurCalculEtScale(MoteurCalcul moteurCalcul, double scale) {
+        startTime = System.currentTimeMillis()/1000;
+//        dtDepart = (double) System.currentTimeMillis() /1000;
         this.moteurCalcul = moteurCalcul;
         this.timeScale = scale;
     }
@@ -47,13 +46,15 @@ public class SimulationService extends ScheduledService<Void> {
         return new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                endTime = System.currentTimeMillis() + startTime;
-                double deltaTemps = (endTime - System.currentTimeMillis()) * timeScale;
+
+                endTime = System.currentTimeMillis()/1000;
+                dt = endTime-startTime;
                 startTime = endTime;
+
                 moteurCalcul.calculeSim();
                 moteurCalcul.avancePasDeTemps();
                 moteurCalcul.refreshEquations();
-                System.out.println(moteurCalcul.getNouvelleValeurVariableMap().get("dt_"));
+                System.out.println(moteurCalcul.getNouvelleValeurVariableMap().get("t_").getConstantValue());
                 System.out.println(moteurCalcul.getAncienneValeurVariableMap().get("dt_"));
                 try {
                     gererAffichageGraphique();

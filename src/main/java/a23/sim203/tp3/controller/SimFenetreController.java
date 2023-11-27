@@ -4,6 +4,7 @@ import a23.sim203.tp3.app.GestionAffichage;
 import a23.sim203.tp3.modele.Equation;
 import a23.sim203.tp3.modele.MoteurCalcul;
 import a23.sim203.tp3.services.SimulationService;
+import a23.sim203.tp3.vue.Animations;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,10 +30,16 @@ public class SimFenetreController {
     @FXML
     private TextField echelleTemporelleTextField;
 
+    private Stage stageSimulation;
+    private Stage stageCalculatrice;
+    private Stage stageTableau;
+    private Stage stageGraphique;
+
     MoteurCalcul moteurCalcul;
 
 
     GestionAffichage gestionAffichage;
+
 
     private SimulationService simulationService = new SimulationService();
 
@@ -104,6 +111,7 @@ public class SimFenetreController {
         stageTableau.setScene(scene);
         stageTableau.show();
         controller.setMoteurCalcul(moteurCalcul);
+        gestionAffichage.getAnimations().partageDesFenetresTableau();
     }
 
     public void setMoteurCalcul(MoteurCalcul moteurCalcul) {
@@ -120,6 +128,8 @@ public class SimFenetreController {
 
     public void setGestionAffichage(GestionAffichage gestionAffichage) {
         this.gestionAffichage = gestionAffichage;
+        this.stageCalculatrice = gestionAffichage.getStage();
+        this.stageSimulation = gestionAffichage.
     }
 
 }

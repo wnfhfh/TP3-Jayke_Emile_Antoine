@@ -12,6 +12,7 @@ import a23.sim203.tp3.controller.TableauController;
 import a23.sim203.tp3.modele.Equation;
 import a23.sim203.tp3.modele.MoteurCalcul;
 import a23.sim203.tp3.services.SimulationService;
+import a23.sim203.tp3.vue.Animations;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -35,6 +36,7 @@ public class GestionAffichage {
     private CalculatriceController calculatriceController;
     private SimFenetreController simFenetreController;
     private Stage stage = new Stage();
+    private Animations animations = new Animations();
 
     /**
      * Constructeur de la classe GestionAffichage.
@@ -48,6 +50,10 @@ public class GestionAffichage {
         calculatriceController.getListeEquations();
 
         ajouterEquationsDeBase();
+    }
+
+    public Animations getAnimations() {
+        return animations;
     }
 
     /**
@@ -314,12 +320,13 @@ public class GestionAffichage {
                 throw new RuntimeException(e);
             }
             SimFenetreController controller = fxmlLoader.getController();
-//            controller.setMoteurCalcul(moteurCalcul);
             controller.setGestionAffichage(this);
             Scene sceneSimulation = new Scene(root);
-            stage.setScene(sceneSimulation);
-            stage.show();
+            Stage stageSimulation = new Stage();
+            stageSimulation.setScene(sceneSimulation);
+            stageSimulation.show();
             controller.setMoteurCalcul(moteurCalcul);
+            animations.partageDesFenetresSimulation(stageSimulation,stage);
         });
     }
 
