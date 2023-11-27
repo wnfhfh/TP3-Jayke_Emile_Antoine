@@ -27,6 +27,7 @@ public class SimulationService extends ScheduledService<Void> {
     public void setMoteurCalcul(MoteurCalcul moteurCalcul) {
         this.moteurCalcul = moteurCalcul;
     }
+
     public void setMoteurCalculEtScale(MoteurCalcul moteurCalcul, double scale) {
         this.moteurCalcul = moteurCalcul;
         this.timeScale = scale;
@@ -35,17 +36,20 @@ public class SimulationService extends ScheduledService<Void> {
     public void setAffichageResultatsController(AffichageResultatsController aRC) {
         this.affichageResultatsController = aRC;
     }
+
     private void gererAffichageGraphique() {
         for (String equationAMettreDansGraphique :
                 affichageResultatsController.getBoutonsCliques()) {
             affichageResultatsController.rafraichirGraphique(equationAMettreDansGraphique, moteurCalcul.getNouvelleValeurVariableMap().get(equationAMettreDansGraphique), endTime);
         }
     }
-    public void setTableauController(TableauController tableauController1){
+
+    public void setTableauController(TableauController tableauController1) {
         this.tableauController = tableauController1;
     }
+
     private void gererTableauController() {
-       tableauController.ajouterEquationTableau();
+        tableauController.ajouterEquationTableau();
     }
 
     @Override
@@ -62,9 +66,12 @@ public class SimulationService extends ScheduledService<Void> {
                 System.out.println(moteurCalcul.getNouvelleValeurVariableMap().get("dt_"));
                 System.out.println(moteurCalcul.getAncienneValeurVariableMap().get("dt_"));
                 try {
-                    //FIXME
-                    gererAffichageGraphique();
-                    gererTableauController();
+                    if (affichageResultatsController != null) {
+                        gererAffichageGraphique();
+                    }
+                    if (tableauController != null) {
+                        gererTableauController();
+                    }
                 } catch (Exception e) {
                     System.out.println("erreur affichage" + e.getMessage() + "\nligne: " + e.getStackTrace()[0].getLineNumber());
                 }
