@@ -198,7 +198,7 @@ public class GestionAffichage {
                 moteurCalcul.ajouteEquation(calculatriceController.getStringAfficheTexte());
                 calculatriceController.getListeEquations().getItems().add(moteurCalcul.getEquationMap().get((calculatriceController.getStringAfficheTexte()).split("=")[0]).toString());
                 calculatriceController.getListeEquations().refresh();
-                calculatriceController.getListeVariables().getItems().setAll(moteurCalcul.getToutesLesConstantesString());
+                calculatriceController.getListeVariables().getItems().setAll(moteurCalcul.getToutesLesVariablesString());
             } catch (Exception e) {
                 // Affiche une alerte en cas d'équation non valide
                 new Alert(Alert.AlertType.ERROR, "Équation non valide").showAndWait();
@@ -323,6 +323,7 @@ public class GestionAffichage {
             controller.setGestionAffichage(this);
             Scene sceneSimulation = new Scene(root);
             Stage stageSimulation = new Stage();
+            controller.setStageSimulation(stageSimulation);
             stageSimulation.setScene(sceneSimulation);
             stageSimulation.show();
             controller.setMoteurCalcul(moteurCalcul);

@@ -93,7 +93,7 @@ public class CalculatriceController implements Initializable {
     @FXML
     private ToggleButton toggleBoutonLire;
     @FXML
-    private TextField stringAffiche;    // TODO Changer ID dans SceneBuilder
+    private TextField stringAffiche;
     @FXML
     private MenuItem MenuItemCalculPasDeTemps;
     @FXML

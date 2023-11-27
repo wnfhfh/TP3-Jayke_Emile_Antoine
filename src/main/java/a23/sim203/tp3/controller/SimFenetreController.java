@@ -90,6 +90,7 @@ public class SimFenetreController {
         simulationService.setAffichageResultatsController(controller);
 
         Stage stageGraphique = new Stage();
+        this.stageGraphique = stageGraphique;
         stageGraphique.setScene(new Scene(root));
         stageGraphique.show();
     }
@@ -104,14 +105,15 @@ public class SimFenetreController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        fxmlLoader.setController(new TableauController());
-        TableauController controller = fxmlLoader.getController();
+        TableauController controller = new TableauController();
+        fxmlLoader.setController(controller);
         Scene scene = new Scene(root);
         Stage stageTableau = new Stage();
+        this.stageTableau = stageTableau;
         stageTableau.setScene(scene);
         stageTableau.show();
         controller.setMoteurCalcul(moteurCalcul);
-        gestionAffichage.getAnimations().partageDesFenetresTableau();
+        gestionAffichage.getAnimations().partageDesFenetresTableau(stageSimulation,stageCalculatrice,stageTableau);
     }
 
     public void setMoteurCalcul(MoteurCalcul moteurCalcul) {
@@ -129,8 +131,10 @@ public class SimFenetreController {
     public void setGestionAffichage(GestionAffichage gestionAffichage) {
         this.gestionAffichage = gestionAffichage;
         this.stageCalculatrice = gestionAffichage.getStage();
-        this.stageSimulation = gestionAffichage.
     }
 
+    public void setStageSimulation(Stage stageSimulation) {
+        this.stageSimulation = stageSimulation;
+    }
 }
 
