@@ -71,7 +71,7 @@ public class MoteurCalcul {
      * Ajoute une variable à la carte des variables avec la valeur spécifiée.
      *
      * @param constante Le nom de la variable à ajouter.
-     * @param valeur   La valeur de la variable à ajouter.
+     * @param valeur    La valeur de la variable à ajouter.
      */
     private void ajouteConstante(String constante, double valeur) {
         constantMap.remove(constante);
@@ -308,7 +308,6 @@ public class MoteurCalcul {
             expressionStringTemp = expressionStringTemp.replace(constants.get(i).getConstantName(), Double.toString(constants.get(i).getConstantValue()));
         }
         resultat = new Expression(expressionStringTemp).calculate();
-        mapNouvelleValeur.put(equation.getNom(), new Constant(equation.getNom(), resultat));
         return resultat;
     }
 
@@ -537,5 +536,18 @@ public class MoteurCalcul {
         equationMap.put("sim_", new Equation("sim_", expressionSim.substring(0, expressionSim.length() - 1)));
         mapAncienneValeur.put("sim_", new Constant("sim_", 0));
         calcule("sim_");
+        mapNouvelleValeur.put("sim_", new Constant("sim_", calcule("sim_")));
+    }
+
+    public void refreshEquations() {
+        for (Equation equation :
+                equationMap.values()) {
+            try {
+                mapNouvelleValeur.put(equation.getNom(), new Constant(equation.getNom(), calcule(equation)));
+            } catch (NullPointerException e) {
+                System.out.println(equation);
+                mapNouvelleValeur.put(equation.getNom(), new Constant(equation.getNom(), Double.NaN));
+            }
+        }
     }
 }

@@ -38,7 +38,7 @@ public class SimulationService extends ScheduledService<Void> {
     private void gererAffichageGraphique() {
         for (String equationAMettreDansGraphique :
                 affichageResultatsController.getBoutonsCliques()) {
-            affichageResultatsController.rafraichirGraphique(equationAMettreDansGraphique, moteurCalcul.getAncienneValeurVariableMap().get(equationAMettreDansGraphique), endTime);
+            affichageResultatsController.rafraichirGraphique(equationAMettreDansGraphique, moteurCalcul.getNouvelleValeurVariableMap().get(equationAMettreDansGraphique), endTime);
         }
     }
 
@@ -52,6 +52,7 @@ public class SimulationService extends ScheduledService<Void> {
                 startTime = endTime;
                 moteurCalcul.calculeSim();
                 moteurCalcul.avancePasDeTemps();
+                moteurCalcul.refreshEquations();
                 System.out.println(moteurCalcul.getNouvelleValeurVariableMap().get("dt_"));
                 System.out.println(moteurCalcul.getAncienneValeurVariableMap().get("dt_"));
                 try {
