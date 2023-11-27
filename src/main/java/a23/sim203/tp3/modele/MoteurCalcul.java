@@ -53,7 +53,7 @@ public class MoteurCalcul {
     public long avancePasDeTemps() {
         historique.put(pasDeTempsActuel.toString(), mapAncienneValeur);
         pasDeTempsActuel++;
-        mapAncienneValeur = mapNouvelleValeur;
+        mapAncienneValeur.putAll(mapNouvelleValeur);
         mapNouvelleValeur.clear();
         return pasDeTempsActuel;
     }
@@ -109,7 +109,8 @@ public class MoteurCalcul {
             addConstantesFromEquation(equation);
             constantMap.remove(equation.getNom()); // Supprime la variable existante avec le même nom
         }
-        mapAncienneValeur.put(equation.getNom(), new Constant(equation.getNom(), 0)); // TODO figure out par quoi le remplacer
+        mapAncienneValeur.put(equation.getNom(), new Constant(equation.getNom(), Double.NaN)); // TODO figure out par quoi le remplacer
+        mapNouvelleValeur.put(equation.getNom(), new Constant(equation.getNom(), calcule(equation)));
     }
 
 
@@ -239,8 +240,10 @@ public class MoteurCalcul {
         Pattern pattern = Pattern.compile("[a-zA-Z]");
         Matcher matcher = pattern.matcher(nomEquation);
 
-        if (matcher.find()) resultat = calcule(equationMap.get(nomEquation));
-        else resultat = calcule(new Equation("o_", nomEquation.replace(" ", "")));
+        if (matcher.find()) {
+            resultat = calcule(equationMap.get(nomEquation));
+            mapNouvelleValeur.put(nomEquation, new Constant(nomEquation, resultat));
+        } else resultat = calcule(new Equation("o_", nomEquation.replace(" ", "")));
         return resultat;
     }
 
@@ -308,6 +311,7 @@ public class MoteurCalcul {
             expressionStringTemp = expressionStringTemp.replace(constants.get(i).getConstantName(), Double.toString(constants.get(i).getConstantValue()));
         }
         resultat = new Expression(expressionStringTemp).calculate();
+
         return resultat;
     }
 
