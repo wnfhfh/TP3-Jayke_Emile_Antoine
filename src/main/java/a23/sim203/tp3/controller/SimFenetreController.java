@@ -91,8 +91,6 @@ public class SimFenetreController {
     public void setMenuItemTableTemps(ActionEvent event) {
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("affichageTableau.fxml"));
-        TableauController tableauController = fxmlLoader.getController();
-        tableauController.tableau(moteurCalcul.getAllEquations(),moteurCalcul.getAllConstantes());
         Parent root = null;
         try {
             root = fxmlLoader.load();
