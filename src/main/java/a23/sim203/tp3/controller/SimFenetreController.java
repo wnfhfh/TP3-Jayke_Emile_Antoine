@@ -97,7 +97,6 @@ public class SimFenetreController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        fxmlLoader.setController(new TableauController());
         TableauController controller = fxmlLoader.getController();
         Scene scene = new Scene(root);
         Stage stageTableau = new Stage();

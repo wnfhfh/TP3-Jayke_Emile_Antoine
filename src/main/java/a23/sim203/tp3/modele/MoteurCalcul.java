@@ -127,7 +127,7 @@ public class MoteurCalcul {
 
     public void retireConstantesInutiles() { //todo verif s'il faut retirer variables of const inutiles
         Set<String> variablesInutiles = getAllConstantes();
-        variablesInutiles.removeAll(getAllElementsRequis());
+        variablesInutiles.removeAll(getAllequationsRequises());
 
         if (variablesInutiles.size() > 0) {
             Iterator<String> iterator = variablesInutiles.iterator();
@@ -149,7 +149,7 @@ public class MoteurCalcul {
      *
      * @return L'ensemble de tous les éléments requis par les équations du calculateur.
      */
-    private Set<String> getAllElementsRequis() {
+    private Set<String> getAllequationsRequises() {
         Set<String> variablesRequises = new HashSet<>();
         Iterator<Equation> iterator = equationMap.values().iterator();
         while (iterator.hasNext()) {
@@ -187,8 +187,8 @@ public class MoteurCalcul {
      * @param equation L'équation dont les variables nécessaires doivent être ajoutées à la carte des variables.
      */
     private void addConstantesFromEquation(Equation equation) {
-        Set<String> elementsRequis = equation.getElementsRequis();
-        Iterator<String> iterator = elementsRequis.iterator();
+        Set<String> equationsRequises = equation.getElementsRequis();
+        Iterator<String> iterator = equationsRequises.iterator();
         while (iterator.hasNext()) {
             String nomVariable = iterator.next();
             if (!equationEtconstantMap.containsKey(nomVariable) && nomVariable != equation.getNom()) {
@@ -295,11 +295,11 @@ public class MoteurCalcul {
     public double calcule(Equation equation) {
         Double resultat;
 
-        String expressionStringTemp = remplacerEquations(equation);
-        Set<String> elementsRequis = new Equation("a_", expressionStringTemp).getElementsRequis();
+        String expressionStringTemp = remplacerEquations(equation, equation.getExpression(), new HashSet<>());
+        Set<String> equationsRequises = new Equation("a_", expressionStringTemp).getElementsRequis();
         ArrayList<Constant> constants = new ArrayList();
 
-        for (String element : elementsRequis) {
+        for (String element : equationsRequises) {
             if (constantMap.containsKey(element))
                 constants.add(constantMap.get(element));
         }
@@ -322,62 +322,114 @@ public class MoteurCalcul {
      * @param equation L'equation à traiter.
      * @return La nouvelle expression avec les équations remplacées.
      */
-    private String remplacerEquations(Equation equation) {
-        String equationDecompressee = "";
-        String expressionStringTemp = equation.getExpression();
-        Set<String> equations = equationMap.keySet();
-        ArrayList<String> dejaRemplace = new ArrayList<>();
+    private String remplacerEquations(Equation equation, String expressionAvant, Set<String> equationsRequisesRecursifsRemplaces) {
+//        String equationDecompressee = "";
+//        String expressionStringTemp = equation.getExpression();
+//        Set<String> equations = equationMap.keySet();
+//        ArrayList<String> dejaRemplace = new ArrayList<>();
+//
+//        for (String nomEquationTemp : equations) {
+//            String equationUpdate = "";
+//            if (expressionStringTemp.contains(nomEquationTemp)) {
+//                if (Objects.equals(nomEquationTemp, equation.getNom())) {
+//                    equationUpdate = expressionStringTemp.replace(nomEquationTemp, '(' + String.valueOf(mapAncienneValeur.get(nomEquationTemp).getConstantValue()) + ')');
+//                    dejaRemplace.add(nomEquationTemp);
+//                } else {
+//                    equationUpdate = expressionStringTemp.replace(nomEquationTemp, '(' + equationMap.get(nomEquationTemp).getExpression() + ')');
+//                    dejaRemplace.add(nomEquationTemp);
+//                }
+//            }
+//
+//            if (equationUpdate.length() > equationDecompressee.length()) equationDecompressee = equationUpdate;
+//        }
+//        if (equationDecompressee.isEmpty()) equationDecompressee = expressionStringTemp;
+//        if (!equationDecompressee.equals(expressionStringTemp))
+//            equationDecompressee = remplacerEquations(new Equation(equation.getNom(), equationDecompressee), dejaRemplace);
+//
+//        return equationDecompressee;
 
-        for (String nomEquationTemp : equations) {
-            String equationUpdate = "";
-            if (expressionStringTemp.contains(nomEquationTemp)) {
-                if (Objects.equals(nomEquationTemp, equation.getNom())) {
-                    equationUpdate = expressionStringTemp.replace(nomEquationTemp, '(' + String.valueOf(mapAncienneValeur.get(nomEquationTemp).getConstantValue()) + ')');
-                    dejaRemplace.add(nomEquationTemp);
+        String expressionApres = expressionAvant;
+        Set<String> equationsRequises = getEquationsDansExpression(equation.getElementsRequis());
+        Set<String> equationsRequisesRecursifs = getEquationsRequisesRecursifs(equation);
+
+
+        for (String element :
+                equationsRequises) {
+            if (expressionApres.contains(element)) {
+                if (equationsRequisesRecursifs.contains(element)) {
+                    if (!(equationsRequisesRecursifsRemplaces.contains(element))) {
+                        equationsRequisesRecursifsRemplaces.add(element);
+                    }
+                    expressionApres = expressionApres.replace(element, Double.toString(mapAncienneValeur.get(element).getConstantValue()));
+
                 } else {
-                    equationUpdate = expressionStringTemp.replace(nomEquationTemp, '(' + equationMap.get(nomEquationTemp).getExpression() + ')');
-                    dejaRemplace.add(nomEquationTemp);
+                    expressionApres = expressionApres.replace(element, Double.toString(mapAncienneValeur.get(element).getConstantValue()));
                 }
             }
-
-            if (equationUpdate.length() > equationDecompressee.length()) equationDecompressee = equationUpdate;
         }
-        if (equationDecompressee.isEmpty()) equationDecompressee = expressionStringTemp;
-        if (!equationDecompressee.equals(expressionStringTemp))
-            equationDecompressee = remplacerEquations(new Equation(equation.getNom(), equationDecompressee), dejaRemplace);
 
-        return equationDecompressee;
+        if (!expressionApres.equals(expressionAvant)) {
+            return remplacerEquations(equation, expressionApres, equationsRequisesRecursifsRemplaces);
+        } else {
+            return expressionApres;
+        }
     }
 
-    private String remplacerEquations(Equation equation, ArrayList<String> dejaRemplace) {
-        String equationDecompressee = "";
-        String expressionStringTemp = equation.getExpression();
-        Set<String> equations = equationMap.keySet();
+    private Set<String> getEquationsDansExpression(Set<String> elementsRequis) {
+        Set<String> equationsDansExpression = new HashSet<>();
 
-        for (String nomEquationTemp : equations) {
-            String equationUpdate = null;
-            if (expressionStringTemp.contains(nomEquationTemp)) {
-                if (nomEquationTemp == equation.getNom()) {
-                    if (!dejaRemplace.contains(nomEquationTemp)) {
-                        equationUpdate = expressionStringTemp.replace(nomEquationTemp, '(' + String.valueOf(mapAncienneValeur.get(nomEquationTemp).getConstantValue()) + ')');
-                        dejaRemplace.add(nomEquationTemp);
-                    }
-                } else {
-                    if (!dejaRemplace.contains(nomEquationTemp)) {
-                        equationUpdate = expressionStringTemp.replace(nomEquationTemp, '(' + equationMap.get(nomEquationTemp).getExpression() + ')');
-                        dejaRemplace.add(nomEquationTemp);
-                    }
-                }
-            }
-
-            if (equationUpdate != null && equationUpdate.length() > equationDecompressee.length())
-                equationDecompressee = equationUpdate;
+        for (String element :
+                elementsRequis) {
+            if (equationMap.containsKey(element)) equationsDansExpression.add(element);
         }
-        if (equationDecompressee == "") equationDecompressee = expressionStringTemp;
-        if (!equationDecompressee.equals(expressionStringTemp))
-            equationDecompressee = remplacerEquations(new Equation(equation.getNom(), equationDecompressee), dejaRemplace);
+        return equationsDansExpression;
+    }
 
-        return equationDecompressee;
+    private Set<String> getEquationsRequisesRecursifs(Equation equation) {
+        Set<String> equationsRequises = equation.getElementsRequis();
+        Set<String> equationsRequisesRecursifs = new HashSet<>();
+
+        for (String element :
+                equationsRequises) {
+            if (equationMap.containsKey(element)) {
+                Equation equationAVerif = equationMap.get(element);
+                if (equationAVerif.getExpression().contains(element)) equationsRequisesRecursifs.add(element);
+            }
+        }
+        return equationsRequisesRecursifs;
+    }
+
+    private String remplacerEquations(Equation equation, Set<String> dejaRemplace) {
+//        String equationDecompressee = "";
+//        String expressionStringTemp = equation.getExpression();
+//        Set<String> equations = equationMap.keySet();
+//
+//        for (String nomEquationTemp : equations) {
+//            String equationUpdate = null;
+//            if (expressionStringTemp.contains(nomEquationTemp)) {
+//                if (nomEquationTemp == equation.getNom()) {
+//                    if (!dejaRemplace.contains(nomEquationTemp)) {
+//                        equationUpdate = expressionStringTemp.replace(nomEquationTemp, '(' + String.valueOf(mapAncienneValeur.get(nomEquationTemp).getConstantValue()) + ')');
+//                        dejaRemplace.add(nomEquationTemp);
+//                    }
+//                } else {
+//                    if (!dejaRemplace.contains(nomEquationTemp)) {
+//                        equationUpdate = expressionStringTemp.replace(nomEquationTemp, '(' + equationMap.get(nomEquationTemp).getExpression() + ')');
+//                        dejaRemplace.add(nomEquationTemp);
+//                    }
+//                }
+//            }
+//
+//            if (equationUpdate != null && equationUpdate.length() > equationDecompressee.length())
+//                equationDecompressee = equationUpdate;
+//        }
+//        if (equationDecompressee == "") equationDecompressee = expressionStringTemp;
+//        if (!equationDecompressee.equals(expressionStringTemp))
+//            equationDecompressee = remplacerEquations(new Equation(equation.getNom(), equationDecompressee), dejaRemplace);
+//
+//        return equationDecompressee;
+
+        return null;
     }
 
     /**
@@ -471,10 +523,10 @@ public class MoteurCalcul {
     public boolean equationEstRecursive(String nomEquation) {
         boolean estRecursive = false;
         Equation equation = equationMap.get(nomEquation);
-        Set<String> elementsRequis = equation.getElementsRequis();
+        Set<String> equationsRequises = equation.getElementsRequis();
 
-        for (int i = 0; i < elementsRequis.size(); i++) {
-            if (elementsRequis.contains(nomEquation)) {
+        for (int i = 0; i < equationsRequises.size(); i++) {
+            if (equationsRequises.contains(nomEquation)) {
                 estRecursive = true;
                 break;
             }
