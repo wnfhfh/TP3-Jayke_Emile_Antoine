@@ -363,7 +363,7 @@ public class MoteurCalcul {
                     expressionApres = expressionApres.replace(element, Double.toString(mapAncienneValeur.get(element).getConstantValue()));
 
                 } else {
-                    expressionApres = expressionApres.replace(element, Double.toString(mapAncienneValeur.get(element).getConstantValue()));
+                    expressionApres = expressionApres.replace(element, '(' + equationMap.get(element).getExpression() + ')');
                 }
             }
         }
