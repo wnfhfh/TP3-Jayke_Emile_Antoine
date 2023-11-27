@@ -107,6 +107,9 @@ public class SimFenetreController {
         }
         TableauController controller = new TableauController();
         fxmlLoader.setController(controller);
+        controller.setMoteurCalcul(moteurCalcul);
+        controller.ajouterEquationTableau();
+        simulationService.setTableauController(controller);
         Scene scene = new Scene(root);
         Stage stageTableau = new Stage();
         this.stageTableau = stageTableau;

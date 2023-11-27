@@ -1,6 +1,7 @@
 package a23.sim203.tp3.services;
 
 import a23.sim203.tp3.controller.AffichageResultatsController;
+import a23.sim203.tp3.controller.TableauController;
 import a23.sim203.tp3.modele.MoteurCalcul;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Service;
@@ -16,15 +17,12 @@ public class SimulationService extends ScheduledService<Void> {
     private double startTime;
     private double dt;
     private AffichageResultatsController affichageResultatsController;
+    private TableauController tableauController;
 
 
     public void setMoteurCalcul(MoteurCalcul moteurCalcul) {
         startTime = System.currentTimeMillis()/1000;
         this.moteurCalcul = moteurCalcul;
-    }
-
-    public void setAffichageResultatsController(AffichageResultatsController aRC) {
-        this.affichageResultatsController = aRC;
     }
 
     public void setMoteurCalculEtScale(MoteurCalcul moteurCalcul, double scale) {
@@ -34,11 +32,23 @@ public class SimulationService extends ScheduledService<Void> {
         this.timeScale = scale;
     }
 
+    public void setAffichageResultatsController(AffichageResultatsController aRC) {
+        this.affichageResultatsController = aRC;
+    }
+
     private void gererAffichageGraphique() {
         for (String equationAMettreDansGraphique :
                 affichageResultatsController.getBoutonsCliques()) {
             affichageResultatsController.rafraichirGraphique(equationAMettreDansGraphique, moteurCalcul.getNouvelleValeurVariableMap().get(equationAMettreDansGraphique), endTime);
         }
+    }
+
+    public void setTableauController(TableauController tableauController1) {
+        this.tableauController = tableauController1;
+    }
+
+    private void gererTableauController() {
+        tableauController.ajouterEquationTableau();
     }
 
     @Override
@@ -57,7 +67,12 @@ public class SimulationService extends ScheduledService<Void> {
                 System.out.println(moteurCalcul.getNouvelleValeurVariableMap().get("t_").getConstantValue());
                 System.out.println(moteurCalcul.getAncienneValeurVariableMap().get("dt_"));
                 try {
-                    gererAffichageGraphique();
+                    if (affichageResultatsController != null) {
+                        gererAffichageGraphique();
+                    }
+                    if (tableauController != null) {
+                        gererTableauController();
+                    }
                 } catch (Exception e) {
                     System.out.println("erreur affichage" + e.getMessage() + "\nligne: " + e.getStackTrace()[0].getLineNumber());
                 }
