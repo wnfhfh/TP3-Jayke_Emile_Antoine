@@ -66,7 +66,7 @@ public class SimulationService extends ScheduledService<Void> {
                     gererAffichageGraphique();
                     gererTableauController();
                 } catch (Exception e) {
-                    System.out.println("erreur affichage" + e.getMessage());
+                    System.out.println("erreur affichage" + e.getMessage() + "\nligne: " + e.getStackTrace()[0].getLineNumber());
                 }
                 System.out.println("service roule");
                 return null;

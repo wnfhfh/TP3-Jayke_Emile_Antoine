@@ -106,6 +106,7 @@ public class SimFenetreController {
         Stage stageTableau = new Stage();
         stageTableau.setScene(scene);
         stageTableau.show();
+        controller.setMoteurCalcul(moteurCalcul);
     }
 
     public void setMoteurCalcul(MoteurCalcul moteurCalcul) {
