@@ -51,11 +51,19 @@ public class MoteurCalcul {
     }
 
     public long avancePasDeTemps() {
-        historique.put(pasDeTempsActuel.toString(), mapAncienneValeur);
+        historique.put(pasDeTempsActuel.toString(), faireMapHistorique());
         pasDeTempsActuel++;
         mapAncienneValeur.putAll(mapNouvelleValeur);
         mapNouvelleValeur.clear();
         return pasDeTempsActuel;
+    }
+
+    private Map<String, Constant> faireMapHistorique() {
+        HashMap mapAAjouter = new HashMap<String, Constant>();
+
+        mapAAjouter.putAll(mapAncienneValeur);
+        mapAAjouter.putAll(constantMap);
+        return mapAAjouter;
     }
 
     /**
@@ -192,7 +200,7 @@ public class MoteurCalcul {
         Iterator<String> iterator = equationsRequises.iterator();
         while (iterator.hasNext()) {
             String nomVariable = iterator.next();
-            if (!equationMap.containsKey(nomVariable)&& !constantMap.containsKey(nomVariable) && nomVariable != equation.getNom()) {
+            if (!equationMap.containsKey(nomVariable) && !constantMap.containsKey(nomVariable) && nomVariable != equation.getNom()) {
                 ajouteConstante(nomVariable, Double.NaN);
                 equationEtconstantMap.put(nomVariable, Double.NaN);
             }

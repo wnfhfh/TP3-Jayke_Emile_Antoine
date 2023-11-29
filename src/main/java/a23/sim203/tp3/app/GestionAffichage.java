@@ -310,6 +310,8 @@ public class GestionAffichage {
             stageSimulation.setScene(sceneSimulation);
             stageSimulation.show();
             controller.setMoteurCalcul(moteurCalcul);
+            controller.creerGraphique();
+            controller.creerTableau();
             animations.partageDesFenetresSimulation(stageSimulation,stage);
         });
     }

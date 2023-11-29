@@ -34,11 +34,11 @@ public class SimFenetreController {
     private Stage stageCalculatrice;
     private Stage stageTableau;
     private Stage stageGraphique;
-
     MoteurCalcul moteurCalcul;
-
-
     GestionAffichage gestionAffichage;
+    private AffichageResultatsController affichageResultatsController;
+
+    private TableauController tableauController;
 
 
     private SimulationService simulationService = new SimulationService();
@@ -60,6 +60,8 @@ public class SimFenetreController {
             moteurCalcul.ajouteEquation("t_=t_+d_");
             moteurCalcul.getAncienneValeurVariableMap().put("t_", new Constant("t_", 0));
             simulationService.start();
+            addServiceListener();
+
             boutonLancer.setDisable(true);
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -70,6 +72,20 @@ public class SimFenetreController {
         }
     }
 
+    private void addServiceListener() {
+        simulationService.setOnSucceeded(event -> {
+
+            for (String equationAMettreDansGraphique :
+                    affichageResultatsController.getBoutonsCliques()) {
+                affichageResultatsController.rafraichirGraphique(equationAMettreDansGraphique,
+                        moteurCalcul.getAncienneValeurVariableMap().get(equationAMettreDansGraphique),
+                        moteurCalcul.getAncienneValeurVariableMap().get("t_").getConstantValue());
+            }
+
+            tableauController.ajouterEquationTableau();
+        });
+    }
+
     @FXML
     void boutonPauseOnAction(ActionEvent event) {
 
@@ -77,6 +93,10 @@ public class SimFenetreController {
 
     @FXML
     void afficherGraphiqueOnAction(ActionEvent event) {
+        stageGraphique.show();
+    }
+
+    public void creerGraphique() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("affichageResultats.fxml"));
         Parent root = null;
         try {
@@ -84,21 +104,25 @@ public class SimFenetreController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        AffichageResultatsController controller = fxmlLoader.getController();
-        controller.setMoteurCalcul(moteurCalcul);
-        controller.creerLineChart();
-        controller.rafraichirEquationsOnAction(event);
-        simulationService.setAffichageResultatsController(controller);
+        affichageResultatsController = fxmlLoader.getController();
+        affichageResultatsController.setMoteurCalcul(moteurCalcul);
+        affichageResultatsController.creerLineChart();
+        affichageResultatsController.rafraichirEquationsOnAction(new ActionEvent());
+        simulationService.setAffichageResultatsController(affichageResultatsController);
 
         Stage stageGraphique = new Stage();
         this.stageGraphique = stageGraphique;
         stageGraphique.setScene(new Scene(root));
-        stageGraphique.show();
     }
 
     @FXML
     public void setMenuItemTableTemps(ActionEvent event) {
+        stageTableau.show();
+        tableauController.setMoteurCalcul(moteurCalcul);
+        gestionAffichage.getAnimations().partageDesFenetresTableau(stageSimulation, stageCalculatrice, stageTableau);
+    }
 
+    public void creerTableau() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("affichageTableau.fxml"));
         Parent root = null;
         try {
@@ -106,18 +130,15 @@ public class SimFenetreController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        TableauController controller = new TableauController();
-        fxmlLoader.setController(controller);
-        controller.setMoteurCalcul(moteurCalcul);
-        controller.ajouterEquationTableau();
-        simulationService.setTableauController(controller);
+        tableauController = new TableauController();
+        fxmlLoader.setController(tableauController);
+        tableauController.setMoteurCalcul(moteurCalcul);
+        tableauController.ajouterEquationTableau();
+        simulationService.setTableauController(tableauController);
         Scene scene = new Scene(root);
         Stage stageTableau = new Stage();
         this.stageTableau = stageTableau;
         stageTableau.setScene(scene);
-        stageTableau.show();
-        controller.setMoteurCalcul(moteurCalcul);
-        gestionAffichage.getAnimations().partageDesFenetresTableau(stageSimulation, stageCalculatrice, stageTableau);
     }
 
     public void setMoteurCalcul(MoteurCalcul moteurCalcul) {

@@ -38,15 +38,6 @@ public class SimulationService extends ScheduledService<Void> {
         this.affichageResultatsController = aRC;
     }
 
-    private void gererAffichageGraphique() {
-        for (String equationAMettreDansGraphique :
-                affichageResultatsController.getBoutonsCliques()) {
-            affichageResultatsController.rafraichirGraphique(equationAMettreDansGraphique,
-                    moteurCalcul.getNouvelleValeurVariableMap().get(equationAMettreDansGraphique),
-                    moteurCalcul.getAncienneValeurVariableMap().get("t_").getConstantValue());
-        }
-    }
-
     public void setTableauController(TableauController tableauController1) {
         this.tableauController = tableauController1;
     }
@@ -74,9 +65,6 @@ public class SimulationService extends ScheduledService<Void> {
                 dt = endTime - startTime;
 
                 try {
-                    if (affichageResultatsController != null) {
-                        gererAffichageGraphique();
-                    }
                     if (tableauController != null) {
                         gererTableauController();
                     }

@@ -54,13 +54,13 @@ public class AffichageResultatsController implements Initializable {
         if (dejaDansGraphique(nomEquation) != null) {
             XYChart.Series serieARafraichir = dejaDansGraphique(nomEquation);
             serieARafraichir.setName(nomEquation);
-            serieARafraichir.getData().add(new XYChart.Data<Double, Double>(endTime, i++));
+            serieARafraichir.getData().add(new XYChart.Data<Double, Double>(endTime, y.getConstantValue()));
 //            lineChart.getData().add(serieARafraichir);
         } else {
             XYChart.Series aAjouter = new XYChart.Series();
             aAjouter.setName(nomEquation);
             seriesDejaDansGraphique.add(aAjouter);
-            aAjouter.getData().add(new XYChart.Data<Double, Double>(endTime, i++));
+            aAjouter.getData().add(new XYChart.Data<Double, Double>(endTime, y.getConstantValue()));
             lineChart.setCreateSymbols(true);
             lineChart.getData().add(aAjouter);
         }
@@ -85,13 +85,6 @@ public class AffichageResultatsController implements Initializable {
 
     @FXML
     public void rafraichirEquationsOnAction(ActionEvent event) {
-        for (Node node :
-                tilePaneEquations.getChildren()) {
-            Button bouton = (Button) node;
-            if ((!moteurCalcul.getEquationMap().containsKey(bouton.getText())) || boutonsCliques.contains(bouton.getText())) {
-                tilePaneEquations.getChildren().remove(node);
-            }
-        }
         for (Equation equation :
                 moteurCalcul.getAllEquations()) {
             Button button = new Button(equation.getNom());
@@ -103,7 +96,14 @@ public class AffichageResultatsController implements Initializable {
                 tilePaneEquations.getChildren().remove(button);
             });
             tilePaneEquations.getChildren().add(button);
+        }
 
+        for (Node node :
+                tilePaneEquations.getChildren()) {
+            Button bouton = (Button) node;
+            if (boutonsCliques.contains(bouton.getText())) {
+                tilePaneEquations.getChildren().remove(node);
+            }
         }
     }
 
@@ -117,5 +117,10 @@ public class AffichageResultatsController implements Initializable {
         boutonsCliques = new HashSet<>();
         seriesDejaDansGraphique = new HashSet<>();
         tilePaneEquations.setPadding(new Insets(10, 10, 10, 10));
+        boutonVider.setOnAction(event -> {
+            boutonsCliques.clear();
+            lineChart.getData().clear();
+            rafraichirEquationsOnAction(event);
+        });
     }
 }
