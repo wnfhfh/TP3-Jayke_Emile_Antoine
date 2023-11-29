@@ -192,7 +192,7 @@ public class MoteurCalcul {
         Iterator<String> iterator = equationsRequises.iterator();
         while (iterator.hasNext()) {
             String nomVariable = iterator.next();
-            if (!equationEtconstantMap.containsKey(nomVariable) && nomVariable != equation.getNom()) {
+            if (!equationMap.containsKey(nomVariable)&& !constantMap.containsKey(nomVariable) && nomVariable != equation.getNom()) {
                 ajouteConstante(nomVariable, Double.NaN);
                 equationEtconstantMap.put(nomVariable, Double.NaN);
             }
@@ -365,7 +365,6 @@ public class MoteurCalcul {
                         equationsRequisesRecursifsRemplaces.add(element);
                     }
                     expressionApres = expressionApres.replace(element, Double.toString(mapAncienneValeur.get(element).getConstantValue()));
-
                 } else {
                     expressionApres = expressionApres.replace(element, '(' + equationMap.get(element).getExpression() + ')');
                 }
@@ -598,12 +597,8 @@ public class MoteurCalcul {
     public void refreshEquations() {
         for (Equation equation :
                 equationMap.values()) {
-            try {
-                mapNouvelleValeur.put(equation.getNom(), new Constant(equation.getNom(), calcule(equation)));
-            } catch (NullPointerException e) {
-                System.out.println(equation);
-                mapNouvelleValeur.put(equation.getNom(), new Constant(equation.getNom(), Double.NaN));
-            }
+            mapNouvelleValeur.remove(equation.getNom());
+            mapNouvelleValeur.put(equation.getNom(), new Constant(equation.getNom(), calcule(equation)));
         }
     }
 }

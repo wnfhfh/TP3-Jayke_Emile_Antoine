@@ -21,8 +21,10 @@ public class SimulationService extends ScheduledService<Void> {
 
 
     public void setMoteurCalcul(MoteurCalcul moteurCalcul) {
-        startTime = System.currentTimeMillis()/1000;
+        startTime = System.currentTimeMillis();
         this.moteurCalcul = moteurCalcul;
+        endTime = System.currentTimeMillis();
+        dt = endTime-startTime;
     }
 
     public void setMoteurCalculEtScale(MoteurCalcul moteurCalcul, double scale) {
@@ -39,7 +41,7 @@ public class SimulationService extends ScheduledService<Void> {
     private void gererAffichageGraphique() {
         for (String equationAMettreDansGraphique :
                 affichageResultatsController.getBoutonsCliques()) {
-            affichageResultatsController.rafraichirGraphique(equationAMettreDansGraphique, moteurCalcul.getNouvelleValeurVariableMap().get(equationAMettreDansGraphique), endTime);
+            affichageResultatsController.rafraichirGraphique(equationAMettreDansGraphique, moteurCalcul.getNouvelleValeurVariableMap().get(equationAMettreDansGraphique), startTime);
         }
     }
 
@@ -57,15 +59,18 @@ public class SimulationService extends ScheduledService<Void> {
             @Override
             protected Void call() throws Exception {
 
-                endTime = System.currentTimeMillis()/1000;
-                dt = endTime-startTime;
-                startTime = endTime;
+                startTime = System.currentTimeMillis();
 
                 moteurCalcul.calculeSim();
-                moteurCalcul.avancePasDeTemps();
                 moteurCalcul.refreshEquations();
                 System.out.println(moteurCalcul.getNouvelleValeurVariableMap().get("t_").getConstantValue());
-                System.out.println(moteurCalcul.getAncienneValeurVariableMap().get("dt_"));
+                System.out.println(moteurCalcul.getConstanteValeurMap().get("d_").getConstantValue());
+                moteurCalcul.avancePasDeTemps();
+
+
+                endTime = System.currentTimeMillis();
+                dt = endTime-startTime;
+
                 try {
                     if (affichageResultatsController != null) {
                         gererAffichageGraphique();

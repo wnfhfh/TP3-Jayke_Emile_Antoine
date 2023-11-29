@@ -60,23 +60,6 @@ public class GestionAffichage {
      * Ajoute les équations demandées aux listes et au moteur de calcul.
      */
     private void ajouterEquationsDeBase() {
-//        moteurCalcul.ajouteEquation("sin_=sin(x_)");
-//        moteurCalcul.ajouteEquation("cos_=cos(x_)");
-//        moteurCalcul.ajouteEquation("inverse_=1/x_");
-//        moteurCalcul.ajouteEquation("exp_ = x_^e_");
-//        moteurCalcul.ajouteEquation("linear_ = a_*x_+b_");
-//
-//        if (calculatriceController.getListeEquations().getItems().size() == 0) {
-//            for (Equation equation :
-//                    moteurCalcul.getAllEquations()) {
-//                calculatriceController.getListeEquations().getItems().add(equation.toString());
-//            }
-//            for (Constant constante :
-//                    moteurCalcul.getConstanteValeurMap().values()) {
-//                calculatriceController.getListeConstantes().getItems().add(constante.getConstantName() + " = " + constante.getConstantValue());
-//            }
-//        }
-
         Enregistreur enregistreur = new Enregistreur(moteurCalcul, this);
         try {
             Enregistreur.EquationsConstantesEtVariables eCET = enregistreur.chargeModele(new File(System.getProperty("user.dir") + "//modeleDeBase.txt"));

@@ -20,6 +20,8 @@ import java.util.ResourceBundle;
 
 public class AffichageResultatsController implements Initializable {
 
+    Double i = 0d;
+
     @FXML
     private Button boutonVider;
 
@@ -29,29 +31,37 @@ public class AffichageResultatsController implements Initializable {
     @FXML
     private TilePane tilePaneEquations;
 
-    private NumberAxis axeX;
-    private NumberAxis axeY;
+    final private NumberAxis axeX = new NumberAxis();
+    final private NumberAxis axeY = new NumberAxis();
 
     private MoteurCalcul moteurCalcul;
     private HashSet<String> boutonsCliques;
-    private HashSet<XYChart.Series> equationsDejaDansGraphique;
+    private HashSet<XYChart.Series> seriesDejaDansGraphique;
+
 
     public void creerLineChart() {
-        axeX = new NumberAxis();
-        axeY = new NumberAxis();
-        lineChart = new LineChart(axeX, axeY);
+//        XYChart.Series series = new XYChart.Series<>();
+//        series.getData().addAll(
+//                new XYChart.Data<>(1, 2),
+//                new XYChart.Data<>(2, 2),
+//                new XYChart.Data<>(3, 2),
+//                new XYChart.Data<>(4, 2),
+//                new XYChart.Data<>(5, 2));
+//        lineChart.getData().add(series);
     }
 
     public void rafraichirGraphique(String nomEquation, Constant y, double endTime) { //TODO figurer si on se fie a endtime pour calc
         if (dejaDansGraphique(nomEquation) != null) {
-            XYChart.Series droiteEquation = new XYChart.Series();
-            equationsDejaDansGraphique.add(droiteEquation);
-            droiteEquation.setName(nomEquation);
-            droiteEquation.getData().add(new XYChart.Data<Double, Double>(endTime, y.getConstantValue()));
-            lineChart.getData().add(droiteEquation);
+            XYChart.Series serieARafraichir = dejaDansGraphique(nomEquation);
+            serieARafraichir.setName(nomEquation);
+            serieARafraichir.getData().add(new XYChart.Data<Double, Double>(endTime, i++));
+//            lineChart.getData().add(serieARafraichir);
         } else {
-            XYChart.Series aAjouter = new XYChart.Series<>();
-            aAjouter.getData().add(new XYChart.Data<Double, Double>(1d, y.getConstantValue()));
+            XYChart.Series aAjouter = new XYChart.Series();
+            aAjouter.setName(nomEquation);
+            seriesDejaDansGraphique.add(aAjouter);
+            aAjouter.getData().add(new XYChart.Data<Double, Double>(endTime, i++));
+            lineChart.setCreateSymbols(true);
             lineChart.getData().add(aAjouter);
         }
     }
@@ -59,7 +69,7 @@ public class AffichageResultatsController implements Initializable {
     private XYChart.Series dejaDansGraphique(String nomEquation) {
         XYChart.Series seriesDejaDansGraphique = null;
         for (XYChart.Series series :
-                equationsDejaDansGraphique) {
+                this.seriesDejaDansGraphique) {
             if (nomEquation.equals(series.getName())) seriesDejaDansGraphique = series;
         }
         return seriesDejaDansGraphique;
@@ -78,7 +88,7 @@ public class AffichageResultatsController implements Initializable {
         for (Node node :
                 tilePaneEquations.getChildren()) {
             Button bouton = (Button) node;
-            if (!moteurCalcul.getEquationMap().containsKey(bouton.getText()) || boutonsCliques.contains(bouton.getText())) {
+            if ((!moteurCalcul.getEquationMap().containsKey(bouton.getText())) || boutonsCliques.contains(bouton.getText())) {
                 tilePaneEquations.getChildren().remove(node);
             }
         }
@@ -90,6 +100,7 @@ public class AffichageResultatsController implements Initializable {
             button.setMaxSize(100, 100);
             button.setOnAction(event1 -> {
                 ajouterEquationAGraph(button.getText());
+                tilePaneEquations.getChildren().remove(button);
             });
             tilePaneEquations.getChildren().add(button);
 
@@ -104,7 +115,7 @@ public class AffichageResultatsController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         moteurCalcul = new MoteurCalcul();
         boutonsCliques = new HashSet<>();
-        equationsDejaDansGraphique = new HashSet<>();
+        seriesDejaDansGraphique = new HashSet<>();
         tilePaneEquations.setPadding(new Insets(10, 10, 10, 10));
     }
 }

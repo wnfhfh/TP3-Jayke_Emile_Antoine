@@ -56,8 +56,9 @@ public class SimFenetreController {
             double scale = Double.parseDouble(echelleTemporelleTextField.getText());
             setMoteurCalcul(moteurCalcul, scale);
             simulationService.setPeriod(Duration.valueOf(dtTextField.getText() + "s"));
-            moteurCalcul.getConstanteValeurMap().put("dt_", new Constant("dt_", simulationService.getPeriod().toSeconds() * scale));
-            moteurCalcul.ajouteEquation("t_=t_+dt_");
+            moteurCalcul.getConstanteValeurMap().put("d_", new Constant("d_", simulationService.getPeriod().toSeconds() * scale));
+            moteurCalcul.ajouteEquation("t_=t_+d_");
+            moteurCalcul.getAncienneValeurVariableMap().put("t_", new Constant("t_", 0));
             simulationService.start();
             boutonLancer.setDisable(true);
         } catch (Exception e) {
@@ -116,7 +117,7 @@ public class SimFenetreController {
         stageTableau.setScene(scene);
         stageTableau.show();
         controller.setMoteurCalcul(moteurCalcul);
-        gestionAffichage.getAnimations().partageDesFenetresTableau(stageSimulation,stageCalculatrice,stageTableau);
+        gestionAffichage.getAnimations().partageDesFenetresTableau(stageSimulation, stageCalculatrice, stageTableau);
     }
 
     public void setMoteurCalcul(MoteurCalcul moteurCalcul) {
