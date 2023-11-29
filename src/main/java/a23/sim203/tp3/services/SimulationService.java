@@ -24,11 +24,11 @@ public class SimulationService extends ScheduledService<Void> {
         startTime = System.currentTimeMillis();
         this.moteurCalcul = moteurCalcul;
         endTime = System.currentTimeMillis();
-        dt = endTime-startTime;
+        dt = endTime - startTime;
     }
 
     public void setMoteurCalculEtScale(MoteurCalcul moteurCalcul, double scale) {
-        startTime = System.currentTimeMillis()/1000;
+        startTime = System.currentTimeMillis() / 1000;
 //        dtDepart = (double) System.currentTimeMillis() /1000;
         this.moteurCalcul = moteurCalcul;
         this.timeScale = scale;
@@ -41,7 +41,9 @@ public class SimulationService extends ScheduledService<Void> {
     private void gererAffichageGraphique() {
         for (String equationAMettreDansGraphique :
                 affichageResultatsController.getBoutonsCliques()) {
-            affichageResultatsController.rafraichirGraphique(equationAMettreDansGraphique, moteurCalcul.getNouvelleValeurVariableMap().get(equationAMettreDansGraphique), startTime);
+            affichageResultatsController.rafraichirGraphique(equationAMettreDansGraphique,
+                    moteurCalcul.getNouvelleValeurVariableMap().get(equationAMettreDansGraphique),
+                    moteurCalcul.getAncienneValeurVariableMap().get("t_").getConstantValue());
         }
     }
 
@@ -69,7 +71,7 @@ public class SimulationService extends ScheduledService<Void> {
 
 
                 endTime = System.currentTimeMillis();
-                dt = endTime-startTime;
+                dt = endTime - startTime;
 
                 try {
                     if (affichageResultatsController != null) {
