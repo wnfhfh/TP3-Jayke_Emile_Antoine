@@ -127,6 +127,7 @@ public class SimFenetreController {
         cercle.setCenterX(centerX);
         cercle.setCenterY(centerY);
 
+        //TODO ajouter des limites au cercle pour pas qu'il s'autoyeet, permettre de mettre autre chose qu'un cercle
 /*
         String MessageCacherMick = "Antoine pu de la raie";
  */
