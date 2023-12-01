@@ -335,31 +335,6 @@ public class MoteurCalcul {
      * @return La nouvelle expression avec les équations remplacées.
      */
     private String remplacerEquations(Equation equation, String expressionAvant, Set<String> equationsRequisesRecursifsRemplaces) {
-//        String equationDecompressee = "";
-//        String expressionStringTemp = equation.getExpression();
-//        Set<String> equations = equationMap.keySet();
-//        ArrayList<String> dejaRemplace = new ArrayList<>();
-//
-//        for (String nomEquationTemp : equations) {
-//            String equationUpdate = "";
-//            if (expressionStringTemp.contains(nomEquationTemp)) {
-//                if (Objects.equals(nomEquationTemp, equation.getNom())) {
-//                    equationUpdate = expressionStringTemp.replace(nomEquationTemp, '(' + String.valueOf(mapAncienneValeur.get(nomEquationTemp).getConstantValue()) + ')');
-//                    dejaRemplace.add(nomEquationTemp);
-//                } else {
-//                    equationUpdate = expressionStringTemp.replace(nomEquationTemp, '(' + equationMap.get(nomEquationTemp).getExpression() + ')');
-//                    dejaRemplace.add(nomEquationTemp);
-//                }
-//            }
-//
-//            if (equationUpdate.length() > equationDecompressee.length()) equationDecompressee = equationUpdate;
-//        }
-//        if (equationDecompressee.isEmpty()) equationDecompressee = expressionStringTemp;
-//        if (!equationDecompressee.equals(expressionStringTemp))
-//            equationDecompressee = remplacerEquations(new Equation(equation.getNom(), equationDecompressee), dejaRemplace);
-//
-//        return equationDecompressee;
-
         String expressionApres = expressionAvant;
         Set<String> equationsRequises = getEquationsDansExpression(equation.getElementsRequis());
         Set<String> equationsRequisesRecursifs = getEquationsRequisesRecursifs(equation);
@@ -408,39 +383,6 @@ public class MoteurCalcul {
             }
         }
         return equationsRequisesRecursifs;
-    }
-
-    private String remplacerEquations(Equation equation, Set<String> dejaRemplace) {
-//        String equationDecompressee = "";
-//        String expressionStringTemp = equation.getExpression();
-//        Set<String> equations = equationMap.keySet();
-//
-//        for (String nomEquationTemp : equations) {
-//            String equationUpdate = null;
-//            if (expressionStringTemp.contains(nomEquationTemp)) {
-//                if (nomEquationTemp == equation.getNom()) {
-//                    if (!dejaRemplace.contains(nomEquationTemp)) {
-//                        equationUpdate = expressionStringTemp.replace(nomEquationTemp, '(' + String.valueOf(mapAncienneValeur.get(nomEquationTemp).getConstantValue()) + ')');
-//                        dejaRemplace.add(nomEquationTemp);
-//                    }
-//                } else {
-//                    if (!dejaRemplace.contains(nomEquationTemp)) {
-//                        equationUpdate = expressionStringTemp.replace(nomEquationTemp, '(' + equationMap.get(nomEquationTemp).getExpression() + ')');
-//                        dejaRemplace.add(nomEquationTemp);
-//                    }
-//                }
-//            }
-//
-//            if (equationUpdate != null && equationUpdate.length() > equationDecompressee.length())
-//                equationDecompressee = equationUpdate;
-//        }
-//        if (equationDecompressee == "") equationDecompressee = expressionStringTemp;
-//        if (!equationDecompressee.equals(expressionStringTemp))
-//            equationDecompressee = remplacerEquations(new Equation(equation.getNom(), equationDecompressee), dejaRemplace);
-//
-//        return equationDecompressee;
-
-        return null;
     }
 
     /**
@@ -608,5 +550,20 @@ public class MoteurCalcul {
             mapNouvelleValeur.remove(equation.getNom());
             mapNouvelleValeur.put(equation.getNom(), new Constant(equation.getNom(), calcule(equation)));
         }
+    }
+
+    public HashMap<String, Double> getDataTableau() {
+        HashMap<String, Double> dataTableau = new HashMap<>();
+
+        for (String s :
+                mapAncienneValeur.keySet()) {
+            dataTableau.put(s, mapAncienneValeur.get(s).getConstantValue());
+        }
+        for (String s :
+                constantMap.keySet()) {
+            dataTableau.put(s, constantMap.get(s).getConstantValue());
+        }
+
+        return dataTableau;
     }
 }

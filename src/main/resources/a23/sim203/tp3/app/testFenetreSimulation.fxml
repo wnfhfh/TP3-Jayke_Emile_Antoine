@@ -1,26 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Polygon?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="a23.sim203.tp3.controller.SimFenetreController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="458.0" prefWidth="963.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="a23.sim203.tp3.controller.SimFenetreController">
    <children>
-      <Button fx:id="boutonLancer" layoutX="14.0" layoutY="353.0" mnemonicParsing="false" onAction="#boutonLancerOnAction" prefHeight="33.0" prefWidth="33.0">
+      <Button fx:id="boutonLancer" layoutX="14.0" layoutY="336.0" mnemonicParsing="false" onAction="#boutonLancerOnAction" prefHeight="33.0" prefWidth="33.0">
          <graphic>
             <Polygon fill="#09860d" points="9.0, 3.0, -7.0, -7.0, -7.0, 11.0" stroke="BLACK" strokeType="INSIDE" />
          </graphic>
       </Button>
-      <Button layoutX="54.0" layoutY="353.0" mnemonicParsing="false" onAction="#boutonArreterOnAction" prefHeight="33.0" prefWidth="33.0">
+      <Button layoutX="53.0" layoutY="336.0" mnemonicParsing="false" onAction="#boutonArreterOnAction" prefHeight="33.0" prefWidth="33.0">
          <graphic>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f24242" height="16.0" stroke="BLACK" strokeType="INSIDE" width="16.0" />
          </graphic>
       </Button>
-      <Button alignment="CENTER" layoutX="94.0" layoutY="353.0" mnemonicParsing="false" onAction="#boutonPauseOnAction" prefHeight="33.0" prefWidth="33.0">
+      <Button alignment="CENTER" layoutX="94.0" layoutY="336.0" mnemonicParsing="false" onAction="#boutonPauseOnAction" prefHeight="33.0" prefWidth="33.0">
          <graphic>
             <HBox alignment="CENTER" prefHeight="28.0" prefWidth="28.0" spacing="3.0">
                <children>
@@ -30,19 +37,62 @@
             </HBox>
          </graphic>
       </Button>
-      <HBox layoutX="135.0" layoutY="353.0" prefHeight="33.0" prefWidth="115.0" spacing="2.0">
+      <HBox layoutX="140.0" layoutY="336.0" prefHeight="33.0" prefWidth="115.0" spacing="2.0">
          <children>
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="79.0" prefWidth="60.0" text="Intervalle&#10;de temps&#10;" textAlignment="CENTER" />
             <TextField fx:id="dtTextField" prefHeight="33.0" prefWidth="50.0" text="1" />
          </children>
       </HBox>
-      <HBox layoutX="256.0" layoutY="353.0" prefHeight="33.0" prefWidth="115.0" spacing="2.0">
+      <HBox layoutX="262.0" layoutY="336.0" prefHeight="33.0" prefWidth="115.0" spacing="2.0">
          <children>
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="79.0" prefWidth="60.0" text="Échelle&#10;temporelle&#10;" textAlignment="CENTER" />
             <TextField fx:id="echelleTemporelleTextField" prefHeight="33.0" prefWidth="50.0" text="1" />
          </children>
       </HBox>
-      <Button layoutX="546.0" layoutY="357.0" mnemonicParsing="false" onAction="#setMenuItemTableTemps" text="Tableau" />
-      <Button layoutX="400.0" layoutY="357.0" mnemonicParsing="false" onAction="#afficherGraphiqueOnAction" text="Afficher Graphique" />
+      <Button layoutX="545.0" layoutY="340.0" mnemonicParsing="false" onAction="#setMenuItemTableTemps" text="Tableau" />
+      <Button layoutX="399.0" layoutY="340.0" mnemonicParsing="false" onAction="#afficherGraphiqueOnAction" text="Afficher Graphique" />
+      <VBox layoutX="11.0" layoutY="380.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="17.0" prefWidth="680.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="X Accélération" wrappingWidth="150.0" />
+                  <Text layoutX="10.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Y Accélération" wrappingWidth="150.0" />
+                  <Text layoutX="33.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="X Initial" wrappingWidth="150.0" />
+                  <Text layoutX="55.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Y Initial" wrappingWidth="150.0" />
+                  <Text layoutX="78.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="X Vitesse Initiale" wrappingWidth="150.0" />
+                  <Text layoutX="101.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Y Vitesse Initiale" wrappingWidth="150.0" />
+               </children>
+               <opaqueInsets>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </opaqueInsets>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="995.0" spacing="20.0">
+               <opaqueInsets>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </opaqueInsets>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <children>
+                  <ChoiceBox fx:id="XAccelerationChoiceBox" prefWidth="130.0" />
+                  <ChoiceBox fx:id="YAccelerationChoiceBox" layoutX="20.0" layoutY="29.0" prefWidth="130.0" />
+                  <ChoiceBox fx:id="XInitialChoiceBox" layoutX="180.0" layoutY="29.0" prefWidth="130.0" />
+                  <ChoiceBox fx:id="YInitialChoiceBox" layoutX="340.0" layoutY="29.0" prefWidth="130.0" />
+                  <ChoiceBox fx:id="XVitesseInitialeChoiceBox" layoutX="500.0" layoutY="29.0" prefWidth="130.0" />
+                  <ChoiceBox fx:id="YVitesseInitialeChoiceBox" layoutX="556.0" layoutY="29.0" prefWidth="130.0" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <ImageView fitHeight="300.0" fitWidth="943.0" layoutX="11.0" layoutY="10.0" pickOnBounds="true">
+         <image>
+            <Image url="@space_background.png" />
+         </image>
+      </ImageView>
+      <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="300.0" prefWidth="945.0">
+         <children>
+            <Circle fx:id="cercle" fill="DODGERBLUE" layoutX="475.0" layoutY="150.0" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

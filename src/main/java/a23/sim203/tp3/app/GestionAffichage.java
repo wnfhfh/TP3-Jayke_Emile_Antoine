@@ -312,6 +312,7 @@ public class GestionAffichage {
             controller.setMoteurCalcul(moteurCalcul);
             controller.creerGraphique();
             controller.creerTableau();
+            controller.setChoiceBoxes();
             animations.partageDesFenetresSimulation(stageSimulation,stage);
         });
     }

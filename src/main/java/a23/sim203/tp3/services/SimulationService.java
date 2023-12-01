@@ -60,7 +60,6 @@ public class SimulationService extends ScheduledService<Void> {
                 System.out.println(moteurCalcul.getConstanteValeurMap().get("d_").getConstantValue());
                 moteurCalcul.avancePasDeTemps();
 
-
                 endTime = System.currentTimeMillis();
                 dt = endTime - startTime;
 

@@ -84,10 +84,11 @@ public class AffichageResultatsController implements Initializable {
     }
 
     @FXML
-    public void rafraichirEquationsOnAction(ActionEvent event) {
-        for (Equation equation :
-                moteurCalcul.getAllEquations()) {
-            Button button = new Button(equation.getNom());
+    public void rafraichirEquations() {
+        tilePaneEquations.getChildren().clear();
+        for (String equationNom :
+                equationsAMettreBouton()) {
+            Button button = new Button(equationNom);
             button.setPrefSize(100, 100);
             button.setMinSize(100, 100);
             button.setMaxSize(100, 100);
@@ -97,14 +98,23 @@ public class AffichageResultatsController implements Initializable {
             });
             tilePaneEquations.getChildren().add(button);
         }
+    }
 
-        for (Node node :
-                tilePaneEquations.getChildren()) {
-            Button bouton = (Button) node;
-            if (boutonsCliques.contains(bouton.getText())) {
-                tilePaneEquations.getChildren().remove(node);
+    private HashSet<String> equationsAMettreBouton() {
+        HashSet<String> equationsAMettreBouton = new HashSet<>();
+        HashSet<String> equationsDejaDansGraph = new HashSet<>();
+
+        for (XYChart.Series series :
+                seriesDejaDansGraphique) {
+            equationsDejaDansGraph.add(series.getName());
+        }
+        for (Equation equation :
+                moteurCalcul.getAllEquations()) {
+            if (!equationsDejaDansGraph.contains(equation.getNom())) {
+                equationsAMettreBouton.add(equation.getNom());
             }
         }
+        return equationsAMettreBouton;
     }
 
     public void setMoteurCalcul(MoteurCalcul moteurCalcul) {
@@ -120,7 +130,8 @@ public class AffichageResultatsController implements Initializable {
         boutonVider.setOnAction(event -> {
             boutonsCliques.clear();
             lineChart.getData().clear();
-            rafraichirEquationsOnAction(event);
+            seriesDejaDansGraphique.clear();
+            rafraichirEquations();
         });
     }
 }

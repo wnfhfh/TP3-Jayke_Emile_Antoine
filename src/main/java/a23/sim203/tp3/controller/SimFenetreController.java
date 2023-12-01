@@ -10,10 +10,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.mariuszgromada.math.mxparser.Constant;
@@ -37,8 +35,28 @@ public class SimFenetreController {
     MoteurCalcul moteurCalcul;
     GestionAffichage gestionAffichage;
     private AffichageResultatsController affichageResultatsController;
-
     private TableauController tableauController;
+
+    @FXML
+    private ChoiceBox<String> XAccelerationChoiceBox;
+
+    @FXML
+    private ChoiceBox<String> XInitialChoiceBox;
+
+    @FXML
+    private ChoiceBox<String> XVitesseInitialeChoiceBox;
+
+    @FXML
+    private ChoiceBox<String> YAccelerationChoiceBox;
+
+    @FXML
+    private ChoiceBox<String> YInitialChoiceBox;
+
+    @FXML
+    private ChoiceBox<String> YVitesseInitialeChoiceBox;
+
+    @FXML
+    private Circle cercle;
 
 
     private SimulationService simulationService = new SimulationService();
@@ -57,11 +75,9 @@ public class SimFenetreController {
             setMoteurCalcul(moteurCalcul, scale);
             simulationService.setPeriod(Duration.valueOf(dtTextField.getText() + "s"));
             moteurCalcul.getConstanteValeurMap().put("d_", new Constant("d_", simulationService.getPeriod().toSeconds() * scale));
-            moteurCalcul.ajouteEquation("t_=t_+d_");
-            moteurCalcul.getAncienneValeurVariableMap().put("t_", new Constant("t_", 0));
             simulationService.start();
             addServiceListener();
-
+            placerSimulation();
             boutonLancer.setDisable(true);
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -70,6 +86,15 @@ public class SimFenetreController {
             alert.setContentText("Réessayez plz");
             alert.showAndWait();
         }
+    }
+
+    private void placerSimulation() {
+        String xInitial = XInitialChoiceBox.getSelectionModel().getSelectedItem();
+        String yInitial = YInitialChoiceBox.getSelectionModel().getSelectedItem();
+
+        cercle.setCenterX(Double.parseDouble(xInitial.split("=")[1]));
+        cercle.setCenterY(Double.parseDouble(yInitial.split("=")[1]));
+
     }
 
     private void addServiceListener() {
@@ -83,7 +108,28 @@ public class SimFenetreController {
             }
 
             tableauController.ajouterEquationTableau();
+            rafraichirSimulation();
         });
+    }
+
+    private void rafraichirSimulation() {
+        String nomXAcceleration = XAccelerationChoiceBox.getSelectionModel().getSelectedItem().split("=")[0];
+        String nomYAcceleration = YAccelerationChoiceBox.getSelectionModel().getSelectedItem().split("=")[0];
+        Double xInitial = Double.valueOf(XInitialChoiceBox.getSelectionModel().getSelectedItem().split("=")[1]);
+        Double yInitial = Double.valueOf(YInitialChoiceBox.getSelectionModel().getSelectedItem().split("=")[1]);
+        Double xVitesseInitiale = Double.valueOf(XVitesseInitialeChoiceBox.getSelectionModel().getSelectedItem().split("=")[1]);
+        Double yVitesseInitiale = Double.valueOf(YVitesseInitialeChoiceBox.getSelectionModel().getSelectedItem().split("=")[1]);
+
+        Double temps = moteurCalcul.getAncienneValeurVariableMap().get("t_").getConstantValue();
+        Double centerX = xInitial + (xVitesseInitiale * temps) + (0.5 * moteurCalcul.getAncienneValeurVariableMap().get(nomXAcceleration).getConstantValue() * (Math.pow(temps, 2)));
+        Double centerY = yInitial + (yVitesseInitiale * temps) + (0.5 * moteurCalcul.getAncienneValeurVariableMap().get(nomYAcceleration).getConstantValue() * (Math.pow(temps, 2)));
+
+        cercle.setCenterX(centerX);
+        cercle.setCenterY(centerY);
+
+/*
+        String MessageCacherMick = "Antoine pu de la raie";
+ */
     }
 
     @FXML
@@ -107,7 +153,7 @@ public class SimFenetreController {
         affichageResultatsController = fxmlLoader.getController();
         affichageResultatsController.setMoteurCalcul(moteurCalcul);
         affichageResultatsController.creerLineChart();
-        affichageResultatsController.rafraichirEquationsOnAction(new ActionEvent());
+        affichageResultatsController.rafraichirEquations();
         simulationService.setAffichageResultatsController(affichageResultatsController);
 
         Stage stageGraphique = new Stage();
@@ -160,6 +206,23 @@ public class SimFenetreController {
 
     public void setStageSimulation(Stage stageSimulation) {
         this.stageSimulation = stageSimulation;
+    }
+
+    public void setChoiceBoxes() {
+        for (String equationString :
+                moteurCalcul.getAllEquationsString()) {
+            XAccelerationChoiceBox.getItems().add(equationString);
+            YAccelerationChoiceBox.getItems().add(equationString);
+        }
+        for (String constanteString :
+                moteurCalcul.getToutesLesConstantesString()) {
+            XInitialChoiceBox.getItems().add(constanteString);
+            YInitialChoiceBox.getItems().add(constanteString);
+            XAccelerationChoiceBox.getItems().add(constanteString);
+            YAccelerationChoiceBox.getItems().add(constanteString);
+            XVitesseInitialeChoiceBox.getItems().add(constanteString);
+            YVitesseInitialeChoiceBox.getItems().add(constanteString);
+        }
     }
 }
 
