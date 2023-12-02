@@ -11,7 +11,11 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.TilePane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 import org.mariuszgromada.math.mxparser.Constant;
 
 import java.net.URL;
@@ -54,13 +58,20 @@ public class AffichageResultatsController implements Initializable {
         if (dejaDansGraphique(nomEquation) != null) {
             XYChart.Series serieARafraichir = dejaDansGraphique(nomEquation);
             serieARafraichir.setName(nomEquation);
-            serieARafraichir.getData().add(new XYChart.Data<Double, Double>(endTime, y.getConstantValue()));
-//            lineChart.getData().add(serieARafraichir);
+            XYChart.Data data = new XYChart.Data<Double, Double>(endTime, y.getConstantValue());
+            Circle cercleData = new Circle(5);
+            Tooltip.install(cercleData, new Tooltip(" + y.getConstantValue())"));
+            data.setNode(cercleData);
+            serieARafraichir.getData().add(data);
         } else {
             XYChart.Series aAjouter = new XYChart.Series();
             aAjouter.setName(nomEquation);
             seriesDejaDansGraphique.add(aAjouter);
-            aAjouter.getData().add(new XYChart.Data<Double, Double>(endTime, y.getConstantValue()));
+            XYChart.Data data = new XYChart.Data<Double, Double>(endTime, y.getConstantValue());
+            Circle cercleData = new Circle(5);
+            Tooltip.install(cercleData, new Tooltip( " + y.getConstantValue())"));
+            data.setNode(cercleData);
+            aAjouter.getData().add(data);
             lineChart.setCreateSymbols(true);
             lineChart.getData().add(aAjouter);
         }

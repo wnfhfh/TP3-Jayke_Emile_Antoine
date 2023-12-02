@@ -503,6 +503,10 @@ public class MoteurCalcul {
         return pasDeTempsActuel;
     }
 
+    public Long getPasDeTempsActuelMoinsUn() {
+        return (pasDeTempsActuel - 1);
+    }
+
     public Collection<String> getAllEquationsString() {
         Collection<String> equationsString = new ArrayList<>();
         for (Equation equation :
@@ -565,5 +569,9 @@ public class MoteurCalcul {
         }
 
         return dataTableau;
+    }
+
+    public HashMap<String, Map<String, Constant>> getHistorique() {
+        return historique;
     }
 }

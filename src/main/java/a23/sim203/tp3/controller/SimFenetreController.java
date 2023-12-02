@@ -65,6 +65,9 @@ public class SimFenetreController {
     void boutonArreterOnAction(ActionEvent event) {
         simulationService.cancel();
         simulationService.reset();
+        cercle.setCenterX(0);
+        cercle.setCenterY(0);
+        moteurCalcul.getAncienneValeurVariableMap().get("t_").setConstantValue(0);
         boutonLancer.setDisable(false);
     }
 
@@ -77,7 +80,7 @@ public class SimFenetreController {
             moteurCalcul.getConstanteValeurMap().put("d_", new Constant("d_", simulationService.getPeriod().toSeconds() * scale));
             simulationService.start();
             addServiceListener();
-            placerSimulation();
+            placerCercleIni();
             boutonLancer.setDisable(true);
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -88,45 +91,49 @@ public class SimFenetreController {
         }
     }
 
-    private void placerSimulation() {
-        String xInitial = XInitialChoiceBox.getSelectionModel().getSelectedItem();
-        String yInitial = YInitialChoiceBox.getSelectionModel().getSelectedItem();
+    private void placerCercleIni() {
+        try {
+            String xInitial = XInitialChoiceBox.getSelectionModel().getSelectedItem();
+            String yInitial = YInitialChoiceBox.getSelectionModel().getSelectedItem();
 
-        cercle.setCenterX(Double.parseDouble(xInitial.split("=")[1]));
-        cercle.setCenterY(Double.parseDouble(yInitial.split("=")[1]));
-
+            cercle.setCenterX(Double.parseDouble(xInitial.split("=")[1]));
+            cercle.setCenterY(Double.parseDouble(yInitial.split("=")[1]));
+        } catch (NullPointerException e) {
+            System.out.println("veuillez remplir les choice box plz");
+        }
     }
 
     private void addServiceListener() {
         simulationService.setOnSucceeded(event -> {
-
             for (String equationAMettreDansGraphique :
                     affichageResultatsController.getBoutonsCliques()) {
                 affichageResultatsController.rafraichirGraphique(equationAMettreDansGraphique,
                         moteurCalcul.getAncienneValeurVariableMap().get(equationAMettreDansGraphique),
                         moteurCalcul.getAncienneValeurVariableMap().get("t_").getConstantValue());
             }
-
-            tableauController.ajouterEquationTableau();
+            tableauController.refreshDonneesTableau();
             rafraichirSimulation();
         });
     }
 
     private void rafraichirSimulation() {
-        String nomXAcceleration = XAccelerationChoiceBox.getSelectionModel().getSelectedItem().split("=")[0];
-        String nomYAcceleration = YAccelerationChoiceBox.getSelectionModel().getSelectedItem().split("=")[0];
-        Double xInitial = Double.valueOf(XInitialChoiceBox.getSelectionModel().getSelectedItem().split("=")[1]);
-        Double yInitial = Double.valueOf(YInitialChoiceBox.getSelectionModel().getSelectedItem().split("=")[1]);
-        Double xVitesseInitiale = Double.valueOf(XVitesseInitialeChoiceBox.getSelectionModel().getSelectedItem().split("=")[1]);
-        Double yVitesseInitiale = Double.valueOf(YVitesseInitialeChoiceBox.getSelectionModel().getSelectedItem().split("=")[1]);
+        try {
+            String nomXAcceleration = XAccelerationChoiceBox.getSelectionModel().getSelectedItem().split("=")[0];
+            String nomYAcceleration = YAccelerationChoiceBox.getSelectionModel().getSelectedItem().split("=")[0];
+            Double xInitial = Double.valueOf(XInitialChoiceBox.getSelectionModel().getSelectedItem().split("=")[1]);
+            Double yInitial = Double.valueOf(YInitialChoiceBox.getSelectionModel().getSelectedItem().split("=")[1]);
+            Double xVitesseInitiale = Double.valueOf(XVitesseInitialeChoiceBox.getSelectionModel().getSelectedItem().split("=")[1]);
+            Double yVitesseInitiale = Double.valueOf(YVitesseInitialeChoiceBox.getSelectionModel().getSelectedItem().split("=")[1]);
 
-        Double temps = moteurCalcul.getAncienneValeurVariableMap().get("t_").getConstantValue();
-        Double centerX = xInitial + (xVitesseInitiale * temps) + (0.5 * moteurCalcul.getAncienneValeurVariableMap().get(nomXAcceleration).getConstantValue() * (Math.pow(temps, 2)));
-        Double centerY = yInitial + (yVitesseInitiale * temps) + (0.5 * moteurCalcul.getAncienneValeurVariableMap().get(nomYAcceleration).getConstantValue() * (Math.pow(temps, 2)));
+            Double temps = moteurCalcul.getAncienneValeurVariableMap().get("t_").getConstantValue();
+            Double centerX = xInitial + (xVitesseInitiale * temps) + (0.5 * moteurCalcul.getAncienneValeurVariableMap().get(nomXAcceleration).getConstantValue() * (Math.pow(temps, 2)));
+            Double centerY = yInitial + (yVitesseInitiale * temps) + (0.5 * moteurCalcul.getAncienneValeurVariableMap().get(nomYAcceleration).getConstantValue() * (Math.pow(temps, 2)));
 
-        cercle.setCenterX(centerX);
-        cercle.setCenterY(centerY);
-
+            cercle.setCenterX(centerX);
+            cercle.setCenterY(centerY);
+        } catch (NullPointerException e) {
+            System.out.println("mettre des données dans tous les champs svp");
+        }
         //TODO ajouter des limites au cercle pour pas qu'il s'autoyeet, permettre de mettre autre chose qu'un cercle
 /*
         String MessageCacherMick = "Antoine pu de la raie";
@@ -164,8 +171,9 @@ public class SimFenetreController {
 
     @FXML
     public void setMenuItemTableTemps(ActionEvent event) {
-        stageTableau.show();
         tableauController.setMoteurCalcul(moteurCalcul);
+        tableauController.ajouterColonnesTableau();
+        stageTableau.show();
         gestionAffichage.getAnimations().partageDesFenetresTableau(stageSimulation, stageCalculatrice, stageTableau);
     }
 
@@ -177,14 +185,12 @@ public class SimFenetreController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        tableauController = new TableauController();
-        fxmlLoader.setController(tableauController);
+        tableauController = fxmlLoader.getController();
         tableauController.setMoteurCalcul(moteurCalcul);
-        tableauController.ajouterEquationTableau();
+        tableauController.ajouterColonnesTableau();
         simulationService.setTableauController(tableauController);
         Scene scene = new Scene(root);
-        Stage stageTableau = new Stage();
-        this.stageTableau = stageTableau;
+        stageTableau = new Stage();
         stageTableau.setScene(scene);
     }
 
