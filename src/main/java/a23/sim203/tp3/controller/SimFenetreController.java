@@ -57,6 +57,7 @@ public class SimFenetreController {
 
     @FXML
     private Circle cercle;
+    private int shownStagesCount = 2;
 
 
     private SimulationService simulationService = new SimulationService();
@@ -147,7 +148,11 @@ public class SimFenetreController {
 
     @FXML
     void afficherGraphiqueOnAction(ActionEvent event) {
+        stageGraphique.setOnShown(event1 -> {
+            shownStagesCount++;
+        });
         stageGraphique.show();
+        gestionAffichage.getAnimations().sortLesMethodes(shownStagesCount,stageGraphique);
     }
 
     public void creerGraphique() {
@@ -171,10 +176,15 @@ public class SimFenetreController {
 
     @FXML
     public void setMenuItemTableTemps(ActionEvent event) {
+        stageTableau.setOnShown(event1 -> {
+            shownStagesCount++;
+        });
         tableauController.setMoteurCalcul(moteurCalcul);
         tableauController.ajouterColonnesTableau();
         stageTableau.show();
-        gestionAffichage.getAnimations().partageDesFenetresTableau(stageSimulation, stageCalculatrice, stageTableau);
+        gestionAffichage.getAnimations().sortLesMethodes(shownStagesCount,stageTableau);
+//        gestionAffichage.getAnimations().partageDesFenetresTableau(stageSimulation, stageCalculatrice, stageTableau);
+
     }
 
     public void creerTableau() {

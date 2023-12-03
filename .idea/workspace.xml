@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="befd7eba-a942-471e-8707-72f79c403d3b" name="Changes" comment="Fixe du tableau. Tableau terminé. Fixe du FXML, car bug quand le cercle dépasse les boutons. Le tout à été fixé.">
+    <list default="true" id="befd7eba-a942-471e-8707-72f79c403d3b" name="Changes" comment="Interface Créé">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-11-13_13_57__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-11-13_13_57__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/TableauController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/TableauController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/GestionAffichage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/GestionAffichage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/SimFenetreController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/SimFenetreController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/vue/Animations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/vue/Animations.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -79,7 +81,7 @@
   <component name="RunManager" selected="Application.SimulateurApp">
     <configuration name="SimulateurApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="a23.sim203.tp3.app.SimulateurApp" />
-      <module name="TP3_Officiel" />
+      <module name="TP3-Jayke_Emile_Antoine" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="a23.sim203.tp3.app.*" />
@@ -202,9 +204,7 @@
       <workItem from="1701376521933" duration="4138000" />
       <workItem from="1701401655872" duration="5956000" />
       <workItem from="1701566162698" duration="1580000" />
-      <workItem from="1701569193082" duration="7846000" />
-      <workItem from="1701636178177" duration="434000" />
-      <workItem from="1701636623358" duration="777000" />
+      <workItem from="1701569193082" duration="7632000" />
     </task>
     <task id="LOCAL-00003" summary="Changement de l'interface.">
       <created>1700755738559</created>
@@ -228,14 +228,7 @@
       <option name="project" value="LOCAL" />
       <updated>1701443653270</updated>
     </task>
-    <task id="LOCAL-00006" summary="Fixe du tableau. Tableau terminé. Fixe du FXML, car bug quand le cercle dépasse les boutons. Le tout à été fixé.">
-      <created>1701578886915</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1701578886915</updated>
-    </task>
-    <option name="localTasksCounter" value="7" />
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -258,17 +251,11 @@
     <MESSAGE value="Modification de SimulationService" />
     <MESSAGE value="Interface Créé" />
     <MESSAGE value="Ajout de simulation/cercle qui bouge, adaptation de l'interface SimFenetreController pour accueillir cela" />
-    <MESSAGE value="Fixe du tableau. Tableau terminé. Fixe du FXML, car bug quand le cercle dépasse les boutons. Le tout à été fixé." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixe du tableau. Tableau terminé. Fixe du FXML, car bug quand le cercle dépasse les boutons. Le tout à été fixé." />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajout de simulation/cercle qui bouge, adaptation de l'interface SimFenetreController pour accueillir cela" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/GestionAffichage.java</url>
-          <line>335</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/code fourni/test/java/a23/sim203/tp3/modele/MoteurCalculTest.java</url>
           <line>125</line>
