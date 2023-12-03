@@ -316,7 +316,6 @@ public class GestionAffichage {
             animations.partageDesFenetresSimulation(stageSimulation,stage);
             animations.setStages(stageSimulation, this.stage);
             animations.premiereAnimation(new Stage());
-            animations.deuxiemeAnimation(new Stage());
         });
     }
 

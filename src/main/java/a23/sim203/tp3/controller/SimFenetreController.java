@@ -168,6 +168,10 @@ public class SimFenetreController {
         stageGraphique.setOnShown(event1 -> {
             shownStagesCount++;
         });
+        stageGraphique.setOnCloseRequest(event1 -> {
+            shownStagesCount--;
+            gestionAffichage.getAnimations().sortLesMethodes(shownStagesCount,stageGraphique);
+        });
         stageGraphique.show();
         gestionAffichage.getAnimations().sortLesMethodes(shownStagesCount, stageGraphique);
     }
@@ -198,6 +202,7 @@ public class SimFenetreController {
         });
         stageTableau.setOnCloseRequest(event1 -> {
             shownStagesCount--;
+            gestionAffichage.getAnimations().sortLesMethodes(shownStagesCount,stageTableau);
         });
         tableauController.setMoteurCalcul(moteurCalcul);
         tableauController.ajouterColonnesTableau();
