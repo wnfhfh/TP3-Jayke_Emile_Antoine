@@ -33,7 +33,7 @@ public class MoteurCalcul {
 
     private HashMap<String, Constant> mapAncienneValeur;
     private HashMap<String, Constant> mapNouvelleValeur;
-    private HashMap<String, Map<String, Constant>> historique;
+    private HashMap<Long, Map<String, Constant>> historique;
 
     /**
      * Constructeur par défaut du moteur de calcul.
@@ -51,7 +51,7 @@ public class MoteurCalcul {
     }
 
     public long avancePasDeTemps() {
-        historique.put(pasDeTempsActuel.toString(), faireMapHistorique());
+        historique.put(pasDeTempsActuel, faireMapHistorique());
         pasDeTempsActuel++;
         mapAncienneValeur.putAll(mapNouvelleValeur);
         mapNouvelleValeur.clear();
@@ -571,7 +571,7 @@ public class MoteurCalcul {
         return dataTableau;
     }
 
-    public HashMap<String, Map<String, Constant>> getHistorique() {
+    public HashMap<Long, Map<String, Constant>> getHistorique() {
         return historique;
     }
 }

@@ -14,7 +14,6 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import org.mariuszgromada.math.mxparser.Constant;
 
 import java.net.URL;
@@ -24,13 +23,12 @@ public class TableauController implements Initializable {
 
     MoteurCalcul moteurCalcul;
     @FXML
-    TableView<Map.Entry<String, Map<String, Double>>> tableView;
+    TableView<Map<String, Constant>>tableView;
     @FXML
     private TableColumn<Map, Double> tempsTableColumn;
 
     public TableauController() {
         this.tableView = new TableView<>();
-
     }
 
     public void ajouterColonnesTableau() {
@@ -40,13 +38,13 @@ public class TableauController implements Initializable {
         }
 
         String[] tableauNomsColonnes = nomsColonnes.toArray(new String[0]);
-
+        tableView.getColumns().clear();
         for (String nomColonne : tableauNomsColonnes) {
-            TableColumn<Map.Entry<String, Map<String, Double>>, Double> colonne = new TableColumn<>(nomColonne);
+            TableColumn<Map<String, Constant>, Double> colonne = new TableColumn<>(nomColonne);
             colonne.setCellValueFactory(cellData -> {
-                Map<String, Double> rowData = cellData.getValue().getValue();
+                Map<String, Constant> rowData = cellData.getValue();
                 if (rowData != null && rowData.containsKey(nomColonne)) {
-                    return new ReadOnlyObjectWrapper<>(rowData.get(nomColonne));
+                    return new ReadOnlyObjectWrapper<>(rowData.get(nomColonne).getConstantValue());
                 } else {
                     return null;
                 }
@@ -57,9 +55,7 @@ public class TableauController implements Initializable {
     }
 
     public void refreshDonneesTableau() {
-        Map<String, Double> nouvelleDonnee = new HashMap<>();
-        nouvelleDonnee.put(moteurCalcul.getPasDeTempsActuelMoinsUn().toString(), ((Constant) moteurCalcul.getHistorique().get(moteurCalcul.getPasDeTempsActuelMoinsUn())).getConstantValue());
-        tableView.getItems().add(Map.entry(moteurCalcul.getPasDeTempsActuelMoinsUn().toString(), nouvelleDonnee));
+      tableView.getItems().add(moteurCalcul.getHistorique().get(moteurCalcul.getPasDeTempsActuelMoinsUn()));
     }
 
 

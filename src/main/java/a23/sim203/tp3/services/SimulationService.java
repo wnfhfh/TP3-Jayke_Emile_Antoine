@@ -42,10 +42,6 @@ public class SimulationService extends ScheduledService<Void> {
         this.tableauController = tableauController1;
     }
 
-//    private void gererTableauController() {
-//        tableauController.ajouterColonnesTableau();
-//    }
-
     @Override
     protected Task<Void> createTask() {
         return new Task<Void>() {
@@ -62,14 +58,6 @@ public class SimulationService extends ScheduledService<Void> {
 
                 endTime = System.currentTimeMillis();
                 dt = endTime - startTime;
-
-//                try {
-//                    if (tableauController != null) {
-//                        gererTableauController();
-//                    }
-//                } catch (Exception e) {
-//                    System.out.println("erreur affichage" + e.getMessage() + "\nligne: " + e.getStackTrace()[0].getLineNumber());
-//                }
                 System.out.println("service roule");
                 return null;
             }
