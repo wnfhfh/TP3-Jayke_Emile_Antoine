@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="befd7eba-a942-471e-8707-72f79c403d3b" name="Changes" comment="Interface Créé">
+    <list default="true" id="befd7eba-a942-471e-8707-72f79c403d3b" name="Changes" comment="Fixe du tableau. Tableau terminé. Fixe du FXML, car bug quand le cercle dépasse les boutons. Le tout à été fixé.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/TableauController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/TableauController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/modele/MoteurCalcul.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/modele/MoteurCalcul.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/services/SimulationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/services/SimulationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/vue/Animations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/vue/Animations.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -203,7 +202,9 @@
       <workItem from="1701376521933" duration="4138000" />
       <workItem from="1701401655872" duration="5956000" />
       <workItem from="1701566162698" duration="1580000" />
-      <workItem from="1701569193082" duration="7632000" />
+      <workItem from="1701569193082" duration="7846000" />
+      <workItem from="1701636178177" duration="434000" />
+      <workItem from="1701636623358" duration="777000" />
     </task>
     <task id="LOCAL-00003" summary="Changement de l'interface.">
       <created>1700755738559</created>
@@ -227,7 +228,14 @@
       <option name="project" value="LOCAL" />
       <updated>1701443653270</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Fixe du tableau. Tableau terminé. Fixe du FXML, car bug quand le cercle dépasse les boutons. Le tout à été fixé.">
+      <created>1701578886915</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1701578886915</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -250,7 +258,8 @@
     <MESSAGE value="Modification de SimulationService" />
     <MESSAGE value="Interface Créé" />
     <MESSAGE value="Ajout de simulation/cercle qui bouge, adaptation de l'interface SimFenetreController pour accueillir cela" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajout de simulation/cercle qui bouge, adaptation de l'interface SimFenetreController pour accueillir cela" />
+    <MESSAGE value="Fixe du tableau. Tableau terminé. Fixe du FXML, car bug quand le cercle dépasse les boutons. Le tout à été fixé." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixe du tableau. Tableau terminé. Fixe du FXML, car bug quand le cercle dépasse les boutons. Le tout à été fixé." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -32,27 +32,28 @@ public class TableauController implements Initializable {
     }
 
     public void ajouterColonnesTableau() {
-        Set<String> nomsColonnes = new TreeSet<>();
+        Set<String> columnNames = new TreeSet<>();
+
         for (Map<String, Constant> innerMap : moteurCalcul.getHistorique().values()) {
-            nomsColonnes.addAll(innerMap.keySet());
+            columnNames.addAll(innerMap.keySet());
         }
 
-        String[] tableauNomsColonnes = nomsColonnes.toArray(new String[0]);
         tableView.getColumns().clear();
-        for (String nomColonne : tableauNomsColonnes) {
-            TableColumn<Map<String, Constant>, Double> colonne = new TableColumn<>(nomColonne);
-            colonne.setCellValueFactory(cellData -> {
+
+        for (String columnName : columnNames) {
+            TableColumn<Map<String, Constant>, Double> column = new TableColumn<>(columnName);
+            column.setCellValueFactory(cellData -> {
                 Map<String, Constant> rowData = cellData.getValue();
-                if (rowData != null && rowData.containsKey(nomColonne)) {
-                    return new ReadOnlyObjectWrapper<>(rowData.get(nomColonne).getConstantValue());
-                } else {
-                    return null;
-                }
+                Constant constantValue = (rowData != null) ? rowData.get(columnName) : null;
+                return new ReadOnlyObjectWrapper<>((constantValue != null) ? constantValue.getConstantValue() : null);
             });
-            tableView.getColumns().add(colonne);
-            tableView.refresh();
+
+            tableView.getColumns().add(column);
         }
+
+        tableView.refresh();
     }
+
 
     public void refreshDonneesTableau() {
       tableView.getItems().add(moteurCalcul.getHistorique().get(moteurCalcul.getPasDeTempsActuelMoinsUn()));

@@ -42,4 +42,6 @@ public class Animations {
     public void partageDesFenetresGraphique(Stage stageSimulation, Stage stageCalculatrice, Stage stageGraphique){
 
     }
+
+
 }
