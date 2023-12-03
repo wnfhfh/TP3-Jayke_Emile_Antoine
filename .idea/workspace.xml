@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="befd7eba-a942-471e-8707-72f79c403d3b" name="Changes" comment="Chronomètre relié aux boutons de la simulation">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/SimFenetreController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/SimFenetreController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/vue/Animations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/vue/Animations.java" afterDir="false" />
+    <list default="true" id="befd7eba-a942-471e-8707-72f79c403d3b" name="Changes" comment="Deuxième animation - Loading Screen. Reste à rendre l'interface ok.">
+      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/GestionAffichage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/GestionAffichage.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
