@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="befd7eba-a942-471e-8707-72f79c403d3b" name="Changes" comment="Début de la première animation">
+    <list default="true" id="befd7eba-a942-471e-8707-72f79c403d3b" name="Changes" comment="Chronomètre relié aux boutons de la simulation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/GestionAffichage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/GestionAffichage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/SimFenetreController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/SimFenetreController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/vue/Animation.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/vue/Animations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/vue/Animations.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -37,6 +35,7 @@
   <component name="Git.Settings">
     <option name="PREVIOUS_COMMIT_AUTHORS">
       <list>
+        <option value="Emile &lt;a@a.com&gt;" />
         <option value="Antoine &lt;a@a.com&gt;" />
       </list>
     </option>
@@ -234,7 +233,14 @@
       <option name="project" value="LOCAL" />
       <updated>1701640063744</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Chronomètre relié aux boutons de la simulation">
+      <created>1701646209012</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1701646209012</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -259,7 +265,8 @@
     <MESSAGE value="Ajout de simulation/cercle qui bouge, adaptation de l'interface SimFenetreController pour accueillir cela" />
     <MESSAGE value="Simplification de la méthode ajouterColonnesTableau" />
     <MESSAGE value="Début de la première animation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Début de la première animation" />
+    <MESSAGE value="Chronomètre relié aux boutons de la simulation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Chronomètre relié aux boutons de la simulation" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
