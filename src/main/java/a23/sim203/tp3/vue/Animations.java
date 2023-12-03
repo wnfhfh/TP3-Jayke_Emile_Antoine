@@ -41,6 +41,9 @@ public class Animations {
         if (shownStagesCount == 4) {
             partageQuatreFenetres(stageToShow);
         }
+        if (shownStagesCount == 2) {
+            partageDesFenetresSimulation(stageSimulation, stageCalculatrice);
+        }
     }
 
     private void partageTroisFenetres(Stage stageToShow) {
