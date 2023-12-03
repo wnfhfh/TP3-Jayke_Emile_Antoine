@@ -1,9 +1,6 @@
 package a23.sim203.tp3.vue;
 
-import a23.sim203.tp3.modele.MoteurCalcul;
-import a23.sim203.tp3.services.SimulationService;
 import javafx.animation.KeyFrame;
-import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -11,24 +8,17 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.mariuszgromada.math.mxparser.Constant;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
 
 public class Animations {
-    @FXML
-    private Button boutonLancer;
+
+    private int frameIndex = 0;
+    private final String[] spinner = {"|", "/", "-", "\\"};
+    private final Label loadingLabel = new Label("Loading " + spinner[frameIndex]);
 
     private Rectangle2D screensize = Screen.getPrimary().getBounds();
 
@@ -155,4 +145,25 @@ public class Animations {
     public Timeline getTimeline() {
         return timeline;
     }
+
+    public void deuxiemeAnimation(Stage primaryStage){
+            StackPane root = new StackPane(loadingLabel);
+            root.setAlignment(Pos.CENTER);
+
+            Scene scene = new Scene(root, 300, 200);
+            primaryStage.setTitle("Télécharge l'animation");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+
+            startLoadingAnimation();
+        }
+
+        private void startLoadingAnimation() {
+            Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), event -> {
+                loadingLabel.setText("Télécharge " + spinner[frameIndex]);
+                frameIndex = (frameIndex + 1) % spinner.length;
+            }));
+            timeline.setCycleCount(Timeline.INDEFINITE);
+            timeline.play();
+        }
 }
