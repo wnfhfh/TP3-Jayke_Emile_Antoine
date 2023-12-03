@@ -17,6 +17,7 @@ import javafx.util.Duration;
 import org.mariuszgromada.math.mxparser.Constant;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class SimFenetreController {
 
@@ -68,6 +69,7 @@ public class SimFenetreController {
 
     @FXML
     void boutonArreterOnAction(ActionEvent event) {
+        gestionAffichage.getAnimations().arreterChronometre();
         simulationService.cancel();
         simulationService.reset();
         cercle.setCenterX(0);
@@ -79,7 +81,11 @@ public class SimFenetreController {
 
     @FXML
     void boutonLancerOnAction(ActionEvent event) {
-
+        if (gestionAffichage.getAnimations().getTimeline() != null) {
+            gestionAffichage.getAnimations().resumeChronometre();
+        } else {
+            gestionAffichage.getAnimations().departChronometre();
+        }
         if (boutonPause.disabledProperty().getValue()) {
             simulationService.resumeService();
             boutonPause.setDisable(false);
@@ -154,6 +160,7 @@ public class SimFenetreController {
         boutonPause.setDisable(true);
         boutonLancer.setDisable(false);
         simulationService.pauseService();
+        gestionAffichage.getAnimations().pauseChronometre();
     }
 
     @FXML

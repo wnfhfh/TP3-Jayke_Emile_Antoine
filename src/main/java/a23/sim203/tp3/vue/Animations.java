@@ -107,28 +107,17 @@ public class Animations {
         root.setMaxHeight(50);
         root.setMaxWidth(50);
 
-        Button playButton = new Button("Play");
-        playButton.setDisable(false);
-        playButton.setOnAction(event -> departChronomètre());
 
-        Button stopButton = new Button("Stop");
-        stopButton.setDisable(false);
-        stopButton.setOnAction(event -> arreterChronometre());
+        root.getChildren().add(timerLabel);
 
-
-        root.getChildren().addAll(timerLabel, playButton, stopButton);
-
-        Scene scene = new Scene(root, 200, 100);
+        Scene scene = new Scene(root, 250, 150);
 
         stageAnimation.setTitle("Chronomètre");
         stageAnimation.setScene(scene);
         stageAnimation.show();
     }
 
-    private void departChronomètre() {
-        // Disable the play button once the timer starts
-        (timerLabel.getParent().getChildrenUnmodifiable().filtered(node -> node instanceof Button).get(0)).setDisable(true);
-
+    public void departChronometre() {
         timeline = new Timeline(
                 new KeyFrame(Duration.seconds(1), event -> {
                     secondsElapsed++;
@@ -139,24 +128,28 @@ public class Animations {
         timeline.play();
     }
 
-    private void arreterChronometre() {
-        // Enable the play button and disable the stop button when the timer stops
-        Button playButton = (Button) timerLabel.getParent().getChildrenUnmodifiable().filtered(node -> node instanceof Button && ((Button) node).getText().equals("Play")).get(0);
-        Button stopButton = (Button) timerLabel.getParent().getChildrenUnmodifiable().filtered(node -> node instanceof Button && ((Button) node).getText().equals("Stop")).get(0);
-
-        playButton.setDisable(false);
-        stopButton.setDisable(true);
-
+    public void arreterChronometre() {
         if (timeline != null) {
             timeline.stop();
         }
     }
 
+    public void resumeChronometre() {
+        timeline.play();
+    }
+
+    public void pauseChronometre() {
+        timeline.pause();
+    }
 
     private void updateTimerLabel() {
         int minutes = secondsElapsed / 60;
         int seconds = secondsElapsed % 60;
         String formattedTime = String.format("%02d:%02d", minutes, seconds);
         timerLabel.setText(formattedTime);
+    }
+
+    public Timeline getTimeline() {
+        return timeline;
     }
 }
