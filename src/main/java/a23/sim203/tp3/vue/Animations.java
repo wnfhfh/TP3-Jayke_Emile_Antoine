@@ -1,8 +1,20 @@
 package a23.sim203.tp3.vue;
 
+import a23.sim203.tp3.modele.MoteurCalcul;
+import a23.sim203.tp3.services.SimulationService;
+import javafx.animation.ScaleTransition;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import org.mariuszgromada.math.mxparser.Constant;
+
+import java.util.Map;
 
 public class Animations {
 
@@ -10,6 +22,7 @@ public class Animations {
 
     private Stage stageSimulation;
     private Stage stageCalculatrice;
+    Button clickedButton;
 
     public void setStages(Stage stageSimulation, Stage stageCalculatrice) {
         this.stageSimulation = stageSimulation;
@@ -68,6 +81,34 @@ public class Animations {
 
         stageCalculatrice.setY(0);
         stageSimulation.setY(0);
+    }
+
+    public void premiereAnimation(Stage stageAnimation) {
+        AnchorPane root = new AnchorPane();
+        TableView<Map<String, Constant>> tableView = new TableView<>();
+
+        stageAnimation.setScene(new Scene(root));
+        stageAnimation.setWidth(1000);
+        stageAnimation.setHeight(1000);
+
+        MoteurCalcul moteurCalcul = new MoteurCalcul();
+        tableView.getItems().add(moteurCalcul.getVariableValueMap());
+        root.getChildren().add(tableView);
+
+        clickedButton.setOnMouseClicked(event -> {
+            // Add your animation logic for the clicked button here
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.5), clickedButton);
+            scaleTransition.setFromX(1);
+            scaleTransition.setFromY(1);
+            scaleTransition.setToX(1.2);
+            scaleTransition.setToY(1.2);
+            scaleTransition.setCycleCount(2);
+            scaleTransition.setAutoReverse(true);
+            scaleTransition.play();
+        });
+
+        stageAnimation.show();
+
     }
 
 
