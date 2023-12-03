@@ -29,6 +29,10 @@ public class SimFenetreController {
     @FXML
     private Button boutonArret;
     @FXML
+    private Button boutonTableau;
+    @FXML
+    private Button boutonGraphique;
+    @FXML
     private TextField dtTextField;
     @FXML
     private TextField echelleTemporelleTextField;
@@ -167,10 +171,12 @@ public class SimFenetreController {
     void afficherGraphiqueOnAction(ActionEvent event) {
         stageGraphique.setOnShown(event1 -> {
             shownStagesCount++;
+            boutonGraphique.setDisable(true);
         });
         stageGraphique.setOnCloseRequest(event1 -> {
             shownStagesCount--;
             gestionAffichage.getAnimations().sortLesMethodes(shownStagesCount,stageGraphique);
+            boutonGraphique.setDisable(false);
         });
         stageGraphique.show();
         gestionAffichage.getAnimations().sortLesMethodes(shownStagesCount, stageGraphique);
@@ -199,10 +205,12 @@ public class SimFenetreController {
     public void setMenuItemTableTemps(ActionEvent event) {
         stageTableau.setOnShown(event1 -> {
             shownStagesCount++;
+            boutonTableau.setDisable(true);
         });
         stageTableau.setOnCloseRequest(event1 -> {
             shownStagesCount--;
             gestionAffichage.getAnimations().sortLesMethodes(shownStagesCount,stageTableau);
+            boutonTableau.setDisable(false);
         });
         tableauController.setMoteurCalcul(moteurCalcul);
         tableauController.ajouterColonnesTableau();

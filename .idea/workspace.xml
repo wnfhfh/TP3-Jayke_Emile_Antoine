@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="befd7eba-a942-471e-8707-72f79c403d3b" name="Changes" comment="Chronomètre relié aux boutons de la simulation">
+    <list default="true" id="befd7eba-a942-471e-8707-72f79c403d3b" name="Changes" comment="Peaufiné le placement des fenetres dans la classe Animations.java">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/SimFenetreController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/SimFenetreController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/vue/Animations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/vue/Animations.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -240,7 +239,14 @@
       <option name="project" value="LOCAL" />
       <updated>1701646209012</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Peaufiné le placement des fenetres dans la classe Animations.java">
+      <created>1701646752551</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1701646752551</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -266,7 +272,8 @@
     <MESSAGE value="Simplification de la méthode ajouterColonnesTableau" />
     <MESSAGE value="Début de la première animation" />
     <MESSAGE value="Chronomètre relié aux boutons de la simulation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Chronomètre relié aux boutons de la simulation" />
+    <MESSAGE value="Peaufiné le placement des fenetres dans la classe Animations.java" />
+    <option name="LAST_COMMIT_MESSAGE" value="Peaufiné le placement des fenetres dans la classe Animations.java" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
