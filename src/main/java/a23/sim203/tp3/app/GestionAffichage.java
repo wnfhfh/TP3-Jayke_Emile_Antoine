@@ -295,8 +295,8 @@ public class GestionAffichage {
 
     public void setMenuItemCalculPasDeTemps(MenuItem boutonCalculPasDeTemps) {
         boutonCalculPasDeTemps.setOnAction(n -> {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("testFenetreSimulation.fxml"));
-            Parent root = null;
+            FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("testFenetreSimulation.fxml"));
+            Parent root;
             try {
                 root = fxmlLoader.load();
             } catch (IOException e) {
@@ -315,7 +315,8 @@ public class GestionAffichage {
             controller.setChoiceBoxes();
             animations.partageDesFenetresSimulation(stageSimulation,stage);
             animations.setStages(stageSimulation, this.stage);
-            animations.premiereAnimation(stage);
+            animations.premiereAnimation(new Stage());
+            animations.deuxiemeAnimation(new Stage());
         });
     }
 

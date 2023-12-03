@@ -1,9 +1,6 @@
 package a23.sim203.tp3.vue;
 
-import a23.sim203.tp3.modele.MoteurCalcul;
-import a23.sim203.tp3.services.SimulationService;
 import javafx.animation.KeyFrame;
-import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -11,24 +8,17 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.mariuszgromada.math.mxparser.Constant;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
 
 public class Animations {
-    @FXML
-    private Button boutonLancer;
+
+    private int frameIndex = 0;
+    private final String[] spinner = {"|", "/", "-", "\\"};
+    private final Label loadingLabel = new Label("Loading " + spinner[frameIndex]);
 
     private Rectangle2D screensize = Screen.getPrimary().getBounds();
 
@@ -107,28 +97,17 @@ public class Animations {
         root.setMaxHeight(50);
         root.setMaxWidth(50);
 
-        Button playButton = new Button("Play");
-        playButton.setDisable(false);
-        playButton.setOnAction(event -> departChronomètre());
 
-        Button stopButton = new Button("Stop");
-        stopButton.setDisable(false);
-        stopButton.setOnAction(event -> arreterChronometre());
+        root.getChildren().add(timerLabel);
 
-
-        root.getChildren().addAll(timerLabel, playButton, stopButton);
-
-        Scene scene = new Scene(root, 200, 100);
+        Scene scene = new Scene(root, 250, 150);
 
         stageAnimation.setTitle("Chronomètre");
         stageAnimation.setScene(scene);
         stageAnimation.show();
     }
 
-    private void departChronomètre() {
-        // Disable the play button once the timer starts
-        (timerLabel.getParent().getChildrenUnmodifiable().filtered(node -> node instanceof Button).get(0)).setDisable(true);
-
+    public void departChronometre() {
         timeline = new Timeline(
                 new KeyFrame(Duration.seconds(1), event -> {
                     secondsElapsed++;
@@ -139,19 +118,19 @@ public class Animations {
         timeline.play();
     }
 
-    private void arreterChronometre() {
-        // Enable the play button and disable the stop button when the timer stops
-        Button playButton = (Button) timerLabel.getParent().getChildrenUnmodifiable().filtered(node -> node instanceof Button && ((Button) node).getText().equals("Play")).get(0);
-        Button stopButton = (Button) timerLabel.getParent().getChildrenUnmodifiable().filtered(node -> node instanceof Button && ((Button) node).getText().equals("Stop")).get(0);
-
-        playButton.setDisable(false);
-        stopButton.setDisable(true);
-
+    public void arreterChronometre() {
         if (timeline != null) {
             timeline.stop();
         }
     }
 
+    public void resumeChronometre() {
+        timeline.play();
+    }
+
+    public void pauseChronometre() {
+        timeline.pause();
+    }
 
     private void updateTimerLabel() {
         int minutes = secondsElapsed / 60;
@@ -159,4 +138,29 @@ public class Animations {
         String formattedTime = String.format("%02d:%02d", minutes, seconds);
         timerLabel.setText(formattedTime);
     }
+
+    public Timeline getTimeline() {
+        return timeline;
+    }
+
+    public void deuxiemeAnimation(Stage primaryStage){
+            StackPane root = new StackPane(loadingLabel);
+            root.setAlignment(Pos.CENTER);
+
+            Scene scene = new Scene(root, 300, 200);
+            primaryStage.setTitle("Télécharge l'animation");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+
+            startLoadingAnimation();
+        }
+
+        private void startLoadingAnimation() {
+            Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), event -> {
+                loadingLabel.setText("Télécharge " + spinner[frameIndex]);
+                frameIndex = (frameIndex + 1) % spinner.length;
+            }));
+            timeline.setCycleCount(Timeline.INDEFINITE);
+            timeline.play();
+        }
 }

@@ -22,12 +22,12 @@
             <Polygon fill="#09860d" points="9.0, 3.0, -7.0, -7.0, -7.0, 11.0" stroke="BLACK" strokeType="INSIDE" />
          </graphic>
       </Button>
-      <Button layoutX="53.0" layoutY="336.0" mnemonicParsing="false" onAction="#boutonArreterOnAction" prefHeight="33.0" prefWidth="33.0">
+      <Button fx:id="boutonArret" layoutX="53.0" layoutY="336.0" mnemonicParsing="false" onAction="#boutonArreterOnAction" prefHeight="33.0" prefWidth="33.0">
          <graphic>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f24242" height="16.0" stroke="BLACK" strokeType="INSIDE" width="16.0" />
          </graphic>
       </Button>
-      <Button alignment="CENTER" layoutX="94.0" layoutY="336.0" mnemonicParsing="false" onAction="#boutonPauseOnAction" prefHeight="33.0" prefWidth="33.0">
+      <Button fx:id="boutonPause" alignment="CENTER" layoutX="94.0" layoutY="336.0" mnemonicParsing="false" onAction="#boutonPauseOnAction" prefHeight="33.0" prefWidth="33.0">
          <graphic>
             <HBox alignment="CENTER" prefHeight="28.0" prefWidth="28.0" spacing="3.0">
                <children>

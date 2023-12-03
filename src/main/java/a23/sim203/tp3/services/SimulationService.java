@@ -18,7 +18,8 @@ public class SimulationService extends ScheduledService<Void> {
     private double dt;
     private AffichageResultatsController affichageResultatsController;
     private TableauController tableauController;
-
+    private double tempsDebutPause;
+    private double tempsFinPause;
 
     public void setMoteurCalcul(MoteurCalcul moteurCalcul) {
         startTime = System.currentTimeMillis();
@@ -28,8 +29,6 @@ public class SimulationService extends ScheduledService<Void> {
     }
 
     public void setMoteurCalculEtScale(MoteurCalcul moteurCalcul, double scale) {
-        startTime = System.currentTimeMillis() / 1000;
-//        dtDepart = (double) System.currentTimeMillis() /1000;
         this.moteurCalcul = moteurCalcul;
         this.timeScale = scale;
     }
@@ -42,24 +41,55 @@ public class SimulationService extends ScheduledService<Void> {
         this.tableauController = tableauController1;
     }
 
+    public void startService() {
+        super.start();
+    }
+
+    public void resumeService() {
+        tempsFinPause = System.currentTimeMillis();
+        super.start();
+    }
+
+    public void pauseService() {
+        tempsDebutPause = System.currentTimeMillis();
+        super.cancel();
+        super.reset();
+    }
+
     @Override
     protected Task<Void> createTask() {
         return new Task<Void>() {
             @Override
             protected Void call() throws Exception {
+                if (tempsFinPause - tempsDebutPause != 0) {
+                    startTime = System.currentTimeMillis();
+                    moteurCalcul.calculeSim();
+                    moteurCalcul.refreshEquations();
+                    System.out.println("methode speciale pause");
+                    System.out.println(moteurCalcul.getNouvelleValeurVariableMap().get("t_").getConstantValue());
+                    System.out.println(moteurCalcul.getConstanteValeurMap().get("d_").getConstantValue());
+                    moteurCalcul.avancePasDeTemps();
+                    endTime = System.currentTimeMillis() - (tempsFinPause - tempsDebutPause);
+                    dt = endTime - startTime;
+                    return null;
+                } else {
+                    startTime = System.currentTimeMillis();
 
-                startTime = System.currentTimeMillis();
+                    moteurCalcul.calculeSim();
+                    moteurCalcul.refreshEquations();
+                    System.out.println(moteurCalcul.getNouvelleValeurVariableMap().get("t_").getConstantValue());
+                    System.out.println(moteurCalcul.getConstanteValeurMap().get("d_").getConstantValue());
+                    moteurCalcul.avancePasDeTemps();
 
-                moteurCalcul.calculeSim();
-                moteurCalcul.refreshEquations();
-                System.out.println(moteurCalcul.getNouvelleValeurVariableMap().get("t_").getConstantValue());
-                System.out.println(moteurCalcul.getConstanteValeurMap().get("d_").getConstantValue());
-                moteurCalcul.avancePasDeTemps();
-
-                endTime = System.currentTimeMillis();
-                dt = endTime - startTime;
-                System.out.println("service roule");
-                return null;
+                    if (tempsFinPause - tempsDebutPause != 0) {
+                        endTime = System.currentTimeMillis() - (tempsFinPause - tempsDebutPause);
+                        return null;
+                    }
+                    endTime = System.currentTimeMillis();
+                    dt = endTime - startTime;
+                    System.out.println("service roule");
+                    return null;
+                }
             }
         };
     }
