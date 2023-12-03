@@ -24,6 +24,10 @@ public class SimFenetreController {
     @FXML
     private Button boutonLancer;
     @FXML
+    private Button boutonPause;
+    @FXML
+    private Button boutonArret;
+    @FXML
     private TextField dtTextField;
     @FXML
     private TextField echelleTemporelleTextField;
@@ -70,25 +74,32 @@ public class SimFenetreController {
         cercle.setCenterY(0);
         moteurCalcul.getAncienneValeurVariableMap().get("t_").setConstantValue(0);
         boutonLancer.setDisable(false);
+        boutonPause.setDisable(false);
     }
 
     @FXML
     void boutonLancerOnAction(ActionEvent event) {
-        try {
-            double scale = Double.parseDouble(echelleTemporelleTextField.getText());
-            setMoteurCalcul(moteurCalcul, scale);
-            simulationService.setPeriod(Duration.valueOf(dtTextField.getText() + "s"));
-            moteurCalcul.getConstanteValeurMap().put("d_", new Constant("d_", simulationService.getPeriod().toSeconds() * scale));
-            simulationService.start();
-            addServiceListener();
-            placerCercleIni();
-            boutonLancer.setDisable(true);
-        } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setHeaderText("Veuillez entrer des valeurs valides");
-            alert.setTitle("Calculateur avancée");
-            alert.setContentText("Réessayez plz");
-            alert.showAndWait();
+
+        if (boutonPause.disabledProperty().getValue()) {
+            simulationService.resumeService();
+            boutonPause.setDisable(false);
+        } else {
+            try {
+                double scale = Double.parseDouble(echelleTemporelleTextField.getText());
+                setMoteurCalcul(moteurCalcul, scale);
+                simulationService.setPeriod(Duration.valueOf(dtTextField.getText() + "s"));
+                moteurCalcul.getConstanteValeurMap().put("d_", new Constant("d_", simulationService.getPeriod().toSeconds() * scale));
+                simulationService.startService();
+                addServiceListener();
+                placerCercleIni();
+                boutonLancer.setDisable(true);
+            } catch (Exception e) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setHeaderText("Veuillez entrer des valeurs valides");
+                alert.setTitle("Calculateur avancée");
+                alert.setContentText("Réessayez plz");
+                alert.showAndWait();
+            }
         }
     }
 
@@ -136,14 +147,13 @@ public class SimFenetreController {
             System.out.println("mettre des données dans tous les champs svp");
         }
         //TODO ajouter des limites au cercle pour pas qu'il s'autoyeet, permettre de mettre autre chose qu'un cercle
-/*
-        String MessageCacherMick = "Antoine pu de la raie";
- */
     }
 
     @FXML
     void boutonPauseOnAction(ActionEvent event) {
-
+        boutonPause.setDisable(true);
+        boutonLancer.setDisable(false);
+        simulationService.pauseService();
     }
 
     @FXML
@@ -152,7 +162,7 @@ public class SimFenetreController {
             shownStagesCount++;
         });
         stageGraphique.show();
-        gestionAffichage.getAnimations().sortLesMethodes(shownStagesCount,stageGraphique);
+        gestionAffichage.getAnimations().sortLesMethodes(shownStagesCount, stageGraphique);
     }
 
     public void creerGraphique() {
@@ -179,11 +189,13 @@ public class SimFenetreController {
         stageTableau.setOnShown(event1 -> {
             shownStagesCount++;
         });
+        stageTableau.setOnCloseRequest(event1 -> {
+            shownStagesCount--;
+        });
         tableauController.setMoteurCalcul(moteurCalcul);
         tableauController.ajouterColonnesTableau();
         stageTableau.show();
-        gestionAffichage.getAnimations().sortLesMethodes(shownStagesCount,stageTableau);
-//        gestionAffichage.getAnimations().partageDesFenetresTableau(stageSimulation, stageCalculatrice, stageTableau);
+        gestionAffichage.getAnimations().sortLesMethodes(shownStagesCount, stageTableau);
 
     }
 
@@ -205,13 +217,11 @@ public class SimFenetreController {
     }
 
     public void setMoteurCalcul(MoteurCalcul moteurCalcul) {
-//        double scale = Double.valueOf(echelleTemporelleTextField.getText());
         this.moteurCalcul = moteurCalcul;
         simulationService.setMoteurCalcul(moteurCalcul);
     }
 
     public void setMoteurCalcul(MoteurCalcul moteurCalcul, double scale) {
-//        double scale = Double.valueOf(echelleTemporelleTextField.getText());
         this.moteurCalcul = moteurCalcul;
         simulationService.setMoteurCalculEtScale(moteurCalcul, scale);
     }
