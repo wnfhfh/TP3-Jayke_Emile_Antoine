@@ -5,10 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="befd7eba-a942-471e-8707-72f79c403d3b" name="Changes" comment="Interface Créé">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-11-13_13_57__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-11-13_13_57__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/TableauController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/TableauController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/modele/MoteurCalcul.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/modele/MoteurCalcul.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/services/SimulationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/services/SimulationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/GestionAffichage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/GestionAffichage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/SimFenetreController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/SimFenetreController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/vue/Animations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/vue/Animations.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,7 +81,7 @@
   <component name="RunManager" selected="Application.SimulateurApp">
     <configuration name="SimulateurApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="a23.sim203.tp3.app.SimulateurApp" />
-      <module name="TP3_Officiel" />
+      <module name="TP3-Jayke_Emile_Antoine" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="a23.sim203.tp3.app.*" />
@@ -255,11 +256,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/GestionAffichage.java</url>
-          <line>335</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/code fourni/test/java/a23/sim203/tp3/modele/MoteurCalculTest.java</url>
           <line>125</line>

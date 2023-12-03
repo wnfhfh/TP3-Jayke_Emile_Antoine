@@ -314,6 +314,7 @@ public class GestionAffichage {
             controller.creerTableau();
             controller.setChoiceBoxes();
             animations.partageDesFenetresSimulation(stageSimulation,stage);
+            animations.setStages(stageSimulation, this.stage);
         });
     }
 
