@@ -166,6 +166,13 @@ public class AffichageResultatsController implements Initializable {
         this.moteurCalcul = moteurCalcul;
     }
 
+    public void boutonViderAction(){
+        boutonsCliques.clear();
+        lineChart.getData().clear();
+        seriesDejaDansGraphique.clear();
+        rafraichirEquations();
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         moteurCalcul = new MoteurCalcul();
@@ -173,10 +180,7 @@ public class AffichageResultatsController implements Initializable {
         seriesDejaDansGraphique = new HashSet<>();
         tilePaneEquations.setPadding(new Insets(10, 10, 10, 10));
         boutonVider.setOnAction(event -> {
-            boutonsCliques.clear();
-            lineChart.getData().clear();
-            seriesDejaDansGraphique.clear();
-            rafraichirEquations();
+            boutonViderAction();
         });
     }
 }

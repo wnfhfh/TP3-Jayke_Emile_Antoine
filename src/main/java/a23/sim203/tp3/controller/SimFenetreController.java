@@ -96,6 +96,7 @@ public class SimFenetreController {
         moteurCalcul.getAncienneValeurVariableMap().get("t_").setConstantValue(0);
         boutonLancer.setDisable(false);
         boutonPause.setDisable(false);
+        affichageResultatsController.boutonViderAction();
     }
 
     /**
