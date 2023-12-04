@@ -4,9 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="befd7eba-a942-471e-8707-72f79c403d3b" name="Changes" comment="Peaufinement #2 dans Animations.java">
+    <list default="true" id="befd7eba-a942-471e-8707-72f79c403d3b" name="Changes" comment="Debug de la méthode sortLesMethodes">
+      <change afterPath="$PROJECT_DIR$/hs_err_pid5958.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/replay_pid5958.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/GestionAffichage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/GestionAffichage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/SimFenetreController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/SimFenetreController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/vue/Animations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/vue/Animations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/a23/sim203/tp3/app/testFenetreSimulation.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/a23/sim203/tp3/app/testFenetreSimulation.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +83,7 @@
   <component name="RunManager" selected="Application.SimulateurApp">
     <configuration name="SimulateurApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="a23.sim203.tp3.app.SimulateurApp" />
-      <module name="TP3-Jayke_Emile_Antoine" />
+      <module name="TP3_Officiel" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="a23.sim203.tp3.app.*" />
@@ -202,7 +207,6 @@
       <workItem from="1701401655872" duration="5956000" />
       <workItem from="1701566162698" duration="1580000" />
       <workItem from="1701569193082" duration="7632000" />
-      <workItem from="1701655582345" duration="2588000" />
     </task>
     <task id="LOCAL-00003" summary="Changement de l'interface.">
       <created>1700755738559</created>
@@ -240,7 +244,21 @@
       <option name="project" value="LOCAL" />
       <updated>1701646209012</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Deuxième animation - Loading Screen. Reste à rendre l'interface ok.">
+      <created>1701647028756</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1701647028756</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Debug de la méthode sortLesMethodes">
+      <created>1701647098423</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1701647098423</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -266,7 +284,9 @@
     <MESSAGE value="Simplification de la méthode ajouterColonnesTableau" />
     <MESSAGE value="Début de la première animation" />
     <MESSAGE value="Chronomètre relié aux boutons de la simulation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Chronomètre relié aux boutons de la simulation" />
+    <MESSAGE value="Deuxième animation - Loading Screen. Reste à rendre l'interface ok." />
+    <MESSAGE value="Debug de la méthode sortLesMethodes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Debug de la méthode sortLesMethodes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
