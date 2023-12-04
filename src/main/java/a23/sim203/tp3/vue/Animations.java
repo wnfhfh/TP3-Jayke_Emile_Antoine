@@ -18,7 +18,7 @@ public class Animations {
 
     private int frameIndex = 0;
     private final String[] spinner = {"|", "/", "-", "\\"};
-    private final Label loadingLabel = new Label("Loading " + spinner[frameIndex]);
+    private Label loadingLabel = new Label("En attente "); //spinner[frameIndex]
 
     private Rectangle2D screensize = Screen.getPrimary().getBounds();
 
@@ -103,10 +103,13 @@ public class Animations {
 
         root.getChildren().add(timerLabel);
 
-        Scene scene = new Scene(root, 250, 150);
+        Scene scene = new Scene(root, 225, 100);
 
         stageAnimation.setTitle("Chronomètre");
         stageAnimation.setScene(scene);
+        stageAnimation.setX(screensize.getWidth() / 2 - (scene.getWidth() / 2));
+        stageAnimation.setY(screensize.getHeight()/2.2);
+        stageAnimation.setAlwaysOnTop(true);
         stageAnimation.show();
     }
 
@@ -119,11 +122,13 @@ public class Animations {
         );
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
+        startLoadingAnimation();
     }
 
     public void arreterChronometre() {
         if (timeline != null) {
             timeline.stop();
+            pauseLoadingAnimation();
         }
     }
 
@@ -133,6 +138,7 @@ public class Animations {
 
     public void pauseChronometre() {
         timeline.pause();
+        pauseLoadingAnimation();
     }
 
     private void updateTimerLabel() {
@@ -146,24 +152,30 @@ public class Animations {
         return timeline;
     }
 
-    public void deuxiemeAnimation(Stage primaryStage){
-            StackPane root = new StackPane(loadingLabel);
-            root.setAlignment(Pos.CENTER);
+    public void deuxiemeAnimation(Stage primaryStage) {
+        StackPane root = new StackPane(loadingLabel);
+        root.setAlignment(Pos.CENTER);
 
-            Scene scene = new Scene(root, 300, 200);
-            primaryStage.setTitle("Fenêtre de téléchargement");
-            primaryStage.setScene(scene);
-            primaryStage.show();
+        Scene scene = new Scene(root, 200, 100);
+        primaryStage.setTitle("Télécharge l'animation");
+        primaryStage.setScene(scene);
+        primaryStage.setX((screensize.getWidth() / 2) - (scene.getWidth() / 2));
+        primaryStage.setY(screensize.getHeight() / 1.6);
+        primaryStage.show();
+    }
 
-            startLoadingAnimation();
-        }
+    private void startLoadingAnimation() {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), event -> {
+            loadingLabel.setText("Calcule " + spinner[frameIndex]);
+            frameIndex = (frameIndex + 1) % spinner.length;
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+    }
 
-        private void startLoadingAnimation() {
-            Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), event -> {
-                loadingLabel.setText("Téléchargement " + spinner[frameIndex]);
-                frameIndex = (frameIndex + 1) % spinner.length;
-            }));
-            timeline.setCycleCount(Timeline.INDEFINITE);
-            timeline.play();
-        }
+    public void pauseLoadingAnimation() {
+        loadingLabel.setText("En arrêt" + "/");
+        frameIndex = 0;
+        timeline.pause();
+    }
 }
