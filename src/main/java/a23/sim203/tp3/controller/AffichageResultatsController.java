@@ -22,24 +22,50 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 
+/**
+ * Le contrôleur {@code AffichageResultatsController} gère l'affichage des résultats dans une interface graphique.
+ * Il implémente l'interface {@code Initializable} pour permettre l'initialisation de la classe lors du chargement du fichier FXML.
+ */
 public class AffichageResultatsController implements Initializable {
-
+    /**
+     * Valeur initiale utilisée dans le contexte de l'affichage des résultats.
+     */
     Double i = 0d;
-
+    /**
+     * Bouton de vidage associé à l'instance de la classe.
+     */
     @FXML
     private Button boutonVider;
-
+    /**
+     * Graphique en ligne associé à l'instance de la classe.
+     */
     @FXML
     private LineChart lineChart;
-
+    /**
+     * TilePane pour afficher les équations associé à l'instance de la classe.
+     */
     @FXML
     private TilePane tilePaneEquations;
+    /**
+     * Axe X du graphique en ligne.
+     */
 
     final private NumberAxis axeX = new NumberAxis();
+    /**
+     * Axe Y du graphique en ligne.
+     */
     final private NumberAxis axeY = new NumberAxis();
-
+    /**
+     * Moteur de calcul associé à l'instance de la classe.
+     */
     private MoteurCalcul moteurCalcul;
+    /**
+     * Ensemble de boutons cliqués associé à l'instance de la classe.
+     */
     private HashSet<String> boutonsCliques;
+    /**
+     * Ensemble de séries déjà présentes dans le graphique associé à l'instance de la classe.
+     */
     private HashSet<XYChart.Series> seriesDejaDansGraphique;
 
 
@@ -54,6 +80,12 @@ public class AffichageResultatsController implements Initializable {
 //        lineChart.getData().add(series);
     }
 
+    /**
+     * Méthode appelée lors de l'initialisation de la classe, implémentée depuis l'interface Initializable.
+     *
+     * @param location  L'emplacement utilisé pour résoudre les chemins relatifs pour le root objet, ou null si l'emplacement n'est pas connu.
+     * @param resources Les ressources utilisées pour localiser l'objet root, ou null si l'emplacement n'est pas connu.
+     */
     public void rafraichirGraphique(String nomEquation, Constant y, double endTime) { //TODO figurer si on se fie a endtime pour calc
         if (dejaDansGraphique(nomEquation) != null) {
             XYChart.Series serieARafraichir = dejaDansGraphique(nomEquation);
@@ -69,7 +101,7 @@ public class AffichageResultatsController implements Initializable {
             seriesDejaDansGraphique.add(aAjouter);
             XYChart.Data data = new XYChart.Data<Double, Double>(endTime, y.getConstantValue());
             Circle cercleData = new Circle(5);
-            Tooltip.install(cercleData, new Tooltip( " + y.getConstantValue())"));
+            Tooltip.install(cercleData, new Tooltip(" + y.getConstantValue())"));
             data.setNode(cercleData);
             aAjouter.getData().add(data);
             lineChart.setCreateSymbols(true);
@@ -94,7 +126,9 @@ public class AffichageResultatsController implements Initializable {
         boutonsCliques.add(nomEquation);
     }
 
+
     @FXML
+
     public void rafraichirEquations() {
         tilePaneEquations.getChildren().clear();
         for (String equationNom :

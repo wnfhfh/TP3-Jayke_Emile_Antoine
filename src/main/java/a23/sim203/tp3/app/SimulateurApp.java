@@ -9,13 +9,34 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * La classe {@code SimulateurApp} représente l'application de simulateur, étendant la classe {@code Application}.
+ * Elle initialise et lance l'interface graphique du simulateur.
+ */
 public class SimulateurApp extends Application {
+    /**
+     * Stage (scène) principal de l'application.
+     */
     private Stage stage;
+    /**
+     * Gestion de l'affichage associée à l'instance de la classe.
+     */
     GestionAffichage gestionAffichage;
+    /**
+     * Contrôleur de la calculatrice associé à l'instance de la classe.
+     */
     CalculatriceController calculatriceController;
-
+    /**
+     * Instance de la classe Animations utilisée pour gérer les animations associée à l'instance de la classe.
+     */
     Animations animations;
 
+    /**
+     * Méthode appelée lors du lancement de l'application.
+     *
+     * @param primaryStage Le stage principal de l'application.
+     * @throws Exception En cas d'erreur lors du chargement de l'interface graphique.
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         stage = primaryStage;

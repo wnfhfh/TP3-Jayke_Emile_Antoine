@@ -5,13 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="befd7eba-a942-471e-8707-72f79c403d3b" name="Changes" comment="Interface Créé">
-      <change afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/SettingsPlaneteController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/a23/sim203/tp3/controller/settingsPlanete.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modeleDeBase.txt" beforeDir="false" afterPath="$PROJECT_DIR$/modeleDeBase.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/GestionAffichage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/GestionAffichage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/SimFenetreController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/SimFenetreController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/a23/sim203/tp3/app/testFenetreSimulation.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/a23/sim203/tp3/app/testFenetreSimulation.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/Enregistreur.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/Enregistreur.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/SimulateurApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/SimulateurApp.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,9 +40,6 @@
       </list>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="jar://$PROJECT_DIR$/../../../zulu17.44.53-ca-fx-jdk17.0.8.1-win_x64/zulu17.44.53-ca-fx-jdk17.0.8.1-win_x64/lib/src.zip!/javafx.graphics/javafx/concurrent/Task.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -278,11 +271,6 @@
           <url>file://$PROJECT_DIR$/src/code fourni/test/java/a23/sim203/tp3/modele/MoteurCalculTest.java</url>
           <line>143</line>
           <option name="timeStamp" value="35" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/AffichageResultatsController.java</url>
-          <line>62</line>
-          <option name="timeStamp" value="44" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/SimFenetreController.java</url>
