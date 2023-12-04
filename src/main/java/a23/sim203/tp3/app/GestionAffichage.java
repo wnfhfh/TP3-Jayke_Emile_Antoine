@@ -353,7 +353,7 @@ public class GestionAffichage {
             controller.setStageSimulation(stageSimulation);
             stageSimulation.setScene(sceneSimulation);
             controller.setMoteurCalcul(moteurCalcul);
-            controller.setNombreObjets(demanderNombreObjets());
+             controller.setNombreObjets(demanderNombreObjets());
             stageSimulation.show();
             controller.creerGraphique();
             controller.creerTableau();

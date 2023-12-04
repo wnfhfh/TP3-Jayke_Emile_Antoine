@@ -134,6 +134,8 @@ public class Animations {
 
     public void resumeChronometre() {
         timeline.play();
+        startLoadingAnimation();
+
     }
 
     public void pauseChronometre() {
