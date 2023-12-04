@@ -26,6 +26,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
 
+/**
+ * Le contrôleur {@code SimFenetreController} gère l'interface utilisateur de la simulation.
+ * Il utilise des composants tels que des boutons, des champs de texte, un slider et des éléments graphiques pour permettre à l'utilisateur de contrôler et visualiser la simulation.
+ */
 public class SimFenetreController {
 
     @FXML
@@ -64,6 +68,12 @@ public class SimFenetreController {
 
     private SimulationService simulationService = new SimulationService();
 
+    /**
+     * Méthode appelée lors de l'action du bouton "Arrêter" de la simulation.
+     * Arrête le chronomètre, annule le service de simulation, réinitialise les valeurs, et réactive les boutons de contrôle.
+     *
+     * @param event L'événement associé à l'action du bouton "Arrêter".
+     */
     @FXML
     void boutonArreterOnAction(ActionEvent event) {
         gestionAffichage.getAnimations().arreterChronometre();
@@ -81,6 +91,13 @@ public class SimFenetreController {
         boutonPause.setDisable(false);
     }
 
+    /**
+     * Méthode appelée lors de l'action du bouton "Lancer" de la simulation.
+     * Initialise et lance la simulation avec les paramètres spécifiés par l'utilisateur.
+     * Affiche une boîte de dialogue d'erreur en cas d'entrée invalide.
+     *
+     * @param event L'événement associé à l'action du bouton "Lancer".
+     */
     @FXML
     void boutonLancerOnAction(ActionEvent event) {
         try {
@@ -129,6 +146,10 @@ public class SimFenetreController {
         }
     }
 
+    /**
+     * Place les cercles initiaux des planètes sur l'interface graphique.
+     * Les cercles sont positionnés en fonction des coordonnées initiales spécifiées.
+     */
     private void placerCerclesIni() {
         for (Circle circle :
                 paramsAllPlanetes.keySet()) {
@@ -144,6 +165,10 @@ public class SimFenetreController {
 
     }
 
+    /**
+     * Ajoute un écouteur au service de simulation pour gérer les événements réussis.
+     * Lorsque la simulation est terminée avec succès, met à jour le graphique, le tableau et rafraîchit la simulation.
+     */
     private void addServiceListener() {
         simulationService.setOnSucceeded(event -> {
             for (String equationAMettreDansGraphique :
@@ -157,6 +182,10 @@ public class SimFenetreController {
         });
     }
 
+    /**
+     * Rafraîchit la simulation en mettant à jour la position des planètes et en ajoutant des lignes de trajectoire.
+     * Vérifie également les limites de l'espace de simulation et arrête la simulation si une limite est dépassée.
+     */
     private void rafraichirSimulation() {
         for (Circle circle :
                 paramsAllPlanetes.keySet()) {
@@ -203,6 +232,10 @@ public class SimFenetreController {
         //TODO ajouter des limites au cercle pour pas qu'il s'autoyeet, permettre de mettre autre chose qu'un cercle
     }
 
+    /**
+     * Action déclenchée lorsqu'on appuie sur le bouton de pause.
+     * Désactive le bouton de pause, active le bouton de lancer, met en pause le service de simulation et le chronomètre.
+     */
     @FXML
     void boutonPauseOnAction(ActionEvent event) {
         boutonPause.setDisable(true);
@@ -211,6 +244,11 @@ public class SimFenetreController {
         gestionAffichage.getAnimations().pauseChronometre();
     }
 
+    /**
+     * Action déclenchée lorsqu'on souhaite afficher le graphique.
+     * Configure les événements pour la gestion de l'ouverture et de la fermeture de la fenêtre graphique.
+     * Affiche ensuite la fenêtre graphique et ajuste les méthodes d'animation en fonction du nombre de fenêtres affichées.
+     */
     @FXML
     void afficherGraphiqueOnAction(ActionEvent event) {
         stageGraphique.setOnShown(event1 -> {
@@ -226,6 +264,12 @@ public class SimFenetreController {
         gestionAffichage.getAnimations().sortLesMethodes(shownStagesCount, stageGraphique);
     }
 
+    /**
+     * Crée le graphique en chargeant la vue "affichageResultats.fxml".
+     * Configure le contrôleur d'affichage des résultats en lien avec le moteur de calcul.
+     * Initialise le graphique, rafraîchit les équations et configure le service de simulation.
+     * Initialise la fenêtre graphique.
+     */
     public void creerGraphique() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("affichageResultats.fxml"));
         Parent root = null;
@@ -245,6 +289,12 @@ public class SimFenetreController {
         stageGraphique.setScene(new Scene(root));
     }
 
+    /**
+     * Action déclenchée lorsqu'on sélectionne l'option de menu pour afficher le tableau des temps.
+     * Configure les événements pour la gestion de l'ouverture et de la fermeture de la fenêtre du tableau des temps.
+     * Configure le contrôleur du tableau des temps en lien avec le moteur de calcul, ajoute les colonnes au tableau.
+     * Affiche ensuite la fenêtre du tableau des temps et ajuste les méthodes d'animation en fonction du nombre de fenêtres affichées.
+     */
     @FXML
     public void setMenuItemTableTemps(ActionEvent event) {
         stageTableau.setOnShown(event1 -> {
@@ -263,6 +313,12 @@ public class SimFenetreController {
 
     }
 
+    /**
+     * Crée le tableau en chargeant la vue "affichageTableau.fxml".
+     * Configure le contrôleur du tableau en lien avec le moteur de calcul et ajoute les colonnes au tableau.
+     * Configure le service de simulation avec le contrôleur du tableau.
+     * Initialise la scène et la fenêtre du tableau.
+     */
     public void creerTableau() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("affichageTableau.fxml"));
         Parent root = null;
@@ -280,25 +336,53 @@ public class SimFenetreController {
         stageTableau.setScene(scene);
     }
 
+    /**
+     * Définit le moteur de calcul pour la simulation et met à jour le service de simulation avec le nouveau moteur.
+     *
+     * @param moteurCalcul Le moteur de calcul à utiliser pour la simulation.
+     */
     public void setMoteurCalcul(MoteurCalcul moteurCalcul) {
         this.moteurCalcul = moteurCalcul;
         simulationService.setMoteurCalcul(moteurCalcul);
     }
 
+    /**
+     * Définit le moteur de calcul pour la simulation avec une échelle spécifiée.
+     * Met à jour le service de simulation avec le nouveau moteur et l'échelle.
+     *
+     * @param moteurCalcul Le moteur de calcul à utiliser pour la simulation.
+     * @param scale        L'échelle spécifiée pour la simulation.
+     */
     public void setMoteurCalcul(MoteurCalcul moteurCalcul, double scale) {
         this.moteurCalcul = moteurCalcul;
         simulationService.setMoteurCalculEtScale(moteurCalcul, scale);
     }
 
+    /**
+     * Définit la gestion d'affichage pour la simulation.
+     * Met à jour la référence vers la fenêtre principale de la calculatrice.
+     *
+     * @param gestionAffichage La gestion d'affichage à utiliser pour la simulation.
+     */
     public void setGestionAffichage(GestionAffichage gestionAffichage) {
         this.gestionAffichage = gestionAffichage;
         this.stageCalculatrice = gestionAffichage.getStage();
     }
 
+    /**
+     * Définit la scène de simulation associée à cette fenêtre de contrôleur.
+     *
+     * @param stageSimulation La scène de simulation.
+     */
     public void setStageSimulation(Stage stageSimulation) {
         this.stageSimulation = stageSimulation;
     }
 
+    /**
+     * Définit le nombre d'objets dans la simulation et initialise les paramètres pour chaque planète.
+     *
+     * @param nbObjets Le nombre d'objets à initialiser.
+     */
     public void setNombreObjets(Integer nbObjets) {
         paramsAllPlanetes = new HashMap<Circle, String[]>();
         for (int i = 0; i < nbObjets; i++) {

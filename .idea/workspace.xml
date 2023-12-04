@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="befd7eba-a942-471e-8707-72f79c403d3b" name="Changes" comment="Interface Créé">
+    <list default="true" id="befd7eba-a942-471e-8707-72f79c403d3b" name="Changes" comment="JavaDoc - AffichageResultatsController, Enregistreur,SettingPlanetControler, etc">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/Enregistreur.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/Enregistreur.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/SimulateurApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/app/SimulateurApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/SimFenetreController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/SimFenetreController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -233,7 +232,14 @@
       <option name="project" value="LOCAL" />
       <updated>1701449170540</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="JavaDoc - AffichageResultatsController, Enregistreur,SettingPlanetControler, etc">
+      <created>1701661318068</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1701661318068</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -257,7 +263,8 @@
     <MESSAGE value="Ajout de simulation/cercle qui bouge, adaptation de l'interface SimFenetreController pour accueillir cela" />
     <MESSAGE value="Interface Créé" />
     <MESSAGE value="ajout d'un todo" />
-    <option name="LAST_COMMIT_MESSAGE" value="ajout d'un todo" />
+    <MESSAGE value="JavaDoc - AffichageResultatsController, Enregistreur,SettingPlanetControler, etc" />
+    <option name="LAST_COMMIT_MESSAGE" value="JavaDoc - AffichageResultatsController, Enregistreur,SettingPlanetControler, etc" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -274,12 +281,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/SimFenetreController.java</url>
-          <line>141</line>
+          <line>162</line>
           <option name="timeStamp" value="57" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/a23/sim203/tp3/controller/SimFenetreController.java</url>
-          <line>149</line>
+          <line>174</line>
           <option name="timeStamp" value="59" />
         </line-breakpoint>
       </breakpoints>
