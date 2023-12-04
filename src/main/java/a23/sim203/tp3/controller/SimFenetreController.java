@@ -100,6 +100,7 @@ public class SimFenetreController {
             alert.setTitle("Calculateur avancée");
             alert.setContentText("Réessayez plz");
             alert.showAndWait();
+        }
         if (gestionAffichage.getAnimations().getTimeline() != null) {
             gestionAffichage.getAnimations().resumeChronometre();
         } else {
@@ -116,7 +117,7 @@ public class SimFenetreController {
                 moteurCalcul.getConstanteValeurMap().put("d_", new Constant("d_", simulationService.getPeriod().toSeconds() * scale));
                 simulationService.startService();
                 addServiceListener();
-                placerCercleIni();
+                placerCerclesIni();
                 boutonLancer.setDisable(true);
             } catch (Exception e) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -182,11 +183,11 @@ public class SimFenetreController {
             } else {
                 centerY = anchorPane.getHeight() - (yInitial + (yVitesseInitiale * temps) + (0.5 * moteurCalcul.getConstanteValeurMap().get(nomYAcceleration.trim()).getConstantValue() * (Math.pow(temps, 2))));
             }
-            if (centerX > anchorPane.getWidth() || centerX < 0 || centerY > anchorPane.getHeight() || centerY < 0){
+            if (centerX > anchorPane.getWidth() || centerX < 0 || centerY > anchorPane.getHeight() || centerY < 0) {
                 boutonArreterOnAction(new ActionEvent());
                 break;
             }
-                circle.setCenterX(centerX);
+            circle.setCenterX(centerX);
             circle.setCenterY(centerY);
 
             Line line = new Line();
@@ -218,7 +219,7 @@ public class SimFenetreController {
         });
         stageGraphique.setOnCloseRequest(event1 -> {
             shownStagesCount--;
-            gestionAffichage.getAnimations().sortLesMethodes(shownStagesCount,stageGraphique);
+            gestionAffichage.getAnimations().sortLesMethodes(shownStagesCount, stageGraphique);
             boutonGraphique.setDisable(false);
         });
         stageGraphique.show();
@@ -252,7 +253,7 @@ public class SimFenetreController {
         });
         stageTableau.setOnCloseRequest(event1 -> {
             shownStagesCount--;
-            gestionAffichage.getAnimations().sortLesMethodes(shownStagesCount,stageTableau);
+            gestionAffichage.getAnimations().sortLesMethodes(shownStagesCount, stageTableau);
             boutonTableau.setDisable(false);
         });
         tableauController.setMoteurCalcul(moteurCalcul);
