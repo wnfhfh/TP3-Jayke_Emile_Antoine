@@ -352,16 +352,34 @@ public class GestionAffichage {
             Stage stageSimulation = new Stage();
             controller.setStageSimulation(stageSimulation);
             stageSimulation.setScene(sceneSimulation);
-            stageSimulation.show();
             controller.setMoteurCalcul(moteurCalcul);
+            controller.setNombreObjets(demanderNombreObjets());
+            stageSimulation.show();
             controller.creerGraphique();
             controller.creerTableau();
-            controller.setChoiceBoxes();
             animations.partageDesFenetresSimulation(stageSimulation, stage);
             animations.setStages(stageSimulation, this.stage);
             animations.premiereAnimation(new Stage());
             animations.deuxiemeAnimation(new Stage());
         });
+    }
+
+    private Integer demanderNombreObjets() {
+        TextInputDialog textInputDialog = new TextInputDialog("1");
+        textInputDialog.setHeaderText("Entrez le nombre de planètes voulu:");
+        textInputDialog.showAndWait();
+        try {
+            int reponse = Integer.valueOf(textInputDialog.getResult());
+            return reponse;
+        } catch (Exception e) {
+            textInputDialog.close();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setHeaderText("Veuillez entrer un nombre svp :)");
+            alert.setTitle("Calculateur avancée");
+            alert.setContentText("Réessayez plz");
+            alert.showAndWait();
+            return demanderNombreObjets();
+        }
     }
 
     /**
