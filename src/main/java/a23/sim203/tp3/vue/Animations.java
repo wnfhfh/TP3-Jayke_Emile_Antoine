@@ -151,7 +151,7 @@ public class Animations {
             root.setAlignment(Pos.CENTER);
 
             Scene scene = new Scene(root, 300, 200);
-            primaryStage.setTitle("Télécharge l'animation");
+            primaryStage.setTitle("Fenêtre de téléchargement");
             primaryStage.setScene(scene);
             primaryStage.show();
 
@@ -160,7 +160,7 @@ public class Animations {
 
         private void startLoadingAnimation() {
             Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), event -> {
-                loadingLabel.setText("Télécharge " + spinner[frameIndex]);
+                loadingLabel.setText("Téléchargement " + spinner[frameIndex]);
                 frameIndex = (frameIndex + 1) % spinner.length;
             }));
             timeline.setCycleCount(Timeline.INDEFINITE);

@@ -8,15 +8,10 @@ package a23.sim203.tp3.app;
 
 import a23.sim203.tp3.controller.CalculatriceController;
 import a23.sim203.tp3.controller.SimFenetreController;
-import a23.sim203.tp3.controller.TableauController;
-import a23.sim203.tp3.modele.Equation;
 import a23.sim203.tp3.modele.MoteurCalcul;
-import a23.sim203.tp3.services.SimulationService;
 import a23.sim203.tp3.vue.Animations;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -27,15 +22,29 @@ import javafx.stage.Stage;
 import org.mariuszgromada.math.mxparser.Constant;
 
 import java.io.*;
-import java.net.http.WebSocket;
 import java.util.ArrayList;
 
 public class GestionAffichage {
+    /**
+     * Moteur de calcul associé à l'instance de la classe.
+     */
     private MoteurCalcul moteurCalcul;
+    /**
+     * Chaîne de texte affichée associée à l'instance de la classe.
+     */
+
     private String stringAffiche;
+    /**
+     * Contrôleur de la calculatrice associé à l'instance de la classe.
+     */
     private CalculatriceController calculatriceController;
-    private SimFenetreController simFenetreController;
+    /**
+     * Stage (scène) associé à l'instance de la classe.
+     */
     private Stage stage = new Stage();
+    /**
+     * Instance de la classe Animations utilisée pour gérer les animations associée à l'instance de la classe.
+     */
     private Animations animations = new Animations();
 
     /**
@@ -293,6 +302,41 @@ public class GestionAffichage {
         });
     }
 
+    /**
+     * Définit l'action associée à un MenuItem spécifié pour ouvrir et charger un modèle à partir d'un fichier texte.
+     *
+     * @param menuItemCharger Le MenuItem associé à l'action de chargement de fichier.
+     */
+    public void setMenuItemCharger(MenuItem menuItemCharger) {
+        menuItemCharger.setOnAction(event -> {
+            FileChooser fileChooser = new FileChooser(); // Crée un sélecteur de fichiers avec un filtre pour les fichiers texte
+            fileChooser.getExtensionFilters().add(0, new FileChooser.ExtensionFilter("fichier texte", "*.txt"));
+            // Définit le répertoire initial sur le répertoire utilisateur actuel
+            fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+            File fichierACharger = fileChooser.showOpenDialog(stage); // Affiche la boîte de dialogue d'ouverture et obtient le fichier sélectionné
+            try {
+                // Charge le modèle à partir du fichier sélectionné en utilisant la classe Enregistreur
+                Enregistreur.EquationsConstantesEtVariables eCET = new Enregistreur(moteurCalcul, this).chargeModele(fichierACharger);
+                moteurCalcul.setEquationMap(eCET.getEquations()); // Met à jour le moteur de calcul avec les données chargées
+                moteurCalcul.setConstantMap(eCET.getVariables());
+                moteurCalcul.setMapAncienneValeur(eCET.getMapAncienneValeur());
+                refreshAffichage(); // Rafraîchit l'affichage pour refléter les changements
+            } catch (Exception e) {
+                // Affiche une alerte en cas d'exception lors du chargement du fichier
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setHeaderText("Fichier non valide");
+                alert.setTitle("Calculateur avancée");
+                alert.setContentText("Réessayez");
+                alert.showAndWait();
+            }
+        });
+    }
+
+    /**
+     * Définit l'action associée à un MenuItem spécifié pour ouvrir une fenêtre de simulation de calcul sans contrainte de temps.
+     *
+     * @param boutonCalculPasDeTemps Le MenuItem associé à l'action d'ouverture de la fenêtre de simulation.
+     */
     public void setMenuItemCalculPasDeTemps(MenuItem boutonCalculPasDeTemps) {
         boutonCalculPasDeTemps.setOnAction(n -> {
             FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("testFenetreSimulation.fxml"));
@@ -313,13 +357,27 @@ public class GestionAffichage {
             controller.creerGraphique();
             controller.creerTableau();
             controller.setChoiceBoxes();
-            animations.partageDesFenetresSimulation(stageSimulation,stage);
+            animations.partageDesFenetresSimulation(stageSimulation, stage);
             animations.setStages(stageSimulation, this.stage);
             animations.premiereAnimation(new Stage());
             animations.deuxiemeAnimation(new Stage());
         });
     }
 
+    /**
+     * Rafraîchit l'affichage de la calculatrice en mettant à jour les listes d'équations, de variables et de constantes.
+     */
+    private void refreshAffichage() {
+        calculatriceController.getListeEquations().getItems().addAll(moteurCalcul.getAllEquationsString());
+        calculatriceController.getListeVariables().getItems().addAll(moteurCalcul.getToutesLesVariablesString());
+        calculatriceController.getListeConstantes().getItems().addAll(moteurCalcul.getToutesLesConstantesString());
+    }
+
+    /**
+     * Définit l'action associée à un MenuItem spécifié pour enregistrer les équations et constantes dans un fichier texte.
+     *
+     * @param menuItemEnregistrer Le MenuItem associé à l'action d'enregistrement.
+     */
     public void setMenuItemEnregistrer(MenuItem menuItemEnregistrer) {
         menuItemEnregistrer.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
@@ -329,41 +387,29 @@ public class GestionAffichage {
         });
     }
 
-    public void setMenuItemCharger(MenuItem menuItemCharger) {
-        menuItemCharger.setOnAction(event -> {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.getExtensionFilters().add(0, new FileChooser.ExtensionFilter("fichier texte", "*.txt"));
-            fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
-            File fichierACharger = fileChooser.showOpenDialog(stage);
-            try {
-                Enregistreur.EquationsConstantesEtVariables eCET = new Enregistreur(moteurCalcul, this).chargeModele(fichierACharger);
-                moteurCalcul.setEquationMap(eCET.getEquations());
-                moteurCalcul.setConstantMap(eCET.getVariables());
-                moteurCalcul.setMapAncienneValeur(eCET.getMapAncienneValeur());
-                refreshAffichage();
-            } catch (Exception e) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setHeaderText("Fichier non valide");
-                alert.setTitle("Calculateur avancée");
-                alert.setContentText("Réessayez plz");
-                alert.showAndWait();
-            }
-        });
-    }
-
-    private void refreshAffichage() {
-        calculatriceController.getListeEquations().getItems().addAll(moteurCalcul.getAllEquationsString());
-        calculatriceController.getListeVariables().getItems().addAll(moteurCalcul.getToutesLesVariablesString());
-        calculatriceController.getListeConstantes().getItems().addAll(moteurCalcul.getToutesLesConstantesString());
-    }
-
+    /**
+     * Définit le stage associé à l'instance de la classe.
+     *
+     * @param stage Le stage à associer à l'instance.
+     */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
 
+    /**
+     * Obtient le stage associé à l'instance de la classe.
+     *
+     * @return Le stage associé à l'instance.
+     */
     public Stage getStage() {
         return stage;
     }
+
+    /**
+     * Obtient le moteur de calcul associé à l'instance de la classe.
+     *
+     * @return Le moteur de calcul associé à l'instance.
+     */
 
     public MoteurCalcul getMoteurCalcul() {
         return moteurCalcul;

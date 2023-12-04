@@ -49,8 +49,8 @@
             <TextField fx:id="echelleTemporelleTextField" prefHeight="33.0" prefWidth="50.0" text="1" />
          </children>
       </HBox>
-      <Button layoutX="545.0" layoutY="340.0" mnemonicParsing="false" onAction="#setMenuItemTableTemps" text="Tableau" />
-      <Button layoutX="399.0" layoutY="340.0" mnemonicParsing="false" onAction="#afficherGraphiqueOnAction" text="Afficher Graphique" />
+      <Button fx:id="boutonTableau" layoutX="545.0" layoutY="340.0" mnemonicParsing="false" onAction="#setMenuItemTableTemps" text="Tableau" />
+      <Button fx:id="boutonGraphique" layoutX="399.0" layoutY="340.0" mnemonicParsing="false" onAction="#afficherGraphiqueOnAction" text="Afficher Graphique" />
       <VBox layoutX="11.0" layoutY="380.0">
          <children>
             <HBox alignment="CENTER" prefHeight="17.0" prefWidth="680.0">
