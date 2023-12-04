@@ -11,16 +11,22 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.mariuszgromada.math.mxparser.Constant;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 public class SimFenetreController {
-
 
     @FXML
     private Button boutonLancer;
@@ -47,25 +53,12 @@ public class SimFenetreController {
     private TableauController tableauController;
 
     @FXML
-    private ChoiceBox<String> XAccelerationChoiceBox;
+    private Slider sliderMParPx;
 
     @FXML
-    private ChoiceBox<String> XInitialChoiceBox;
-
-    @FXML
-    private ChoiceBox<String> XVitesseInitialeChoiceBox;
-
-    @FXML
-    private ChoiceBox<String> YAccelerationChoiceBox;
-
-    @FXML
-    private ChoiceBox<String> YInitialChoiceBox;
-
-    @FXML
-    private ChoiceBox<String> YVitesseInitialeChoiceBox;
-
-    @FXML
-    private Circle cercle;
+    private AnchorPane anchorPane;
+    HashMap<Circle, String[]> paramsAllPlanetes;
+    Set<Line> lines;
     private int shownStagesCount = 2;
 
 
@@ -76,8 +69,13 @@ public class SimFenetreController {
         gestionAffichage.getAnimations().arreterChronometre();
         simulationService.cancel();
         simulationService.reset();
-        cercle.setCenterX(0);
-        cercle.setCenterY(0);
+        for (Circle circle :
+                paramsAllPlanetes.keySet()) {
+            circle.setCenterX(0);
+            circle.setCenterY(300);
+        }
+        anchorPane.getChildren().clear();
+        lines.clear();
         moteurCalcul.getAncienneValeurVariableMap().get("t_").setConstantValue(0);
         boutonLancer.setDisable(false);
         boutonPause.setDisable(false);
@@ -85,6 +83,23 @@ public class SimFenetreController {
 
     @FXML
     void boutonLancerOnAction(ActionEvent event) {
+        try {
+            double scale = Double.parseDouble(echelleTemporelleTextField.getText());
+            setMoteurCalcul(moteurCalcul, scale);
+            simulationService.setPeriod(Duration.valueOf(dtTextField.getText() + "s"));
+            moteurCalcul.getConstanteValeurMap().put("d_", new Constant("d_", simulationService.getPeriod().toSeconds() * scale));
+            simulationService.start();
+            addServiceListener();
+            placerCerclesIni();
+            lines = new HashSet<>();
+            boutonLancer.setDisable(true);
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            System.out.println(e.getMessage());
+            alert.setHeaderText("Veuillez entrer des valeurs valides");
+            alert.setTitle("Calculateur avancée");
+            alert.setContentText("Réessayez plz");
+            alert.showAndWait();
         if (gestionAffichage.getAnimations().getTimeline() != null) {
             gestionAffichage.getAnimations().resumeChronometre();
         } else {
@@ -113,16 +128,19 @@ public class SimFenetreController {
         }
     }
 
-    private void placerCercleIni() {
-        try {
-            String xInitial = XInitialChoiceBox.getSelectionModel().getSelectedItem();
-            String yInitial = YInitialChoiceBox.getSelectionModel().getSelectedItem();
+    private void placerCerclesIni() {
+        for (Circle circle :
+                paramsAllPlanetes.keySet()) {
+            circle.setFill(Color.BLUE);
 
-            cercle.setCenterX(Double.parseDouble(xInitial.split("=")[1]));
-            cercle.setCenterY(Double.parseDouble(yInitial.split("=")[1]));
-        } catch (NullPointerException e) {
-            System.out.println("veuillez remplir les choice box plz");
+            String xInitial = paramsAllPlanetes.get(circle)[0];
+            String yInitial = paramsAllPlanetes.get(circle)[1];
+
+            anchorPane.getChildren().add(circle);
+            circle.setCenterX(Double.parseDouble(xInitial.split("=")[1]));
+            circle.setCenterY(300 - Double.parseDouble(yInitial.split("=")[1]));
         }
+
     }
 
     private void addServiceListener() {
@@ -139,22 +157,47 @@ public class SimFenetreController {
     }
 
     private void rafraichirSimulation() {
-        try {
-            String nomXAcceleration = XAccelerationChoiceBox.getSelectionModel().getSelectedItem().split("=")[0];
-            String nomYAcceleration = YAccelerationChoiceBox.getSelectionModel().getSelectedItem().split("=")[0];
-            Double xInitial = Double.valueOf(XInitialChoiceBox.getSelectionModel().getSelectedItem().split("=")[1]);
-            Double yInitial = Double.valueOf(YInitialChoiceBox.getSelectionModel().getSelectedItem().split("=")[1]);
-            Double xVitesseInitiale = Double.valueOf(XVitesseInitialeChoiceBox.getSelectionModel().getSelectedItem().split("=")[1]);
-            Double yVitesseInitiale = Double.valueOf(YVitesseInitialeChoiceBox.getSelectionModel().getSelectedItem().split("=")[1]);
+        for (Circle circle :
+                paramsAllPlanetes.keySet()) {
+            Double ancienCenterX = circle.getCenterX();
+            Double ancienCenterY = circle.getCenterY();
+
+            Double xInitial = Double.valueOf(paramsAllPlanetes.get(circle)[0].split("=")[1]);
+            Double yInitial = Double.valueOf(paramsAllPlanetes.get(circle)[1].split("=")[1]);
+            String nomXAcceleration = paramsAllPlanetes.get(circle)[2].split("=")[0];
+            String nomYAcceleration = paramsAllPlanetes.get(circle)[3].split("=")[0];
+            Double xVitesseInitiale = Double.valueOf(paramsAllPlanetes.get(circle)[4].split("=")[1]);
+            Double yVitesseInitiale = Double.valueOf(paramsAllPlanetes.get(circle)[5].split("=")[1]);
 
             Double temps = moteurCalcul.getAncienneValeurVariableMap().get("t_").getConstantValue();
-            Double centerX = xInitial + (xVitesseInitiale * temps) + (0.5 * moteurCalcul.getAncienneValeurVariableMap().get(nomXAcceleration).getConstantValue() * (Math.pow(temps, 2)));
-            Double centerY = yInitial + (yVitesseInitiale * temps) + (0.5 * moteurCalcul.getAncienneValeurVariableMap().get(nomYAcceleration).getConstantValue() * (Math.pow(temps, 2)));
+            Double centerX;
+            Double centerY;
+            if (moteurCalcul.getAncienneValeurVariableMap().containsKey(nomXAcceleration)) {
+                centerX = xInitial + (xVitesseInitiale * temps) + (0.5 * moteurCalcul.getAncienneValeurVariableMap().get(nomXAcceleration.trim()).getConstantValue() * (Math.pow(temps, 2)));
+            } else {
+                centerX = xInitial + (xVitesseInitiale * temps) + (0.5 * moteurCalcul.getConstanteValeurMap().get(nomXAcceleration.trim()).getConstantValue() * (Math.pow(temps, 2)));
+            }
+            if (moteurCalcul.getAncienneValeurVariableMap().containsKey(nomYAcceleration)) {
+                centerY = anchorPane.getHeight() - (yInitial + (yVitesseInitiale * temps) + (0.5 * moteurCalcul.getAncienneValeurVariableMap().get(nomYAcceleration.trim()).getConstantValue() * (Math.pow(temps, 2))));
+            } else {
+                centerY = anchorPane.getHeight() - (yInitial + (yVitesseInitiale * temps) + (0.5 * moteurCalcul.getConstanteValeurMap().get(nomYAcceleration.trim()).getConstantValue() * (Math.pow(temps, 2))));
+            }
+            if (centerX > anchorPane.getWidth() || centerX < 0 || centerY > anchorPane.getHeight() || centerY < 0){
+                boutonArreterOnAction(new ActionEvent());
+                break;
+            }
+                circle.setCenterX(centerX);
+            circle.setCenterY(centerY);
 
-            cercle.setCenterX(centerX);
-            cercle.setCenterY(centerY);
-        } catch (NullPointerException e) {
-            System.out.println("mettre des données dans tous les champs svp");
+            Line line = new Line();
+            anchorPane.getChildren().add(line);
+            line.setStartX(ancienCenterX);
+            line.setStartY(ancienCenterY);
+            line.setEndX(circle.getCenterX());
+            line.setEndY(circle.getCenterY());
+            line.setStroke(Color.BLUE);
+            line.setStrokeWidth(4);
+            lines.add(line);
         }
         //TODO ajouter des limites au cercle pour pas qu'il s'autoyeet, permettre de mettre autre chose qu'un cercle
     }
@@ -255,20 +298,34 @@ public class SimFenetreController {
         this.stageSimulation = stageSimulation;
     }
 
-    public void setChoiceBoxes() {
-        for (String equationString :
-                moteurCalcul.getAllEquationsString()) {
-            XAccelerationChoiceBox.getItems().add(equationString);
-            YAccelerationChoiceBox.getItems().add(equationString);
-        }
-        for (String constanteString :
-                moteurCalcul.getToutesLesConstantesString()) {
-            XInitialChoiceBox.getItems().add(constanteString);
-            YInitialChoiceBox.getItems().add(constanteString);
-            XAccelerationChoiceBox.getItems().add(constanteString);
-            YAccelerationChoiceBox.getItems().add(constanteString);
-            XVitesseInitialeChoiceBox.getItems().add(constanteString);
-            YVitesseInitialeChoiceBox.getItems().add(constanteString);
+    public void setNombreObjets(Integer nbObjets) {
+        paramsAllPlanetes = new HashMap<Circle, String[]>();
+        for (int i = 0; i < nbObjets; i++) {
+            Stage settingsPlaneteStage = new Stage();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("settingsPlanete.fxml"));
+            try {
+                fxmlLoader.load();
+                settingsPlaneteStage.setScene(new Scene(fxmlLoader.getRoot()));
+            } catch (IOException e) {
+                System.out.println("probleme de load settings planete");
+            }
+            SettingsPlaneteController controller = fxmlLoader.getController();
+            controller.getTitreTextField().setText("Valeurs pour planète " + i);
+            controller.getTitreTextField().setDisable(true);
+            controller.setMoteurCalculEtChoiceBoxes(moteurCalcul);
+
+            String[] paramsPlanete = new String[6];
+            controller.getBoutonOK().setOnAction(event -> {
+                paramsPlanete[0] = controller.getxInitialChoiceBox().getSelectionModel().getSelectedItem();
+                paramsPlanete[1] = controller.getyInitialChoiceBox().getSelectionModel().getSelectedItem();
+                paramsPlanete[2] = controller.getxAccelerationChoiceBox().getSelectionModel().getSelectedItem();
+                paramsPlanete[3] = controller.getyAccelerationChoiceBox().getSelectionModel().getSelectedItem();
+                paramsPlanete[4] = controller.getxVitesseInitialeChoiceBox().getSelectionModel().getSelectedItem();
+                paramsPlanete[5] = controller.getyVitesseInitialeChoiceBox().getSelectionModel().getSelectedItem();
+                paramsAllPlanetes.put(new Circle(13), paramsPlanete);
+                settingsPlaneteStage.close();
+            });
+            settingsPlaneteStage.showAndWait();
         }
     }
 }
