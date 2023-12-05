@@ -130,6 +130,7 @@ public class SimulationService extends ScheduledService<Void> {
                     }
                     endTime = System.currentTimeMillis();
                     dt = endTime - startTime;
+                    moteurCalcul.getConstanteValeurMap().get("d_").setConstantValue(getPeriod().toSeconds() + dt / 1000);
                     System.out.println("service roule");
                     return null;
                 }

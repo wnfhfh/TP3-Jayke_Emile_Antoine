@@ -437,4 +437,8 @@ public class GestionAffichage {
     public MoteurCalcul getMoteurCalcul() {
         return moteurCalcul;
     }
+
+    public CalculatriceController getCalculatriceController() {
+        return calculatriceController;
+    }
 }
