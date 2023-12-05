@@ -49,7 +49,7 @@
                </children>
             </HBox>
             <Button layoutX="539.0" layoutY="340.0" mnemonicParsing="false" onAction="#setMenuItemTableTemps" text="Afficher Tableau" fx:id="boutonTableau" />
-            <Button layoutX="399.0" layoutY="340.0" mnemonicParsing="false" onAction="#afficherGraphiqueOnAction" text="Afficher Graphique" fx:id="boutonGraphique" />
+            <Button layoutX="399.0" layoutY="340.0" mnemonicParsing="false" onAction="#afficherGraphiqueOnAction" text="Afficher Graphique" fx:id="boutonGraphique"/>
             <VBox layoutX="11.0" layoutY="380.0" />
             <ImageView fx:id="imageViewBackground" fitHeight="300.0" fitWidth="963.0" pickOnBounds="true">
                <image>
