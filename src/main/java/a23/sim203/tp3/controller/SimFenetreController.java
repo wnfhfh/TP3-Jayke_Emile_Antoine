@@ -421,11 +421,18 @@ public class SimFenetreController {
         }
     }
 
+    /**
+     * Vérifie si les ChoiceBoxes spécifiées dans le contrôleur SettingsPlaneteController sont remplies.
+     *
+     * @param controller Le contrôleur SettingsPlaneteController contenant les ChoiceBoxes.
+     * @return true si toutes les ChoiceBoxes sont remplies, sinon false.
+     */
     private boolean choiceBoxesRemplies(SettingsPlaneteController controller) {
         return !controller.getxInitialChoiceBox().getSelectionModel().isEmpty() && !controller.getyInitialChoiceBox().getSelectionModel().isEmpty() &&
                 !controller.getxAccelerationChoiceBox().getSelectionModel().isEmpty() && !controller.getyAccelerationChoiceBox().getSelectionModel().isEmpty() &&
                 !controller.getxVitesseInitialeChoiceBox().getSelectionModel().isEmpty() && !controller.getyVitesseInitialeChoiceBox().getSelectionModel().isEmpty();
     }
+
     /**
      * Déclence l'événement lorsqu'il y a une action pour changer l'image de fond.
      * Permet à l'utilisateur de choisir une image à partir du système de fichiers
