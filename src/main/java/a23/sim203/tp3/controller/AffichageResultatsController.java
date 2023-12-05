@@ -68,7 +68,9 @@ public class AffichageResultatsController implements Initializable {
      */
     private HashSet<XYChart.Series> seriesDejaDansGraphique;
 
-
+    /**
+     * Crée un graphique de ligne (LineChart) avec les configurations initiales.
+     */
     public void creerLineChart() {
 //        XYChart.Series series = new XYChart.Series<>();
 //        series.getData().addAll(
@@ -81,10 +83,11 @@ public class AffichageResultatsController implements Initializable {
     }
 
     /**
-     * Méthode appelée lors de l'initialisation de la classe, implémentée depuis l'interface Initializable.
+     * Rafraîchit le graphique avec une nouvelle valeur pour une équation donnée à un certain temps.
      *
-     * @param location  L'emplacement utilisé pour résoudre les chemins relatifs pour le root objet, ou null si l'emplacement n'est pas connu.
-     * @param resources Les ressources utilisées pour localiser l'objet root, ou null si l'emplacement n'est pas connu.
+     * @param nomEquation Le nom de l'équation.
+     * @param y           La constante représentant la valeur de l'équation.
+     * @param endTime     Le temps associé à la nouvelle valeur.
      */
     public void rafraichirGraphique(String nomEquation, Constant y, double endTime) { //TODO figurer si on se fie a endtime pour calc
         if (dejaDansGraphique(nomEquation) != null) {
@@ -109,6 +112,12 @@ public class AffichageResultatsController implements Initializable {
         }
     }
 
+    /**
+     * Vérifie si une série de données pour une équation donnée est déjà présente dans le graphique.
+     *
+     * @param nomEquation Le nom de l'équation.
+     * @return La série de données si elle est déjà présente, sinon null.
+     */
     private XYChart.Series dejaDansGraphique(String nomEquation) {
         XYChart.Series seriesDejaDansGraphique = null;
         for (XYChart.Series series :
@@ -118,17 +127,28 @@ public class AffichageResultatsController implements Initializable {
         return seriesDejaDansGraphique;
     }
 
+    /**
+     * Obtient l'ensemble des boutons cliqués.
+     *
+     * @return L'ensemble des boutons cliqués.
+     */
     public HashSet<String> getBoutonsCliques() {
         return boutonsCliques;
     }
 
+    /**
+     * Ajoute le nom d'une équation à l'ensemble des boutons cliqués.
+     *
+     * @param nomEquation Le nom de l'équation à ajouter.
+     */
     public void ajouterEquationAGraph(String nomEquation) {
         boutonsCliques.add(nomEquation);
     }
 
-
+    /**
+     * Rafraîchit la liste des équations affichées dans le TilePane.
+     */
     @FXML
-
     public void rafraichirEquations() {
         tilePaneEquations.getChildren().clear();
         for (String equationNom :
@@ -145,6 +165,11 @@ public class AffichageResultatsController implements Initializable {
         }
     }
 
+    /**
+     * Obtient l'ensemble des noms d'équations à mettre dans les boutons du TilePane.
+     *
+     * @return L'ensemble des noms d'équations à afficher.
+     */
     private HashSet<String> equationsAMettreBouton() {
         HashSet<String> equationsAMettreBouton = new HashSet<>();
         HashSet<String> equationsDejaDansGraph = new HashSet<>();
@@ -162,17 +187,32 @@ public class AffichageResultatsController implements Initializable {
         return equationsAMettreBouton;
     }
 
+    /**
+     * Associe le moteur de calcul à la classe.
+     *
+     * @param moteurCalcul Le moteur de calcul à associer.
+     */
     public void setMoteurCalcul(MoteurCalcul moteurCalcul) {
         this.moteurCalcul = moteurCalcul;
     }
 
-    public void boutonViderAction(){
+    /**
+     * Gère l'action du bouton pour vider les données et rafraîchir l'interface graphique.
+     */
+    public void boutonViderAction() {
         boutonsCliques.clear();
         lineChart.getData().clear();
         seriesDejaDansGraphique.clear();
         rafraichirEquations();
     }
 
+    /**
+     * Initialise la classe, créant un nouveau moteur de calcul, initialisant les ensembles
+     * et configurant l'action du bouton Vider.
+     *
+     * @param location  L'emplacement du fichier FXML.
+     * @param resources Les ressources utilisées pour localiser l'emplacement.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         moteurCalcul = new MoteurCalcul();

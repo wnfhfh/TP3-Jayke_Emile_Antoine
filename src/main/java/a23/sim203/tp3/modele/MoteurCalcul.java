@@ -50,6 +50,12 @@ public class MoteurCalcul {
         pasDeTempsActuel = 1l;
     }
 
+    /**
+     * Avance le pas de temps actuel et enregistre l'état actuel dans l'historique.
+     * Met à jour les maps d'anciennes et nouvelles valeurs.
+     *
+     * @return Le nouveau pas de temps actuel après l'avancement.
+     */
     public long avancePasDeTemps() {
         historique.put(pasDeTempsActuel, faireMapHistorique());
         pasDeTempsActuel++;
@@ -58,6 +64,12 @@ public class MoteurCalcul {
         return pasDeTempsActuel;
     }
 
+    /**
+     * Crée et retourne une nouvelle map contenant l'historique des constantes
+     * avec les valeurs actuelles et les constantes initiales.
+     *
+     * @return Une map contenant l'historique des constantes.
+     */
     private Map<String, Constant> faireMapHistorique() {
         HashMap mapAAjouter = new HashMap<String, Constant>();
 
@@ -361,6 +373,12 @@ public class MoteurCalcul {
         }
     }
 
+    /**
+     * Obtient l'ensemble des équations présentes parmi les éléments requis.
+     *
+     * @param elementsRequis L'ensemble des éléments requis.
+     * @return L'ensemble des équations présentes dans les éléments requis.
+     */
     private Set<String> getEquationsDansExpression(Set<String> elementsRequis) {
         Set<String> equationsDansExpression = new HashSet<>();
 
@@ -371,6 +389,12 @@ public class MoteurCalcul {
         return equationsDansExpression;
     }
 
+    /**
+     * Obtient de manière récursive l'ensemble des équations requises par une équation donnée.
+     *
+     * @param equation L'équation pour laquelle obtenir les équations requises.
+     * @return L'ensemble des équations requises de manière récursive.
+     */
     private Set<String> getEquationsRequisesRecursifs(Equation equation) {
         Set<String> equationsRequises = equation.getElementsRequis();
         Set<String> equationsRequisesRecursifs = new HashSet<>();
@@ -407,6 +431,12 @@ public class MoteurCalcul {
         return toutesLesConstantes;
     }
 
+    /**
+     * Obtient une collection de toutes les variables sous forme de chaînes de caractères,
+     * avec leur nom et valeur actuelle.
+     *
+     * @return Une collection de chaînes représentant toutes les variables.
+     */
     public Collection<String> getToutesLesVariablesString() {
         HashSet<String> toutesLesVariables = new HashSet<String>();
 
@@ -487,26 +517,56 @@ public class MoteurCalcul {
         return estRecursive;
     }
 
+    /**
+     * Obtient une map contenant les constantes avec leur nom comme clé.
+     *
+     * @return Une map des constantes avec leur nom comme clé.
+     */
     public HashMap<String, Constant> getConstanteValeurMap() {
         return constantMap;
     }
 
+    /**
+     * Obtient une map contenant les anciennes valeurs des variables avec leur nom comme clé.
+     *
+     * @return Une map des anciennes valeurs des variables avec leur nom comme clé.
+     */
     public HashMap<String, Constant> getAncienneValeurVariableMap() {
         return mapAncienneValeur;
     }
 
+    /**
+     * Obtient une map contenant les nouvelles valeurs des variables avec leur nom comme clé.
+     *
+     * @return Une map des nouvelles valeurs des variables avec leur nom comme clé.
+     */
     public HashMap<String, Constant> getNouvelleValeurVariableMap() {
         return mapNouvelleValeur;
     }
 
+    /**
+     * Obtient le pas de temps actuel.
+     *
+     * @return Le pas de temps actuel.
+     */
     public Long getPasDeTempsActuel() {
         return pasDeTempsActuel;
     }
 
+    /**
+     * Obtient le pas de temps actuel moins un.
+     *
+     * @return Le pas de temps actuel moins un.
+     */
     public Long getPasDeTempsActuelMoinsUn() {
         return (pasDeTempsActuel - 1);
     }
 
+    /**
+     * Obtient une collection de chaînes représentant toutes les équations.
+     *
+     * @return Une collection de chaînes représentant toutes les équations.
+     */
     public Collection<String> getAllEquationsString() {
         Collection<String> equationsString = new ArrayList<>();
         for (Equation equation :
@@ -516,26 +576,57 @@ public class MoteurCalcul {
         return equationsString;
     }
 
+    /**
+     * Définit la map des équations de l'objet EquationSolver.
+     *
+     * @param equationMap La nouvelle map des équations.
+     */
     public void setEquationMap(HashMap<String, Equation> equationMap) {
         this.equationMap = equationMap;
     }
 
+    /**
+     * Définit la map des constantes de l'objet EquationSolver.
+     *
+     * @param constantMap La nouvelle map des constantes.
+     */
     public void setConstantMap(HashMap<String, Constant> constantMap) {
         this.constantMap = constantMap;
     }
 
+    /**
+     * Définit la map des anciennes valeurs de l'objet EquationSolver.
+     *
+     * @param mapAncienneValeur La nouvelle map des anciennes valeurs.
+     */
     public void setMapAncienneValeur(HashMap<String, Constant> mapAncienneValeur) {
         this.mapAncienneValeur = mapAncienneValeur;
     }
 
+    /**
+     * Définit la valeur d'une constante dans la map des constantes.
+     *
+     * @param nom Le nom de la constante.
+     * @param x   La nouvelle valeur de la constante.
+     */
     public void setValeurConstante(String nom, Double x) {
         constantMap.put(nom, new Constant(nom, x));
     }
 
+    /**
+     * Définit la valeur initiale d'une constante dans la map des anciennes valeurs.
+     *
+     * @param nom Le nom de la constante.
+     * @param x   La nouvelle valeur initiale de la constante.
+     */
     public void setValeurInitiale(String nom, Double x) {
         mapAncienneValeur.put(nom, new Constant(nom, x));
     }
 
+    /**
+     * Calcule la variable "sim_" en additionnant toutes les équations présentes dans la map des équations.
+     * La valeur résultante est ensuite calculée et mise à jour dans les maps des anciennes et nouvelles valeurs.
+     */
     public void calculeSim() {
         StringBuilder expressionSim = new StringBuilder("");
         for (Equation equation :
@@ -548,6 +639,9 @@ public class MoteurCalcul {
         mapNouvelleValeur.put("sim_", new Constant("sim_", calcule("sim_")));
     }
 
+    /**
+     * Actualise les valeurs des équations dans la map des nouvelles valeurs.
+     */
     public void refreshEquations() {
         for (Equation equation :
                 equationMap.values()) {
@@ -571,6 +665,11 @@ public class MoteurCalcul {
         return dataTableau;
     }
 
+    /**
+     * Obtient l'historique des valeurs des constantes à différents pas de temps.
+     *
+     * @return Une map contenant l'historique des valeurs des constantes à différents pas de temps.
+     */
     public HashMap<Long, Map<String, Constant>> getHistorique() {
         return historique;
     }

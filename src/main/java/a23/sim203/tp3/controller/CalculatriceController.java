@@ -126,6 +126,23 @@ public class CalculatriceController implements Initializable {
         gestionAffichage.actionToggleBoutons(toggleBoutonLire, toggleBoutonVariable, toggleGroup);
     }
 
+    /**
+     * Associe chaque bouton à un caractère spécifique, permettant à l'utilisateur
+     * d'entrer différents caractères via les boutons dans l'interface utilisateur.
+     * Utilise l'objet 'gestionAffichage' pour définir les associations de caractères.
+     * <p>
+     * La méthode définit des associations de caractères pour les boutons 0-9, addition,
+     * soustraction, division, multiplication, parenthèse ouvrante, parenthèse fermante et point.
+     * <p>
+     * Exemple d'utilisation :
+     * <p>
+     * {@code
+     * setBoutonsCaracteres();
+     * }
+     *
+     * @see GestionAffichage#setBoutonCaractere(char, Button)
+     * @see GestionAffichage
+     */
     private void setBoutonsCaractères() {
         gestionAffichage.setBoutonCaractere('0', bouton0);
         gestionAffichage.setBoutonCaractere('1', bouton1);

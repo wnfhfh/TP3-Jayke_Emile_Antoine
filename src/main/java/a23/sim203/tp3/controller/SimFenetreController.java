@@ -414,6 +414,20 @@ public class SimFenetreController {
         }
     }
 
+    /**
+     * Déclence l'événement lorsqu'il y a une action pour changer l'image de fond.
+     * Permet à l'utilisateur de choisir une image à partir du système de fichiers
+     * et met à jour l'image de fond de l'application avec l'image sélectionnée.
+     * En cas d'erreur, affiche une boîte de dialogue d'erreur.
+     * <p>
+     * Exemple d'utilisation dans le fichier FXML :
+     * <p>
+     * {@code
+     * <Button fx:id="changerFondDeSim" onAction="#changerFondDeSimOnAction" text="Changer Fond" />
+     * }
+     *
+     * @param event L'événement déclencheur (clic sur le bouton, dans ce cas).
+     */
     @FXML
     void changerFondDeSimOnAction(ActionEvent event) {
         try {

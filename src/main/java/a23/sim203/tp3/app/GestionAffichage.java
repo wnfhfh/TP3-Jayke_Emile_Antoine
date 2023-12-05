@@ -353,7 +353,7 @@ public class GestionAffichage {
             controller.setStageSimulation(stageSimulation);
             stageSimulation.setScene(sceneSimulation);
             controller.setMoteurCalcul(moteurCalcul);
-             controller.setNombreObjets(demanderNombreObjets());
+            controller.setNombreObjets(demanderNombreObjets());
             stageSimulation.show();
             controller.creerGraphique();
             controller.creerTableau();
@@ -364,6 +364,11 @@ public class GestionAffichage {
         });
     }
 
+    /**
+     * Demande à l'utilisateur d'entrer un nombre d'objets et renvoie la valeur saisie en tant qu'entier.
+     *
+     * @return Le nombre d'objets saisi par l'utilisateur.
+     */
     private Integer demanderNombreObjets() {
         TextInputDialog textInputDialog = new TextInputDialog("1");
         textInputDialog.setHeaderText("Entrez le nombre de planètes voulu:");

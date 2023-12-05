@@ -10,6 +10,11 @@ import org.mariuszgromada.math.mxparser.Constant;
 
 import java.time.LocalDateTime;
 
+/**
+ * Un service de simulation qui utilise le moteur de calcul pour avancer dans le temps.
+ * Ce service peut être démarré, mis en pause et repris en fonction des besoins de la simulation.
+ * Les valeurs des variables et constantes sont calculées à chaque pas de temps et mises à jour.
+ */
 public class SimulationService extends ScheduledService<Void> {
     private MoteurCalcul moteurCalcul;
     private double endTime;
@@ -21,6 +26,12 @@ public class SimulationService extends ScheduledService<Void> {
     private double tempsDebutPause;
     private double tempsFinPause;
 
+    /**
+     * Définit le moteur de calcul pour le service de simulation.
+     * Initialise également le temps de début et de fin pour le calcul de la différence de temps.
+     *
+     * @param moteurCalcul Le moteur de calcul utilisé pour effectuer les calculs.
+     */
     public void setMoteurCalcul(MoteurCalcul moteurCalcul) {
         startTime = System.currentTimeMillis();
         this.moteurCalcul = moteurCalcul;
@@ -28,34 +39,66 @@ public class SimulationService extends ScheduledService<Void> {
         dt = endTime - startTime;
     }
 
+    /**
+     * Définit le moteur de calcul et l'échelle de temps pour le service de simulation.
+     *
+     * @param moteurCalcul Le moteur de calcul utilisé pour effectuer les calculs.
+     * @param scale        L'échelle de temps à appliquer.
+     */
     public void setMoteurCalculEtScale(MoteurCalcul moteurCalcul, double scale) {
         this.moteurCalcul = moteurCalcul;
         this.timeScale = scale;
     }
 
+    /**
+     * Définit le contrôleur d'affichage des résultats pour le service de simulation.
+     *
+     * @param aRC Le contrôleur d'affichage des résultats.
+     */
     public void setAffichageResultatsController(AffichageResultatsController aRC) {
         this.affichageResultatsController = aRC;
     }
 
+    /**
+     * Définit le contrôleur du tableau pour le service de simulation.
+     *
+     * @param tableauController1 Le contrôleur du tableau.
+     */
     public void setTableauController(TableauController tableauController1) {
         this.tableauController = tableauController1;
     }
 
+    /**
+     * Démarre le service de simulation.
+     */
     public void startService() {
         super.start();
     }
 
+    /**
+     * Reprise du service après une pause.
+     */
     public void resumeService() {
         tempsFinPause = System.currentTimeMillis();
         super.start();
     }
 
+    /**
+     * Met en pause le service et enregistre le temps de début de la pause.
+     */
     public void pauseService() {
         tempsDebutPause = System.currentTimeMillis();
         super.cancel();
         super.reset();
     }
 
+    /**
+     * Crée la tâche de simulation à exécuter par le service.
+     * La tâche calculera les valeurs des variables et constantes à chaque pas de temps.
+     * En cas de pause, la méthode spéciale de pause est appelée pour ajuster le temps.
+     *
+     * @return Une tâche représentant la simulation.
+     */
     @Override
     protected Task<Void> createTask() {
         return new Task<Void>() {
