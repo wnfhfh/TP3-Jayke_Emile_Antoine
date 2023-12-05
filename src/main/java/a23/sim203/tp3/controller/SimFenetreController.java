@@ -401,19 +401,31 @@ public class SimFenetreController {
 
             String[] paramsPlanete = new String[6];
             controller.getBoutonOK().setOnAction(event -> {
-                paramsPlanete[0] = controller.getxInitialChoiceBox().getSelectionModel().getSelectedItem();
-                paramsPlanete[1] = controller.getyInitialChoiceBox().getSelectionModel().getSelectedItem();
-                paramsPlanete[2] = controller.getxAccelerationChoiceBox().getSelectionModel().getSelectedItem();
-                paramsPlanete[3] = controller.getyAccelerationChoiceBox().getSelectionModel().getSelectedItem();
-                paramsPlanete[4] = controller.getxVitesseInitialeChoiceBox().getSelectionModel().getSelectedItem();
-                paramsPlanete[5] = controller.getyVitesseInitialeChoiceBox().getSelectionModel().getSelectedItem();
-                paramsAllPlanetes.put(new Circle(13), paramsPlanete);
-                settingsPlaneteStage.close();
+                if (choiceBoxesRemplies(controller)) {
+                    paramsPlanete[0] = controller.getxInitialChoiceBox().getSelectionModel().getSelectedItem();
+                    paramsPlanete[1] = controller.getyInitialChoiceBox().getSelectionModel().getSelectedItem();
+                    paramsPlanete[2] = controller.getxAccelerationChoiceBox().getSelectionModel().getSelectedItem();
+                    paramsPlanete[3] = controller.getyAccelerationChoiceBox().getSelectionModel().getSelectedItem();
+                    paramsPlanete[4] = controller.getxVitesseInitialeChoiceBox().getSelectionModel().getSelectedItem();
+                    paramsPlanete[5] = controller.getyVitesseInitialeChoiceBox().getSelectionModel().getSelectedItem();
+                    paramsAllPlanetes.put(new Circle(13), paramsPlanete);
+                    settingsPlaneteStage.close();
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Veuillez réessayer svp");
+                    alert.setContentText("Veuillez remplir chaque champ");
+                    alert.showAndWait();
+                }
             });
             settingsPlaneteStage.showAndWait();
         }
     }
 
+    private boolean choiceBoxesRemplies(SettingsPlaneteController controller) {
+        return !controller.getxInitialChoiceBox().getSelectionModel().isEmpty() && !controller.getyInitialChoiceBox().getSelectionModel().isEmpty() &&
+                !controller.getxAccelerationChoiceBox().getSelectionModel().isEmpty() && !controller.getyAccelerationChoiceBox().getSelectionModel().isEmpty() &&
+                !controller.getxVitesseInitialeChoiceBox().getSelectionModel().isEmpty() && !controller.getyVitesseInitialeChoiceBox().getSelectionModel().isEmpty();
+    }
     /**
      * Déclence l'événement lorsqu'il y a une action pour changer l'image de fond.
      * Permet à l'utilisateur de choisir une image à partir du système de fichiers
