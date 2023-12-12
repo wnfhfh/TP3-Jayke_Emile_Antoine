@@ -328,6 +328,7 @@ public class GestionAffichage {
                 alert.setTitle("Calculateur avancée");
                 alert.setContentText("Réessayez");
                 alert.showAndWait();
+                System.out.println(e);
             }
         });
     }
@@ -436,5 +437,9 @@ public class GestionAffichage {
 
     public MoteurCalcul getMoteurCalcul() {
         return moteurCalcul;
+    }
+
+    public CalculatriceController getCalculatriceController() {
+        return calculatriceController;
     }
 }

@@ -119,6 +119,7 @@ public class SimFenetreController {
                 setMoteurCalcul(moteurCalcul, scale);
                 simulationService.setPeriod(Duration.valueOf(dtTextField.getText() + "s"));
                 moteurCalcul.getConstanteValeurMap().put("d_", new Constant("d_", simulationService.getPeriod().toSeconds() * scale));
+                gestionAffichage.getCalculatriceController().getListeConstantes().getItems().add("d_ = " + moteurCalcul.getConstanteValeurMap().get("d_").getConstantValue());
                 simulationService.start();
                 addServiceListener();
                 placerCerclesIni();
@@ -211,13 +212,22 @@ public class SimFenetreController {
             } else {
                 centerYEnVrai = anchorPane.getHeight() - (yInitial + (yVitesseInitiale * temps) + (0.5 * moteurCalcul.getConstanteValeurMap().get(nomYAcceleration.trim()).getConstantValue() * (Math.pow(temps, 2))));
             }
-            if (centerXEnVrai > anchorPane.getWidth() || centerXEnVrai < 0 || centerYEnVrai > anchorPane.getHeight() || centerYEnVrai < 0) {
+            if (centerXEnVrai > anchorPane.getWidth() || centerXEnVrai < 0 || centerYEnVrai > anchorPane.getHeight() || centerYEnVrai < 0 || isFctStopTrue()) {
                 boutonArreterOnAction(new ActionEvent());
             }
             circle.setCenterX((centerXEnVrai - ancienCenterX) * mParPx + ancienCenterX);
             circle.setCenterY((centerYEnVrai - ancienCenterY) * mParPx + ancienCenterY);
             ajouterLine(circle, ancienCenterX, ancienCenterY);
         }
+    }
+
+    private boolean isFctStopTrue() {
+        if (moteurCalcul.getEquationMap().containsKey("stop_")) {
+            if (moteurCalcul.getConstanteValeurMap().get("stop_").getConstantValue() == 1.0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void ajouterLine(Circle circle, Double ancienCenterX, Double ancienCenterY) {

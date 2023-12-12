@@ -1,0 +1,19 @@
+Équations:
+t_=t_+d_
+stop_=p_1≤p_0 & p_1≥p_0
+p_0=xety_0*t_
+p_1=xety_1*t_
+Variables:
+t_=0.0
+Constantes:
+hauteur_=1.0
+vitesse_0=7.0
+positiondepart_0=0.0
+vitesse_1=-20.0
+positiondepart_1=500.0
+vitesse_2=7.0
+positiondepart_2=25.0
+acceleration_=0.0
+xety_0=7.0
+xety_1=480.0
+xety_2=32.0
